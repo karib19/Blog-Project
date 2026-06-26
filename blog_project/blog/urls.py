@@ -1,11 +1,11 @@
 from django.urls import path
-from . import views
+from .views import PostListAPIView, PostDetailAPIView, CategoryListAPIView, TagListAPIView, ProfileAPIView
+
 
 urlpatterns = [
-    path('', views.home, name='home'),
-    path('post/<int:pk>/', views.post_detail, name='post_detail'),
-    path('post/new/', views.post_create, name='post_create'),
-    path('post/<int:pk>/edit/', views.post_update, name='post_update'),
-    path('post/<int:pk>/delete/', views.post_delete, name='post_delete'),
-    path('signup/', views.signup_view, name='signup'),
+    path('api/posts/',PostListAPIView.as_view(),name='api-post-list'),
+    path('api/posts/<slug:slug>/',PostDetailAPIView.as_view(),name='api-post-detail'),
+    path('api/categories/',CategoryListAPIView.as_view(),name='api-categories'),
+    path('api/tags/',TagListAPIView.as_view(),name='api-tags'),
+    path('api/profile/',ProfileAPIView.as_view(),name='profile'),
 ]
