@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 
 
 class Category(models.Model):
@@ -29,27 +30,22 @@ class Post(models.Model):
 
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, blank=True, null=True)
-
     excerpt = models.TextField(
         max_length=300,
         blank=True,
         help_text="Short description for cards and SEO."
     )
-
     content = models.TextField()
-
     featured_image = models.ImageField(
         upload_to='posts/',
         blank=True,
         null=True
     )
-
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='posts'
     )
-
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
@@ -57,28 +53,23 @@ class Post(models.Model):
         blank=True,
         related_name='posts'
     )
-
     tags = models.ManyToManyField(
         Tag,
         blank=True,
         related_name='posts'
     )
-
     status = models.CharField(
         max_length=10,
         choices=STATUS_CHOICES,
         default='draft'
     )
-
     views = models.PositiveIntegerField(default=0)
     reading_time = models.PositiveIntegerField(default=1)
     is_featured = models.BooleanField(default=False)
-
     meta_description = models.CharField(
         max_length=160,
         blank=True
     )
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     published_at = models.DateTimeField(
@@ -88,6 +79,11 @@ class Post(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
+    def save(self, *args, **kwargs):
+     if not self.slug:
+        self.slug = slugify(self.title)
+     super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title
@@ -113,7 +109,6 @@ class Comment(models.Model):
         blank=True,
         related_name='replies'
     )
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
