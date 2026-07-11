@@ -31,9 +31,6 @@ ALLOWED_HOSTS = [
     "localhost",
 ]
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://blog-project-w5b9.onrender.com",
-]
 
 # Application definition
 
@@ -89,9 +86,13 @@ MIDDLEWARE = [
 ]
 
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://blog-project-ruby-three.vercel.app",
+]
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://blog-project-w5b9.onrender.com",
+    "https://blog-project-ruby-three.vercel.app",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
