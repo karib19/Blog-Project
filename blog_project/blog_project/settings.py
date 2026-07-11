@@ -24,22 +24,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-xo8whsumplgsbhn!-=^=@hrkukxk)@z(v6wgq$)=!htx7gbq+9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "localhost",
-    "blog-project-w5b9.onrender.com",
-]
+ALLOWED_HOSTS = []
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://blog-project-ruby-three.vercel.app",
+
 ]
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://blog-project-ruby-three.vercel.app",
-]
+
 
 
 # Application definition
@@ -51,10 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    'cloudinary',
-    'cloudinary_storage',
-
     'rest_framework',
     'corsheaders',
     'django_filters',
@@ -180,21 +170,3 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
-
-
-
-
-CLOUDINARY_STORAGE = {
-    "CLOUD_NAME": os.environ.get(" tmciq0nu"),
-    "API_KEY": os.environ.get("724738933429974"),
-    "API_SECRET": os.environ.get("OF3jCLHwB9z6WjGkVl8o2BhvYmY"),
-}
-
-STORAGES = {
-    "default": {
-        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-    },
-}
