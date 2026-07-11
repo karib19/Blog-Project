@@ -45,19 +45,22 @@ CSRF_TRUSTED_ORIGINS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+
+    "rest_framework",
+    "corsheaders",
+    "django_filters",
+    "drf_spectacular",
+
     "cloudinary",
-    "cloudinary_storage"
-    'rest_framework',
-    'corsheaders',
-    'django_filters',
-    'drf_spectacular',
-    'blog'
+    "cloudinary_storage",
+
+    "blog",
 ]
 
 REST_FRAMEWORK = {
