@@ -45,22 +45,21 @@ CSRF_TRUSTED_ORIGINS = [
 # Application definition
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
 
-    "rest_framework",
-    "corsheaders",
-    "django_filters",
-    "drf_spectacular",
+    'cloudinary',
+    'cloudinary_storage',
 
-    "cloudinary",
-    "cloudinary_storage",
-
-    "blog",
+    'rest_framework',
+    'corsheaders',
+    'django_filters',
+    'drf_spectacular',
+    'blog',
 ]
 
 REST_FRAMEWORK = {
@@ -189,4 +188,11 @@ CLOUDINARY_STORAGE = {
     "API_SECRET": os.environ.get("_lWS4CpvAFEj5rJpcqlTqP6Snvw"),
 }
 
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
