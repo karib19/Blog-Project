@@ -182,10 +182,12 @@ LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
 
+
+
 CLOUDINARY_STORAGE = {
-    "CLOUD_NAME": os.environ.get("tmciq0nu"),
-    "API_KEY": os.environ.get("974613293616222"),
-    "API_SECRET": os.environ.get("_lWS4CpvAFEj5rJpcqlTqP6Snvw"),
+    "CLOUD_NAME": os.environ.get("CLOUD_NAME"),
+    "API_KEY": os.environ.get("API_KEY"),
+    "API_SECRET": os.environ.get("API_SECRET"),
 }
 
 STORAGES = {
