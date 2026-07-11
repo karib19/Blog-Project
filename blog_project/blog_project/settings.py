@@ -23,10 +23,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-xo8whsumplgsbhn!-=^=@hrkukxk)@z(v6wgq$)=!htx7gbq+9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "blog-project-w5b9.onrender.com",
+    "127.0.0.1",
+    "localhost",
+]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://blog-project-w5b9.onrender.com",
+]
 
 # Application definition
 
@@ -84,6 +91,7 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "https://blog-project-w5b9.onrender.com",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
