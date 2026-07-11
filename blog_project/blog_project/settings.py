@@ -26,9 +26,18 @@ SECRET_KEY = 'django-insecure-xo8whsumplgsbhn!-=^=@hrkukxk)@z(v6wgq$)=!htx7gbq+9
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    "blog-project-w5b9.onrender.com",
     "127.0.0.1",
     "localhost",
+    "blog-project-w5b9.onrender.com",
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "https://blog-project-ruby-three.vercel.app",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://blog-project-ruby-three.vercel.app",
 ]
 
 
@@ -86,14 +95,7 @@ MIDDLEWARE = [
 ]
 
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://blog-project-ruby-three.vercel.app",
-]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "https://blog-project-ruby-three.vercel.app",
-]
 
 CORS_ALLOW_CREDENTIALS = True
 
