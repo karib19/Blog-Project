@@ -29,7 +29,7 @@ DEBUG = False
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
-    "blog-project-w5b9.onrender.com",
+    "blog-project-l5o3.onrender.com",
 ]
 
 CORS_ALLOWED_ORIGINS = [
