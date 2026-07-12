@@ -34,12 +34,13 @@ ALLOWED_HOSTS = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://karib19.github.io",
+    "https://blog-project-mu-one.vercel.app/",
 ]
 
 
 CSRF_TRUSTED_ORIGINS = [
     "https://blog-project-l5o3.onrender.com",
+    "https://blog-project-mu-one.vercel.app/"
 ]
 
 # Application definition
