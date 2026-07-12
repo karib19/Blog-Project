@@ -38,7 +38,9 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://blog-project-l5o3.onrender.com",
+]
 
 # Application definition
 
