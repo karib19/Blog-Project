@@ -194,3 +194,8 @@ STORAGES = {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
+
+
+print("CLOUD_NAME =", os.environ.get("CLOUD_NAME"))
+print("API_KEY =", os.environ.get("API_KEY"))
+print("API_SECRET exists =", bool(os.environ.get("API_SECRET")))
