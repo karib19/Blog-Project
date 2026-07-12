@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 from pathlib import Path
 import os
-
+import cloudinary
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -196,6 +196,11 @@ STORAGES = {
 }
 
 
-print("CLOUD_NAME =", os.environ.get("CLOUD_NAME"))
-print("API_KEY =", os.environ.get("API_KEY"))
-print("API_SECRET exists =", bool(os.environ.get("API_SECRET")))
+
+
+cloudinary.config(
+    cloud_name=os.environ.get("CLOUD_NAME"),
+    api_key=os.environ.get("API_KEY"),
+    api_secret=os.environ.get("API_SECRET"),
+    secure=True,
+)
