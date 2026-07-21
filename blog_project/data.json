@@ -1,0 +1,1205 @@
+[
+  {
+    "model": "admin.logentry",
+    "pk": 1,
+    "fields": {
+      "action_time": "2026-07-03T05:24:13.259Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "6",
+      "object_repr": "FIFA WORLD CUP 2026",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 2,
+    "fields": {
+      "action_time": "2026-07-03T05:24:39.442Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "5",
+      "object_repr": "Believe in Yourself",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 3,
+    "fields": {
+      "action_time": "2026-07-03T05:24:49.502Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "4",
+      "object_repr": "The New Bangladesh",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Title\", \"Status\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 4,
+    "fields": {
+      "action_time": "2026-07-03T05:25:14.681Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "The dirty side of politics",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Content\", \"Status\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 5,
+    "fields": {
+      "action_time": "2026-07-03T05:25:21.060Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "3",
+      "object_repr": "Donald Trump : the dirtiest person in the world",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Content\", \"Status\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 6,
+    "fields": {
+      "action_time": "2026-07-03T05:25:28.405Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "2",
+      "object_repr": "Osman Hadi",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 7,
+    "fields": {
+      "action_time": "2026-07-03T05:43:53.846Z",
+      "user": 7,
+      "content_type": 9,
+      "object_id": "1",
+      "object_repr": "Politics",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 8,
+    "fields": {
+      "action_time": "2026-07-03T05:44:28.160Z",
+      "user": 7,
+      "content_type": 9,
+      "object_id": "2",
+      "object_repr": "Sports",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 9,
+    "fields": {
+      "action_time": "2026-07-03T05:44:50.253Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "6",
+      "object_repr": "FIFA WORLD CUP 2026",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Category\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 10,
+    "fields": {
+      "action_time": "2026-07-03T05:45:09.074Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "The dirty side of politics",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Category\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 11,
+    "fields": {
+      "action_time": "2026-07-03T05:45:29.404Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "3",
+      "object_repr": "Donald Trump : the dirtiest person in the world",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Category\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 12,
+    "fields": {
+      "action_time": "2026-07-03T05:45:47.354Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "4",
+      "object_repr": "The New Bangladesh",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Category\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 13,
+    "fields": {
+      "action_time": "2026-07-03T06:02:44.485Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "6",
+      "object_repr": "FIFA WORLD CUP 2026",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 14,
+    "fields": {
+      "action_time": "2026-07-03T06:02:52.973Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "5",
+      "object_repr": "Believe in Yourself",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 15,
+    "fields": {
+      "action_time": "2026-07-03T06:02:59.050Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "4",
+      "object_repr": "The New Bangladesh",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 16,
+    "fields": {
+      "action_time": "2026-07-03T06:03:02.927Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "4",
+      "object_repr": "The New Bangladesh",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 17,
+    "fields": {
+      "action_time": "2026-07-03T06:03:06.970Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "3",
+      "object_repr": "Donald Trump : the dirtiest person in the world",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 18,
+    "fields": {
+      "action_time": "2026-07-03T06:03:11.000Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "2",
+      "object_repr": "Osman Hadi",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 19,
+    "fields": {
+      "action_time": "2026-07-03T06:03:15.705Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "The dirty side of politics",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 20,
+    "fields": {
+      "action_time": "2026-07-05T16:02:02.438Z",
+      "user": 7,
+      "content_type": 9,
+      "object_id": "2",
+      "object_repr": "Sports",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Slug\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 21,
+    "fields": {
+      "action_time": "2026-07-05T16:02:10.489Z",
+      "user": 7,
+      "content_type": 9,
+      "object_id": "1",
+      "object_repr": "Politics",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Slug\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 22,
+    "fields": {
+      "action_time": "2026-07-05T16:02:13.979Z",
+      "user": 7,
+      "content_type": 9,
+      "object_id": "2",
+      "object_repr": "Sports",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 23,
+    "fields": {
+      "action_time": "2026-07-05T16:02:24.533Z",
+      "user": 7,
+      "content_type": 9,
+      "object_id": "2",
+      "object_repr": "Sports",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 24,
+    "fields": {
+      "action_time": "2026-07-05T16:40:01.761Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "7",
+      "object_repr": "The Thrilling Showdown in Miami",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Category\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 25,
+    "fields": {
+      "action_time": "2026-07-06T15:55:46.002Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "7",
+      "object_repr": "The Thrilling Showdown in Miami",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 26,
+    "fields": {
+      "action_time": "2026-07-06T15:56:00.282Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "7",
+      "object_repr": "The Thrilling Showdown in Miami",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 27,
+    "fields": {
+      "action_time": "2026-07-06T16:22:11.085Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "8",
+      "object_repr": "The Thrilling Showdown in Miami",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 28,
+    "fields": {
+      "action_time": "2026-07-07T14:40:22.173Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "9",
+      "object_repr": "The Thrilling Showdown in Miami",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 29,
+    "fields": {
+      "action_time": "2026-07-07T14:52:14.343Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "10",
+      "object_repr": "The Thrilling Showdown in Miami",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 30,
+    "fields": {
+      "action_time": "2026-07-07T14:53:58.863Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "10",
+      "object_repr": "The Thrilling Showdown in Miami",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 31,
+    "fields": {
+      "action_time": "2026-07-07T14:55:13.544Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "6",
+      "object_repr": "FIFA WORLD CUP 2026",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Published at\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 32,
+    "fields": {
+      "action_time": "2026-07-07T14:55:43.278Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "11",
+      "object_repr": "The Thrilling Showdown in Miami",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Status\", \"Published at\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 33,
+    "fields": {
+      "action_time": "2026-07-09T07:45:26.811Z",
+      "user": 7,
+      "content_type": 12,
+      "object_id": "1",
+      "object_repr": "Sports",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 34,
+    "fields": {
+      "action_time": "2026-07-09T07:45:32.722Z",
+      "user": 7,
+      "content_type": 12,
+      "object_id": "1",
+      "object_repr": "Sports",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 35,
+    "fields": {
+      "action_time": "2026-07-09T07:45:37.591Z",
+      "user": 7,
+      "content_type": 12,
+      "object_id": "1",
+      "object_repr": "Sports",
+      "action_flag": 2,
+      "change_message": "[]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 36,
+    "fields": {
+      "action_time": "2026-07-09T07:45:54.117Z",
+      "user": 7,
+      "content_type": 12,
+      "object_id": "2",
+      "object_repr": "politics",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 37,
+    "fields": {
+      "action_time": "2026-07-09T07:46:01.668Z",
+      "user": 7,
+      "content_type": 12,
+      "object_id": "1",
+      "object_repr": "sports",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Name\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 38,
+    "fields": {
+      "action_time": "2026-07-09T07:46:10.063Z",
+      "user": 7,
+      "content_type": 12,
+      "object_id": "3",
+      "object_repr": "messi",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 39,
+    "fields": {
+      "action_time": "2026-07-09T14:17:50.980Z",
+      "user": 7,
+      "content_type": 12,
+      "object_id": "3",
+      "object_repr": "messi",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 40,
+    "fields": {
+      "action_time": "2026-07-09T14:17:50.980Z",
+      "user": 7,
+      "content_type": 12,
+      "object_id": "2",
+      "object_repr": "politics",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 41,
+    "fields": {
+      "action_time": "2026-07-09T14:17:50.980Z",
+      "user": 7,
+      "content_type": 12,
+      "object_id": "1",
+      "object_repr": "sports",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 42,
+    "fields": {
+      "action_time": "2026-07-10T12:48:28.528Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "12",
+      "object_repr": "yjdtyjnyhn",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 43,
+    "fields": {
+      "action_time": "2026-07-10T13:45:58.907Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "6",
+      "object_repr": "FIFA WORLD CUP 2026",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Featured image\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 44,
+    "fields": {
+      "action_time": "2026-07-10T13:47:23.231Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "5",
+      "object_repr": "Believe in Yourself",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Featured image\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 45,
+    "fields": {
+      "action_time": "2026-07-10T13:48:56.866Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "4",
+      "object_repr": "The New Bangladesh",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Featured image\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 46,
+    "fields": {
+      "action_time": "2026-07-10T13:50:27.264Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "3",
+      "object_repr": "Donald Trump : the dirtiest person in the world",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Featured image\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 47,
+    "fields": {
+      "action_time": "2026-07-10T13:52:41.673Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "The dirty side of politics",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Featured image\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 48,
+    "fields": {
+      "action_time": "2026-07-10T13:54:05.763Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "2",
+      "object_repr": "Osman Hadi",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Featured image\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 49,
+    "fields": {
+      "action_time": "2026-07-11T14:51:19.883Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "11",
+      "object_repr": "The Thrilling Showdown in Miami",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Featured image\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 50,
+    "fields": {
+      "action_time": "2026-07-11T15:00:40.375Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "11",
+      "object_repr": "The Thrilling Showdown in Miami",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Featured image\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 51,
+    "fields": {
+      "action_time": "2026-07-11T15:01:11.799Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "11",
+      "object_repr": "The Thrilling Showdown in Miami",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Featured image\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 52,
+    "fields": {
+      "action_time": "2026-07-11T15:09:55.073Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "11",
+      "object_repr": "The Thrilling Showdown in Miami",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Featured image\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 53,
+    "fields": {
+      "action_time": "2026-07-11T15:10:53.693Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "6",
+      "object_repr": "FIFA WORLD CUP 2026",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Featured image\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 54,
+    "fields": {
+      "action_time": "2026-07-11T15:11:01.107Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "5",
+      "object_repr": "Believe in Yourself",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Featured image\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 55,
+    "fields": {
+      "action_time": "2026-07-11T15:11:06.527Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "4",
+      "object_repr": "The New Bangladesh",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Featured image\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 56,
+    "fields": {
+      "action_time": "2026-07-11T15:11:15.053Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "3",
+      "object_repr": "Donald Trump : the dirtiest person in the world",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Featured image\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 57,
+    "fields": {
+      "action_time": "2026-07-11T15:11:20.394Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "2",
+      "object_repr": "Osman Hadi",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Featured image\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 58,
+    "fields": {
+      "action_time": "2026-07-11T15:11:28.309Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "The dirty side of politics",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Featured image\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 59,
+    "fields": {
+      "action_time": "2026-07-11T15:13:13.311Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "11",
+      "object_repr": "The Thrilling Showdown in Miami",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Featured image\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 60,
+    "fields": {
+      "action_time": "2026-07-11T16:41:11.353Z",
+      "user": 7,
+      "content_type": 7,
+      "object_id": "11",
+      "object_repr": "The Thrilling Showdown in Miami",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Featured image\"]}}]"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$F4c9DX99l37gdkUKhQop8g$BUZtQie//MFTNbZSyoPgwFnzTLTy5AJCpj/JO4r0wrA=",
+      "last_login": "2026-01-28T07:57:03.476Z",
+      "is_superuser": true,
+      "username": "Karib",
+      "first_name": "",
+      "last_name": "",
+      "email": "prokarib47@gmail.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-01-28T06:19:26.214Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$E6xHX2RAPNsApYnRRb0gpH$t2qifqwI94qvBxE5+a26IuH/g6+tWUpDF/Bv/Vr7caY=",
+      "last_login": "2026-01-28T07:40:09.751Z",
+      "is_superuser": false,
+      "username": "Amir@",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-01-28T07:16:46.636Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$fKWqFLOnWwspt1goTTExvZ$mCsqJLuj5KvyLg1Vn91g0XSxBFk58PlQaWvt/4vjGec=",
+      "last_login": "2026-01-28T07:53:01.141Z",
+      "is_superuser": false,
+      "username": "Jhumu@",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-01-28T07:40:45.843Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$UCyzijVK66CpiufdHdFM4T$ayGPgTAZ9IW1cEWSBGzNOSD4IxwOYVgbncnGqKfTpT4=",
+      "last_login": "2026-02-14T05:42:56.421Z",
+      "is_superuser": false,
+      "username": "Gigi10",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-02-14T05:42:55.047Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 5,
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$o0GxEHXOKZnOy5VLN6cmWg$hvV9/MpWHexP79UrqAEc+AmF2StgCqK8R0LwQu8MlBo=",
+      "last_login": "2026-05-14T11:00:52.097Z",
+      "is_superuser": false,
+      "username": "WhoIsKarib",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T11:00:50.756Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 6,
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$D4WNx4zgmy0rE6Kgijs9BP$W8HKtPUvf2zx8pz8JKyWC0Z/8PwbJ6321SZ211xxyRE=",
+      "last_login": "2026-06-18T14:04:32.179Z",
+      "is_superuser": false,
+      "username": "kiwi",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-06-18T14:04:30.869Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 7,
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$qCHrv6Adk8vwesJVXVZDNP$t24AfAH+DAwF7KNjqOU60OnS2Fx4ILYGQk2S7KqHCms=",
+      "last_login": "2026-07-10T12:48:13.695Z",
+      "is_superuser": true,
+      "username": "karib",
+      "first_name": "Karib",
+      "last_name": "Hosssain",
+      "email": "karibshekh@gmail.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-06-26T12:04:48.411Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 8,
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$aXuGen5JvNGHXS34J8nH9d$zHv8zSk6ISP7U0rSakgqHY3ADbcsMHfs9MKatt3y3RQ=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "sima19",
+      "first_name": "Sima",
+      "last_name": "Khan",
+      "email": "sima@gmail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-07-10T12:00:02.130Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "18snnpia67hllocbrstzrnqied1mky56",
+    "fields": {
+      "session_data": ".eJxVjMsOwiAQRf-FtSEMz-LSvd9ABgakaiAp7cr479qkC93ec859sYDbWsM28hJmYmfm2Ol3i5geue2A7thunafe1mWOfFf4QQe_dsrPy-H-HVQc9VtbsOS8ScVlLVAlgZjJFIEOlPLKCJq0i5IopmJASy0nD46gWIMCsmHvD-UyN5o:1wiAeL:n5HxIn2usmNRM2_Mcwjrfs1zoBsaSKSjSAsEouy08vc",
+      "expire_date": "2026-07-24T12:48:13.703Z"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "dwkyrsbic6o82qfrxedgtbbqza2i170r",
+    "fields": {
+      "session_data": ".eJxVjEsOAiEQBe_C2hDkI7RL956BNHQjowaSYWZlvLtOMgvdvqp6LxFxXWpcB89xInEWXhx-t4T5wW0DdMd26zL3tsxTkpsidzrktRM_L7v7d1Bx1G8NxjpgpTAkpuSPBiFb8InI50AcHHtzcqCtKxg8uES6gMqatQsUShbvD-spODE:1wd5JM:u4Sq3nw3z23qSN6o1rHeCoF2lnYOp3JT7qtr7DP_ZCg",
+      "expire_date": "2026-07-10T12:05:32.929Z"
+    }
+  },
+  {
+    "model": "blog.category",
+    "pk": 1,
+    "fields": {
+      "name": "Politics",
+      "slug": null
+    }
+  },
+  {
+    "model": "blog.category",
+    "pk": 2,
+    "fields": {
+      "name": "Sports",
+      "slug": null
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 1,
+    "fields": {
+      "title": "The dirty side of politics",
+      "slug": "the-dirty-side-of-politics",
+      "excerpt": "",
+      "content": "Dirty politics\" refers to the use of unprincipled, dishonest, and often unethical tactics to gain power or achieve specific, sometimes immoral, ends. This dark side includes illicit campaign financing, voter manipulation, negative campaigning, and the use of misinformation. Key drivers often involve Machiavellianism and the \"Dark Triad\" personality traits.",
+      "featured_image": "",
+      "author": 2,
+      "category": 1,
+      "status": "published",
+      "views": 0,
+      "reading_time": 1,
+      "is_featured": false,
+      "meta_description": "",
+      "created_at": "2026-01-28T07:18:49.888Z",
+      "updated_at": "2026-07-11T15:11:28.299Z",
+      "published_at": null,
+      "tags": []
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 2,
+    "fields": {
+      "title": "Osman Hadi",
+      "slug": "osman-hadi",
+      "excerpt": "",
+      "content": "Sharif Osman Bin Hadi[a] (born Osman Goni;[b][1][2] 30 June 1993 � 18 December 2025) was a Bangladeshi political and cultural activist, writer and a teacher.[c] He was the co-founder and spokesperson of Inqilab Moncho. After the July Revolution, he became a figure in youth-led movements, noted for his opposition to what he termed \"Indian hegemony in Bangladesh\", his advocacy regarding the July martyrs, and his participation in the Awami League ban protests.[d]\r\n\r\nOn 12 December 2025, Hadi was shot in the Paltan area of Dhaka. He was airlifted to the Singapore General Hospital on 15 December, where he died three days later.[e] His death triggered a series of nationwide violent incidents, targeting media houses, political and cultural sites, and diplomatic missions.[15] He has been widely recognised as a martyr in Bangladesh.[f]",
+      "featured_image": "",
+      "author": 2,
+      "category": null,
+      "status": "published",
+      "views": 0,
+      "reading_time": 1,
+      "is_featured": false,
+      "meta_description": "",
+      "created_at": "2026-01-28T07:25:21.715Z",
+      "updated_at": "2026-07-11T15:11:20.391Z",
+      "published_at": null,
+      "tags": []
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 3,
+    "fields": {
+      "title": "Donald Trump : the dirtiest person in the world",
+      "slug": "donald-trump-the-dirtiest-person-in-the-world",
+      "excerpt": "",
+      "content": "The characterization of Donald Trump as the \"dirtiest person in the world\" is an opinionated statement, not a objective fact, and is typically used in a figurative sense to describe perceived moral, ethical, or political corruption. Various sources, including political analysts, former associates, and media outlets, have used such language or similar strong terms when discussing his actions, character, and business practices.",
+      "featured_image": "",
+      "author": 3,
+      "category": 1,
+      "status": "published",
+      "views": 0,
+      "reading_time": 1,
+      "is_featured": false,
+      "meta_description": "",
+      "created_at": "2026-01-28T07:43:38.425Z",
+      "updated_at": "2026-07-11T15:11:15.047Z",
+      "published_at": null,
+      "tags": []
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 4,
+    "fields": {
+      "title": "The New Bangladesh",
+      "slug": "the-new-bangladesh",
+      "excerpt": "",
+      "content": "Today, Bangladesh begins a new journey. After over 18 months since the mass uprising, the long-awaited election has finally been held, opening up the path for a democratic transition. After any election, it is natural that one party will form the government and another will be the opposition. The question for now is whether a large section of the voters have participated in the election, and whether the electoral process has been relatively free from external interference or disturbance. Going by initial estimates, the election has certainly passed the test.",
+      "featured_image": "",
+      "author": 4,
+      "category": 1,
+      "status": "published",
+      "views": 0,
+      "reading_time": 1,
+      "is_featured": false,
+      "meta_description": "",
+      "created_at": "2026-02-14T05:44:33.863Z",
+      "updated_at": "2026-07-11T15:11:06.527Z",
+      "published_at": null,
+      "tags": []
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 5,
+    "fields": {
+      "title": "Believe in Yourself",
+      "slug": "believe-in-yourself",
+      "excerpt": "",
+      "content": "Who am I? What is my identity? What can I do and what can I not do? Finding answers to these questions builds true confidence. When a person understands their strengths and weaknesses, they can move forward successfully. Real identity comes from believing in yourself, not from others� opinions. Confidence gives people courage to dream, learn, and achieve great things in life.",
+      "featured_image": "",
+      "author": 5,
+      "category": null,
+      "status": "published",
+      "views": 0,
+      "reading_time": 1,
+      "is_featured": false,
+      "meta_description": "",
+      "created_at": "2026-05-14T11:09:09.140Z",
+      "updated_at": "2026-07-11T15:11:01.107Z",
+      "published_at": null,
+      "tags": []
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 6,
+    "fields": {
+      "title": "FIFA WORLD CUP 2026",
+      "slug": "fifa-world-cup-2026",
+      "excerpt": "",
+      "content": "The 2026 FIFA World Cup is currently underway in North America, marking the largest, most expansive edition in football history.A Tournament of Historic FirstsThe 23rd edition of the global showpiece introduces structural transformations to the traditional format:Three Co-Hosts: Matches are being staged across 16 cities spanning Canada, Mexico, and the United States.Expanded Field: The tournament field has increased from 32 to 48 national teams.Massive Schedule: A record-breaking 104 total fixtures are taking place over a 39-day window.New Knockout Phase: The top two teams from 12 groups, alongside the eight best third-place finishers, will advance to a brand-new Round of 32 knockout stage.",
+      "featured_image": "",
+      "author": 6,
+      "category": 2,
+      "status": "published",
+      "views": 0,
+      "reading_time": 1,
+      "is_featured": false,
+      "meta_description": "",
+      "created_at": "2026-06-18T14:06:35.556Z",
+      "updated_at": "2026-07-11T15:10:53.693Z",
+      "published_at": "2026-07-07T14:55:04Z",
+      "tags": []
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 11,
+    "fields": {
+      "title": "The Thrilling Showdown in Miami",
+      "slug": "the-thrilling-showdown-in-miami",
+      "excerpt": "",
+      "content": "Played at Miami Stadium, the knockout match was an instant classic. The reigning champions expected a straightforward advance, but Cabo Verde came armed with defensive discipline and a 10-save heroic performance from 40-year-old goalkeeper Vozinha.The Opener: Lionel Messi broke the deadlock with a brilliant strike, marking his record-extending 20th career World Cup goal.The Resilience: Cabo Verde refused to back down. Deroy Duarte capitalized on a defensive lapse to level the match at 1-1, stunning the crowd in Miami Stadium.Extra-time Drama: Lisandro Mart�nez restored Argentina's lead in the 103rd minute, but Sidny Lopes Cabral responded almost immediately to equalize again.The Winner: Just when it seemed Cabo Verde was heading for a historic upset, championship grit carried Argentina through.",
+      "featured_image": "",
+      "author": 7,
+      "category": 2,
+      "status": "published",
+      "views": 0,
+      "reading_time": 1,
+      "is_featured": false,
+      "meta_description": "",
+      "created_at": "2026-07-07T14:55:26.429Z",
+      "updated_at": "2026-07-11T16:41:11.338Z",
+      "published_at": "2026-07-07T14:55:39Z",
+      "tags": []
+    }
+  },
+  {
+    "model": "blog.comment",
+    "pk": 1,
+    "fields": {
+      "post": 11,
+      "user": 7,
+      "content": "yes the match was insane!",
+      "parent": null,
+      "created_at": "2026-07-08T15:46:59.171Z",
+      "updated_at": "2026-07-08T15:46:59.171Z"
+    }
+  },
+  {
+    "model": "blog.like",
+    "pk": 5,
+    "fields": {
+      "user": 7,
+      "post": 4,
+      "created_at": "2026-07-08T15:05:00.542Z"
+    }
+  },
+  {
+    "model": "blog.like",
+    "pk": 12,
+    "fields": {
+      "user": 7,
+      "post": 6,
+      "created_at": "2026-07-08T15:10:18.170Z"
+    }
+  },
+  {
+    "model": "blog.like",
+    "pk": 13,
+    "fields": {
+      "user": 7,
+      "post": 1,
+      "created_at": "2026-07-08T15:55:39.565Z"
+    }
+  },
+  {
+    "model": "blog.like",
+    "pk": 15,
+    "fields": {
+      "user": 7,
+      "post": 11,
+      "created_at": "2026-07-09T13:23:49.538Z"
+    }
+  },
+  {
+    "model": "blog.like",
+    "pk": 17,
+    "fields": {
+      "user": 8,
+      "post": 11,
+      "created_at": "2026-07-10T12:00:23.042Z"
+    }
+  },
+  {
+    "model": "blog.like",
+    "pk": 18,
+    "fields": {
+      "user": 8,
+      "post": 6,
+      "created_at": "2026-07-10T12:00:24.506Z"
+    }
+  },
+  {
+    "model": "blog.like",
+    "pk": 20,
+    "fields": {
+      "user": 7,
+      "post": 3,
+      "created_at": "2026-07-10T13:32:35.528Z"
+    }
+  },
+  {
+    "model": "blog.bookmark",
+    "pk": 5,
+    "fields": {
+      "user": 7,
+      "post": 11,
+      "created_at": "2026-07-10T13:09:43.168Z"
+    }
+  },
+  {
+    "model": "blog.bookmark",
+    "pk": 7,
+    "fields": {
+      "user": 7,
+      "post": 3,
+      "created_at": "2026-07-10T13:32:37.543Z"
+    }
+  }
+]
