@@ -1,31 +1,48 @@
 # 📝 Blog Project
 
-A modern full-stack blog application built with **Django REST Framework** and **React.js**. The project allows users to register, log in securely, create and manage blog posts, bookmark articles, like posts, and interact through comments. The frontend is designed with **Tailwind CSS** and communicates with the backend through REST APIs.
+A modern full-stack Blog Application built with **Django REST Framework** and **React.js**. Users can register, log in securely using JWT authentication, create and manage blog posts, upload featured images, browse posts by category and tags, and search articles through a clean, responsive interface.
 
 ---
 
-## 🚀 Project Overview
+# 🌐 Live Demo
 
-This project was developed as a full-stack web development assignment to demonstrate CRUD operations, JWT authentication, REST API integration, responsive UI design, and modern frontend development using React.
+### Frontend (Vercel)
+
+**https://blog-project-mu-one.vercel.app/**
+
+### Backend API (Render)
+
+**https://blog-project-l5o3.onrender.com/**
+
+### API Documentation (Swagger)
+
+**https://blog-project-l5o3.onrender.com/api/docs/**
 
 ---
 
-## ✨ Features
+# 🚀 Project Overview
 
-### Authentication
+This project demonstrates a complete full-stack blog platform using Django REST Framework for the backend and React.js for the frontend. It includes secure authentication, REST APIs, responsive UI, PostgreSQL database integration, Cloudinary image storage, and production deployment.
+
+---
+
+# ✨ Features
+
+## Authentication
 
 * User Registration
 * Secure Login (JWT Authentication)
 * Logout
 * Protected Routes
-* Change Password
-* Update Profile
+* User Profile
 
-### Blog Features
+---
 
-* Create Post
-* Edit Post
-* Delete Post
+## Blog Features
+
+* Create Blog Posts
+* Edit Posts
+* Delete Posts
 * View All Posts
 * Post Details
 * Featured Image Upload
@@ -34,25 +51,19 @@ This project was developed as a full-stack web development assignment to demonst
 * Search Posts
 * Filter by Category
 * Filter by Tags
-* Sort Posts
+* Ordering
 * Pagination
 
-### User Interaction
+---
 
-* Like Posts
-* Bookmark Posts
-* Comment on Posts
-* View Personal Bookmarks
+## UI Features
 
-### UI Features
-
-* Fully Responsive Design
+* Responsive Design
 * Tailwind CSS
-* Modern Navigation Bar
-* Professional Footer
+* React Router
 * Loading Spinner
 * Custom 404 Page
-* Clean Dashboard
+* Dashboard Layout
 
 ---
 
@@ -61,6 +72,7 @@ This project was developed as a full-stack web development assignment to demonst
 ## Frontend
 
 * React.js
+* Vite
 * React Router
 * Axios
 * Tailwind CSS
@@ -70,22 +82,36 @@ This project was developed as a full-stack web development assignment to demonst
 * Django
 * Django REST Framework
 * Simple JWT
+* Django Filter
+* DRF Spectacular (Swagger)
 
 ## Database
 
-* SQLite
+* PostgreSQL (Production)
+* SQLite (Development)
+
+## Media Storage
+
+* Cloudinary
+
+## Deployment
+
+* Vercel (Frontend)
+* Render (Backend)
+* Render PostgreSQL Database
 
 ---
 
 # 📂 Project Structure
 
-```
+```text
 Blog Project Assignment/
-│
+
 ├── blog_project/
-│   ├── blog_project/
 │   ├── blog/
+│   ├── blog_project/
 │   ├── manage.py
+│   ├── requirements.txt
 │
 ├── blog_frontend/
 │   ├── src/
@@ -101,35 +127,36 @@ Blog Project Assignment/
 
 # 📸 Screenshots
 
-Place your screenshots inside the **screenshots** folder.
 
-Example:
-
-```
+```text
 screenshots/
-│
-├── Home.png
-├── Login.png
-├── Register.png
-├── Dashboard.png
-├── Profile.png
-└── Bookmarks.png
+
+Dashboard.png
+Home.png
+Login.png
+Profile.png
+Register.png
+PostDetails.png
+Swagger.png
 ```
 
-Then display them like this:
 
 ```md
 ## Home
 
 ![Home](screenshots/Home.png)
 
-## Login
-
-![Login](screenshots/Login.png)
-
 ## Dashboard
 
 ![Dashboard](screenshots/Dashboard.png)
+
+## Post Details
+
+![Post Details](screenshots/PostDetails.png)
+
+## Swagger API
+
+![Swagger](screenshots/Swagger.png)
 ```
 
 ---
@@ -147,11 +174,12 @@ git clone https://github.com/karib19/Blog-Project.git
 ## Backend Setup
 
 ```bash
-cd backend
+cd blog_project
 
 python -m venv venv
 
-venv\Source\Scripts\activate
+# Windows
+venv\Scripts\activate
 
 pip install -r requirements.txt
 
@@ -165,7 +193,7 @@ python manage.py runserver
 ## Frontend Setup
 
 ```bash
-cd frontend
+cd blog_frontend
 
 npm install
 
@@ -174,43 +202,80 @@ npm run dev
 
 ---
 
-# 🔐 Authentication
+# 🔐 Environment Variables
 
-This project uses **JWT Authentication**.
 
-Protected APIs require an access token.
+Backend
+
+SECRET_KEY
+
+DEBUG
+
+DATABASE_URL
+
+CLOUDINARY_CLOUD_NAME
+
+CLOUDINARY_API_KEY
+
+CLOUDINARY_API_SECRET
+
 
 ---
 
-# 📌 API Endpoints
+# 🔑 Authentication
 
-| Method | Endpoint                    | Description    |
-| ------ | --------------------------- | -------------- |
-| POST   | `/api/register/`            | Register       |
-| POST   | `/api/token/`               | Login          |
-| POST   | `/api/token/refresh/`       | Refresh Token  |
-| GET    | `/api/posts/`               | All Posts      |
-| GET    | `/api/posts/<slug>/`        | Post Details   |
-| POST   | `/api/posts/create/`        | Create Post    |
-| PUT    | `/api/posts/<slug>/update/` | Update Post    |
-| DELETE | `/api/posts/<slug>/delete/` | Delete Post    |
-| GET    | `/api/profile/`             | User Profile   |
-| PUT    | `/api/profile/`             | Update Profile |
+This project uses **JWT Authentication**.
+
+Protected endpoints require an access token.
+
+---
+
+# 📌 Main API Endpoints
+
+| Method | Endpoint                    | Description   |
+| ------ | --------------------------- | ------------- |
+| POST   | `/api/register/`            | Register User |
+| POST   | `/api/token/`               | Login         |
+| GET    | `/api/posts/`               | All Posts     |
+| GET    | `/api/posts/<slug>/`        | Post Details  |
+| POST   | `/api/posts/create/`        | Create Post   |
+| PUT    | `/api/posts/<slug>/update/` | Update Post   |
+| DELETE | `/api/posts/<slug>/delete/` | Delete Post   |
+| GET    | `/api/profile/`             | User Profile  |
+
+---
+
+# 🚀 Deployment
+
+## Frontend
+
+* Vercel
+
+## Backend
+
+* Render
+
+## Database
+
+* Render PostgreSQL
+
+## Media Storage
+
+* Cloudinary
 
 ---
 
 # 📚 Future Improvements
 
-* Dark Mode
 * Email Verification
-* Password Reset via Email
+* Password Reset
 * Rich Text Editor
 * User Avatar Upload
-* Social Share Buttons
-* Toast Notifications
-* Reading Time Indicator
+* Dark Mode
+* Social Sharing
+* Notifications
 * Related Posts
-* Admin Analytics Dashboard
+* Reading Time Estimation
 
 ---
 
@@ -219,10 +284,11 @@ Protected APIs require an access token.
 **Sharfuddin Karib**
 
 GitHub:
+
 https://github.com/karib19
 
 ---
 
 # 📄 License
 
-This project was created for educational purposes as a full-stack web development assignment.
+This project was built for learning purposes and to demonstrate full-stack web development using Django REST Framework and React.js.
