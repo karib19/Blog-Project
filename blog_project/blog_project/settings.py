@@ -15,7 +15,7 @@ import cloudinary
 import dj_database_url
 from dotenv import load_dotenv
 
-
+load_dotenv()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -134,7 +134,7 @@ WSGI_APPLICATION = 'blog_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-load_dotenv()
+
 
 DATABASES = {
     "default": dj_database_url.config(
