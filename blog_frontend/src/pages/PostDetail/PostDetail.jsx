@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import api from "../../api/axios";
 
 function PostDetail() {
   const { slug } = useParams();
-
+  const navigate = useNavigate();
+  const location = useLocation();
+  const token = localStorage.getItem("access");
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
@@ -60,8 +62,18 @@ function PostDetail() {
       setComment("");
       loadComments();
     } catch (error) {
-      console.error(error.response?.data);
-    }
+
+  if (error.response?.status === 401) {
+    navigate("/login", {
+      state: {
+        from: location.pathname,
+      },
+    });
+    return;
+  }
+
+  console.error(error.response?.data);
+}
   };
 
   if (loading) {
@@ -269,37 +281,64 @@ function PostDetail() {
 
       <section className="mt-14">
 
-        <div className="bg-white rounded-3xl shadow-lg p-8">
+  <div className="bg-white rounded-3xl shadow-lg p-8">
 
-          <h3 className="text-2xl font-bold mb-6">
-            Leave a Comment
-          </h3>
+    <h3 className="text-2xl font-bold mb-6">
+      Leave a Comment
+    </h3>
 
-          <form
-            onSubmit={handleComment}
-            className="space-y-5"
-          >
+    {token ? (
 
-            <textarea
-              rows="5"
-              placeholder="Write your thoughts..."
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              className="w-full border rounded-xl px-5 py-4 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+      <form
+        onSubmit={handleComment}
+        className="space-y-5"
+      >
 
-            <button
-              type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold transition"
-            >
-              Post Comment
-            </button>
+        <textarea
+          rows="5"
+          placeholder="Write your thoughts..."
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          className="w-full border rounded-xl px-5 py-4 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
 
-          </form>
+        <button
+          type="submit"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold transition"
+        >
+          Post Comment
+        </button>
 
-        </div>
+      </form>
 
-      </section>
+    ) : (
+
+      <div className="text-center">
+
+        <p className="text-gray-600 mb-5">
+          You must login to post a comment.
+        </p>
+
+        <button
+          onClick={() =>
+            navigate("/login", {
+              state: {
+                from: location.pathname,
+              },
+            })
+          }
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition"
+        >
+          Login to Comment
+        </button>
+
+      </div>
+
+    )}
+
+  </div>
+
+</section>
 
     </div>
   );

@@ -1,45 +1,67 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import api from "../../api/axios";
 
 function PostCard({ post }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [liked, setLiked] = useState(post.is_liked);
   const [likesCount, setLikesCount] = useState(post.likes_count);
+
 
   const [bookmarked, setBookmarked] = useState(post.is_bookmarked);
   const [bookmarksCount, setBookmarksCount] = useState(post.bookmarks_count);
 
   const handleLike = async () => {
-    try {
-      await api.post(`posts/${post.slug}/like/`);
+  try {
+    await api.post(`posts/${post.slug}/like/`);
 
-      if (liked) {
-        setLiked(false);
-        setLikesCount((prev) => prev - 1);
-      } else {
-        setLiked(true);
-        setLikesCount((prev) => prev + 1);
-      }
-    } catch (error) {
-      console.error(error.response?.data);
+    if (liked) {
+      setLiked(false);
+      setLikesCount((prev) => prev - 1);
+    } else {
+      setLiked(true);
+      setLikesCount((prev) => prev + 1);
     }
-  };
+  } catch (error) {
+    if (error.response?.status === 401) {
+      navigate("/login", {
+        state: {
+          from: location.pathname,
+        },
+      });
+      return;
+    }
+
+    console.error(error.response?.data);
+  }
+};
 
   const handleBookmark = async () => {
-    try {
-      await api.post(`posts/${post.slug}/bookmark/`);
+  try {
+    await api.post(`posts/${post.slug}/bookmark/`);
 
-      if (bookmarked) {
-        setBookmarked(false);
-        setBookmarksCount((prev) => prev - 1);
-      } else {
-        setBookmarked(true);
-        setBookmarksCount((prev) => prev + 1);
-      }
-    } catch (error) {
-      console.error(error.response?.data);
+    if (bookmarked) {
+      setBookmarked(false);
+      setBookmarksCount((prev) => prev - 1);
+    } else {
+      setBookmarked(true);
+      setBookmarksCount((prev) => prev + 1);
     }
-  };
+  } catch (error) {
+    if (error.response?.status === 401) {
+      navigate("/login", {
+        state: {
+          from: location.pathname,
+        },
+      });
+      return;
+    }
+
+    console.error(error.response?.data);
+  }
+};
 
   return (
     <article className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden flex flex-col">
