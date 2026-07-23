@@ -76,16 +76,18 @@ function Register() {
 
     try {
       await api.post("register/", {
-        username: formData.username,
-        first_name: formData.first_name,
-        last_name: formData.last_name,
-        email: formData.email,
-        password: formData.password,
-      });
+    username: formData.username,
+    first_name: formData.first_name,
+    last_name: formData.last_name,
+    email: formData.email,
+    password: formData.password,
+});
 
-      alert("Registration Successful!");
-
-      navigate("/login");
+  navigate("/verify-otp", {
+    state: {
+      email: formData.email,
+  },
+});
     } catch (error) {
       if (error.response?.data) {
         setErrors(error.response.data);

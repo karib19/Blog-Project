@@ -7,6 +7,8 @@ function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
+  const [error, setError] = useState("");
+
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -40,7 +42,11 @@ function Login() {
       navigate("/dashboard");
     } catch (error) {
       console.error(error.response?.data);
-      alert("Login Failed");
+
+    setError(
+      error.response?.data?.detail ||
+      "Login failed."
+);
     } finally {
       setLoading(false);
     }
@@ -103,6 +109,12 @@ function Login() {
                 required
                 className="w-full border border-gray-300 rounded-xl px-4 py-3 pr-24 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
+
+              {error && (
+    <p className="text-red-500 text-center mb-4">
+      {error}
+    </p>
+  )}
 
               <button
                 type="button"

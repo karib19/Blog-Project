@@ -5,6 +5,7 @@ import MainLayout from "../layouts/MainLayout";
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
+import VerifyOTP from "../pages/Auth/VerifyOTP";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import Profile from "../pages/Profile/Profile";
 import ChangePassword from "../pages/Profile/ChangePassword";
@@ -22,6 +23,7 @@ function AppRoutes() {
 
   <Route path="/login" element={<Login />} />
   <Route path="/register" element={<Register />} />
+  <Route path="/verify-otp" element={<VerifyOTP />}/>
 
 
   <Route element={<MainLayout />}>
