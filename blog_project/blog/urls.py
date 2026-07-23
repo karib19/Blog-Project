@@ -1,9 +1,12 @@
 from django.urls import path
-from .views import PostListAPIView, PostDetailAPIView, CategoryListAPIView, TagListAPIView, CommentListCreateAPIView, LikeAPIView, ProfileAPIView, RegisterAPIView, PostCreateAPIView, PostUpdateAPIView, PostDeleteAPIView, BookmarkAPIView, MyPostsAPIView, MyBookmarksAPIView,DashboardAPIView, ChangePasswordAPIView
+from .views import PostListAPIView, PostDetailAPIView, CategoryListAPIView, TagListAPIView, CommentListCreateAPIView, LikeAPIView, ProfileAPIView, RegisterAPIView, VerifyOTPAPIView, ResendOTPAPIView, CustomTokenObtainPairView, PostCreateAPIView, PostUpdateAPIView, PostDeleteAPIView, BookmarkAPIView, MyPostsAPIView, MyBookmarksAPIView,DashboardAPIView, ChangePasswordAPIView
 
 
 urlpatterns = [
     path('api/register/',RegisterAPIView.as_view(),name='register'),
+    path("api/verify-otp/",VerifyOTPAPIView.as_view(),name="verify-otp",),
+    path("api/resend-otp/",ResendOTPAPIView.as_view(),name="resend-otp",),
+    path("api/token/",CustomTokenObtainPairView.as_view(),name="token_obtain_pair",),
     path('api/profile/',ProfileAPIView.as_view(),name='profile'),
     path('api/posts/',PostListAPIView.as_view(),name='api-post-list'),
     path('api/posts/create/',PostCreateAPIView.as_view(),name='post-create'),

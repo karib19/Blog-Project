@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import generics, filters, status
-from .serializers import PostSerializer, CategorySerializer, TagSerializer, RegisterSerializer, CommentSerializer, LikeSerializer, BookmarkSerializer, PostCreateUpdateSerializer, UserSerializer
+from .serializers import PostSerializer, CategorySerializer, TagSerializer, RegisterSerializer, VerifyOTPSerializer, CustomTokenObtainPairSerializer, CommentSerializer, LikeSerializer, BookmarkSerializer, PostCreateUpdateSerializer, UserSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import Post, Category, Tag, Comment, Like, Bookmark
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
@@ -13,9 +14,105 @@ from rest_framework.parsers import MultiPartParser, FormParser
 
 
 
+from .models import EmailOTP
+from django.utils import timezone
+from .utils import send_otp_email
+
+
+
 class RegisterAPIView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
+
+    def perform_create(self, serializer):
+        user = serializer.save()
+
+        user.is_active = False
+        user.save()
+
+        send_otp_email(user)
+
+
+class VerifyOTPAPIView(APIView):
+    def post(self, request):
+
+        email = request.data.get("email")
+        otp = request.data.get("otp")
+
+        if not email or not otp:
+            return Response(
+                {"error": "Email and OTP are required."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return Response(
+                {"error": "User not found."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        try:
+            otp_obj = EmailOTP.objects.get(
+                user=user,
+                otp=otp,
+                is_verified=False
+            )
+        except EmailOTP.DoesNotExist:
+            return Response(
+                {"error": "Invalid OTP."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if timezone.now() > otp_obj.expires_at:
+            return Response(
+                {"error": "OTP has expired."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        otp_obj.is_verified = True
+        otp_obj.save()
+
+        user.is_active = True
+        user.save()
+
+        return Response(
+            {"message": "Email verified successfully."},
+            status=status.HTTP_200_OK
+        )
+
+
+class ResendOTPAPIView(APIView):
+    def post(self, request):
+
+        email = request.data.get("email")
+
+        if not email:
+            return Response(
+                {"error": "Email is required."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return Response(
+                {"error": "User not found."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        send_otp_email(user)
+
+        return Response(
+            {"message": "OTP sent successfully."},
+            status=status.HTTP_200_OK
+        )
+
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
 
 
 class ProfileAPIView(generics.RetrieveUpdateAPIView):

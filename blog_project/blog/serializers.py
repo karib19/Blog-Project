@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import Post, Category, Tag, Comment, Like, Bookmark
-
+from .utils import send_otp_email
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -9,22 +10,67 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username','first_name', 'last_name', 'email', 'password']
+        fields = [
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "password",
+        ]
 
-    extra_kwargs = {
-        "password": {"write_only": True}
-    }
+        extra_kwargs = {
+            "password": {"write_only": True}
+        }
 
     def create(self, validated_data):
-        return User.objects.create_user(
-            username=validated_data['username'],
-            first_name=validated_data['first_name'],
-            last_name=validated_data['last_name'],
-            email=validated_data['email'],
-            password=validated_data['password']
+        user = User.objects.create_user(
+            username=validated_data["username"],
+            first_name=validated_data["first_name"],
+            last_name=validated_data["last_name"],
+            email=validated_data["email"],
+            password=validated_data["password"],
+            is_active=False
         )
 
+        user = User.objects.create_user(
+    username=validated_data["username"],
+    first_name=validated_data["first_name"],
+    last_name=validated_data["last_name"],
+    email=validated_data["email"],
+    password=validated_data["password"],
+)
+
+        user.is_active = False
+        user.save()
+
+
+        send_otp_email(user)
+
         return user
+
+
+class VerifyOTPSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    otp = serializers.CharField(max_length=6)
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        token["username"] = user.username
+        token["email"] = user.email
+
+        return token
+
+    def validate(self, attrs):
+        data = super().validate(attrs)
+
+        data["username"] = self.user.username
+        data["email"] = self.user.email
+
+        return data
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -38,6 +84,26 @@ class UserSerializer(serializers.ModelSerializer):
             "email",
         ]
         read_only_fields = ["id"]
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+
+    @classmethod
+    def get_token(cls, user):
+        return super().get_token(user)
+
+    def validate(self, attrs):
+        data = super().validate(attrs)
+
+        if not self.user.is_verified:
+            raise serializers.ValidationError({
+                "detail": "Please verify your email first."
+            })
+
+        data["username"] = self.user.username
+        data["email"] = self.user.email
+
+        return data
 
 
 class CategorySerializer(serializers.ModelSerializer):
