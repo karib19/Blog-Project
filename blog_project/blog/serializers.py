@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import Post, Category, Tag, Comment, Like, Bookmark
 from .utils import send_otp_email
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
+from .models import EmailOTP
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
