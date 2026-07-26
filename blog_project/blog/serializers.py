@@ -93,24 +93,24 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         return super().get_token(user)
 
     def validate(self, attrs):
-    data = super().validate(attrs)
+        data = super().validate(attrs)
 
-    verified = EmailOTP.objects.filter(
+        verified = EmailOTP.objects.filter(
         user=self.user,
         is_verified=True
-    ).exists()
+        ).exists()
 
-    if not verified:
-        raise serializers.ValidationError(
+        if not verified:
+            raise serializers.ValidationError(
             {
                 "detail": "Please verify your email first."
             }
-        )
+            )
 
-    data["username"] = self.user.username
-    data["email"] = self.user.email
+            data["username"] = self.user.username
+            data["email"] = self.user.email
 
-    return data
+        return data
 
 
 class CategorySerializer(serializers.ModelSerializer):
