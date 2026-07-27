@@ -76,31 +76,7 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ["id"]
 
 
-class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
-    @classmethod
-    def get_token(cls, user):
-        return super().get_token(user)
-
-    def validate(self, attrs):
-        data = super().validate(attrs)
-
-        verified = EmailOTP.objects.filter(
-        user=self.user,
-        is_verified=True
-        ).exists()
-
-        if not verified:
-            raise serializers.ValidationError(
-            {
-                "detail": "Please verify your email first."
-            }
-            )
-
-            data["username"] = self.user.username
-            data["email"] = self.user.email
-
-        return data
 
 
 class CategorySerializer(serializers.ModelSerializer):
