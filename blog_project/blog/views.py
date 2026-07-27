@@ -24,16 +24,9 @@ class RegisterAPIView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
 
-    def perform_create(self, serializer):
-        user = serializer.save()
-
-        user.is_active = False
-        user.save()
-
-        send_otp_email(user)
-
 
 class VerifyOTPAPIView(APIView):
+
     def post(self, request):
 
         email = request.data.get("email")
@@ -47,6 +40,7 @@ class VerifyOTPAPIView(APIView):
 
         try:
             user = User.objects.get(email=email)
+
         except User.DoesNotExist:
             return Response(
                 {"error": "User not found."},
@@ -57,8 +51,9 @@ class VerifyOTPAPIView(APIView):
             otp_obj = EmailOTP.objects.get(
                 user=user,
                 otp=otp,
-                is_verified=False
+                is_verified=False,
             )
+
         except EmailOTP.DoesNotExist:
             return Response(
                 {"error": "Invalid OTP."},
@@ -66,8 +61,9 @@ class VerifyOTPAPIView(APIView):
             )
 
         if timezone.now() > otp_obj.expires_at:
+
             return Response(
-                {"error": "OTP has expired."},
+                {"error": "OTP expired."},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -78,12 +74,15 @@ class VerifyOTPAPIView(APIView):
         user.save()
 
         return Response(
-            {"message": "Email verified successfully."},
+            {
+                "message": "Email verified successfully."
+            },
             status=status.HTTP_200_OK
         )
 
 
 class ResendOTPAPIView(APIView):
+
     def post(self, request):
 
         email = request.data.get("email")
@@ -102,10 +101,20 @@ class ResendOTPAPIView(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
+        if user.is_active:
+            return Response(
+                {
+                    "message": "Email is already verified."
+                },
+                status=status.HTTP_200_OK
+            )
+
         send_otp_email(user)
 
         return Response(
-            {"message": "OTP sent successfully."},
+            {
+                "message": "OTP sent successfully."
+            },
             status=status.HTTP_200_OK
         )
 

@@ -1,24 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import api from "../../api/axios";
 
 function VerifyOTP() {
+
   const navigate = useNavigate();
   const location = useLocation();
 
-  const email = location.state?.email || "";
+  const email =
+    location.state?.email ||
+    localStorage.getItem("verify_email") ||
+    "";
 
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
+  useEffect(() => {
+    if (!email) {
+      navigate("/register");
+    }
+  }, [email, navigate]);
+
   const handleVerify = async (e) => {
+
     e.preventDefault();
 
     setLoading(true);
     setMessage("");
 
     try {
+
       const res = await api.post("verify-otp/", {
         email,
         otp,
@@ -26,21 +38,28 @@ function VerifyOTP() {
 
       setMessage(res.data.message);
 
+      localStorage.removeItem("verify_email");
+
       setTimeout(() => {
         navigate("/login");
       }, 1500);
 
     } catch (error) {
+
       setMessage(
-        error.response?.data?.error || "Verification failed."
+        error.response?.data?.error ||
+        "Verification failed."
       );
+
     } finally {
       setLoading(false);
     }
   };
 
   const handleResend = async () => {
+
     try {
+
       const res = await api.post("resend-otp/", {
         email,
       });
@@ -48,13 +67,17 @@ function VerifyOTP() {
       setMessage(res.data.message);
 
     } catch (error) {
+
       setMessage(
-        error.response?.data?.error || "Failed to resend OTP."
+        error.response?.data?.error ||
+        "Failed to resend OTP."
       );
+
     }
   };
 
   return (
+
     <div className="max-w-md mx-auto py-20">
 
       <div className="bg-white rounded-xl shadow-lg p-8">
@@ -81,9 +104,11 @@ function VerifyOTP() {
             onChange={(e) => setOtp(e.target.value)}
             placeholder="Enter OTP"
             className="w-full border rounded-lg px-4 py-3"
+            required
           />
 
           <button
+            type="submit"
             disabled={loading}
             className="w-full bg-blue-600 text-white py-3 rounded-lg"
           >

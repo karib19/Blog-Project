@@ -18,21 +18,16 @@ class RegisterSerializer(serializers.ModelSerializer):
             "password",
         ]
 
-        extra_kwargs = {
-            "password": {"write_only": True}
-        }
-
     def create(self, validated_data):
+
         user = User.objects.create_user(
             username=validated_data["username"],
             first_name=validated_data["first_name"],
             last_name=validated_data["last_name"],
             email=validated_data["email"],
             password=validated_data["password"],
-            is_active=False
+            is_active=False,
         )
-
-
 
         send_otp_email(user)
 
@@ -51,14 +46,36 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         token["username"] = user.username
         token["email"] = user.email
+        token["first_name"] = user.first_name
+        token["last_name"] = user.last_name
 
         return token
 
     def validate(self, attrs):
+
+        username = attrs.get("username")
+        password = attrs.get("password")
+
+        try:
+            user = self.username_field.model.objects.get(
+                username=username
+            )
+        except self.username_field.model.DoesNotExist:
+            raise serializers.ValidationError({
+                "detail": "Invalid username or password."
+            })
+
+        if not user.is_active:
+            raise serializers.ValidationError({
+                "detail": "Please verify your email first."
+            })
+
         data = super().validate(attrs)
 
         data["username"] = self.user.username
         data["email"] = self.user.email
+        data["first_name"] = self.user.first_name
+        data["last_name"] = self.user.last_name
 
         return data
 
