@@ -83,6 +83,11 @@ function Register() {
     password: formData.password,
 });
 
+localStorage.setItem(
+  "verify_email",
+  formData.email
+);
+
   navigate("/verify-otp", {
     state: {
       email: formData.email,
