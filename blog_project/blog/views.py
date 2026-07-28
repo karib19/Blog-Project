@@ -19,6 +19,11 @@ from django.utils import timezone
 from .utils import send_otp_email
 
 
+from django.http import JsonResponse
+from django.core.mail import send_mail
+from django.conf import settings
+
+
 
 class RegisterAPIView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -79,6 +84,18 @@ class VerifyOTPAPIView(APIView):
             },
             status=status.HTTP_200_OK
         )
+
+
+def test_email(request):
+        send_mail(
+        subject="Test",
+        message="Hello from Render",
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=["karibgaming47@gmail.com"],
+        fail_silently=False,
+        )
+
+        return JsonResponse({"success": True})
 
 
 class ResendOTPAPIView(APIView):
