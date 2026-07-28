@@ -1,10 +1,11 @@
 import random
-import traceback
-
+import resend
 from django.conf import settings
-from django.core.mail import send_mail
 
 from .models import EmailOTP
+
+
+resend.api_key = settings.RESEND_API_KEY
 
 
 def generate_otp():
@@ -12,46 +13,29 @@ def generate_otp():
 
 
 def send_otp_email(user):
-    try:
-        print("STEP 1")
+    EmailOTP.objects.filter(
+        user=user,
+        is_verified=False
+    ).delete()
 
-        EmailOTP.objects.filter(
-            user=user,
-            is_verified=False
-        ).delete()
+    otp = generate_otp()
 
-        print("STEP 2")
+    EmailOTP.objects.create(
+        user=user,
+        otp=otp
+    )
 
-        otp = generate_otp()
+    resend.Emails.send({
+        "from": "onboarding@resend.dev",
+        "to": user.email,
+        "subject": "Verify Your Email",
+        "html": f"""
+        <h2>Hello {user.username}</h2>
 
-        print("STEP 3")
+        <p>Your OTP is:</p>
 
-        EmailOTP.objects.create(
-            user=user,
-            otp=otp
-        )
+        <h1>{otp}</h1>
 
-        print("STEP 4")
-
-        send_mail(
-            subject="Verify Your Email",
-            message=f"""
-Hello {user.username},
-
-Your OTP is:
-
-{otp}
-
-This OTP will expire in 5 minutes.
-""",
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[user.email],
-            fail_silently=False,
-        )
-
-        print("STEP 5")
-
-    except Exception as e:
-        print("EMAIL ERROR:", str(e))
-        traceback.print_exc()
-        raise
+        <p>This OTP will expire in 5 minutes.</p>
+        """
+    })

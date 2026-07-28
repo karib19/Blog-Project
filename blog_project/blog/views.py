@@ -86,7 +86,7 @@ class VerifyOTPAPIView(APIView):
         )
 
 
-def test_email(request):
+cd def test_email(request):
         send_mail(
         subject="Test",
         message="Hello from Render",
