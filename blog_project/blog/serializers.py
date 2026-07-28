@@ -1,9 +1,11 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from .models import Post, Category, Tag, Comment, Like, Bookmark
 from .utils import send_otp_email
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import EmailOTP
+
+User = get_user_model()
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -38,6 +40,7 @@ class VerifyOTPSerializer(serializers.Serializer):
     email = serializers.EmailField()
     otp = serializers.CharField(max_length=6)
 
+
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
     @classmethod
@@ -54,13 +57,10 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
 
         username = attrs.get("username")
-        password = attrs.get("password")
 
         try:
-            user = self.username_field.model.objects.get(
-                username=username
-            )
-        except self.username_field.model.DoesNotExist:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
             raise serializers.ValidationError({
                 "detail": "Invalid username or password."
             })
