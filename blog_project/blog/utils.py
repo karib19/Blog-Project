@@ -1,9 +1,11 @@
 import random
-from django.core.mail import send_mail
+import traceback
+
 from django.conf import settings
+from django.core.mail import send_mail
 
 from .models import EmailOTP
-import traceback
+
 
 def generate_otp():
     return str(random.randint(100000, 999999))
@@ -11,17 +13,25 @@ def generate_otp():
 
 def send_otp_email(user):
     try:
+        print("STEP 1")
+
         EmailOTP.objects.filter(
             user=user,
             is_verified=False
         ).delete()
 
+        print("STEP 2")
+
         otp = generate_otp()
+
+        print("STEP 3")
 
         EmailOTP.objects.create(
             user=user,
             otp=otp
         )
+
+        print("STEP 4")
 
         send_mail(
             subject="Verify Your Email",
@@ -39,6 +49,9 @@ This OTP will expire in 5 minutes.
             fail_silently=False,
         )
 
-    except Exception:
+        print("STEP 5")
+
+    except Exception as e:
+        print("EMAIL ERROR:", str(e))
         traceback.print_exc()
         raise
