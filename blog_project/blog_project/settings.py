@@ -211,5 +211,17 @@ cloudinary.config(
 )
 
 
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
-RESEND_API_KEY = os.getenv("RESEND_API_KEY")
+EMAIL_HOST = "smtp-relay.brevo.com"
+EMAIL_PORT = 587
+
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+DEFAULT_FROM_EMAIL = os.getenv(
+    "DEFAULT_FROM_EMAIL"
+)

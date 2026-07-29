@@ -1,11 +1,9 @@
 import random
-import resend
+
 from django.conf import settings
+from django.core.mail import send_mail
 
 from .models import EmailOTP
-
-
-resend.api_key = settings.RESEND_API_KEY
 
 
 def generate_otp():
@@ -25,17 +23,16 @@ def send_otp_email(user):
         otp=otp
     )
 
-    resend.Emails.send({
-        "from": "onboarding@resend.dev",
-        "to": user.email,
-        "subject": "Verify Your Email",
-        "html": f"""
-        <h2>Hello {user.username}</h2>
+    send_mail(
+        subject="Verify Your Email",
+        message=f"""
+Hello {user.username}
 
-        <p>Your OTP is:</p>
+Your OTP is: {otp}
 
-        <h1>{otp}</h1>
-
-        <p>This OTP will expire in 5 minutes.</p>
-        """
-    })
+This OTP will expire in 5 minutes.
+""",
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[user.email],
+        fail_silently=False,
+    )
