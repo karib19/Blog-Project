@@ -1,7 +1,7 @@
 import random
+import requests
 
 from django.conf import settings
-from django.core.mail import send_mail
 
 from .models import EmailOTP
 
@@ -23,16 +23,28 @@ def send_otp_email(user):
         otp=otp
     )
 
-    send_mail(
-        subject="Verify Your Email",
-        message=f"""
-Hello {user.username}
+    url = "https://api.brevo.com/v3/smtp/email"
 
-Your OTP is: {otp}
+    headers = {
+        "accept": "application/json",
+        "api-key": settings.BREVO_API_KEY,
+        "content-type": "application/json",
+    }
 
-This OTP will expire in 5 minutes.
-""",
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[user.email],
-        fail_silently=False,
-    )
+    payload = {
+        "sender": {"email": settings.DEFAULT_FROM_EMAIL},
+        "to": [{"email": user.email}],
+        "subject": "Verify Your Email",
+        "htmlContent": f"""
+            <p>Hello {user.username},</p>
+            <p>Your OTP is: <strong>{otp}</strong></p>
+            <p>This OTP will expire in 5 minutes.</p>
+        """,
+    }
+
+    response = requests.post(url, json=payload, headers=headers, timeout=10)
+
+    if response.status_code not in (200, 201):
+        # log it so you can see the real reason in Render logs
+        print("Brevo API error:", response.status_code, response.text)
+        response.raise_for_status()
