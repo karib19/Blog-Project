@@ -1,6 +1,6 @@
 # 📝 Blog Project
 
-A modern full-stack Blog Application built with **Django REST Framework** and **React.js**. Users can register, log in securely using JWT authentication, create and manage blog posts, upload featured images, browse posts by category and tags, and search articles through a clean, responsive interface.
+A modern full-stack Blog Application built with **Django REST Framework** and **React.js**. Users can register, verify their email via OTP, log in securely using JWT authentication, create and manage blog posts, upload featured images, browse posts by category and tags, and search articles through a clean, responsive interface.
 
 ---
 
@@ -22,7 +22,7 @@ A modern full-stack Blog Application built with **Django REST Framework** and **
 
 # 🚀 Project Overview
 
-This project demonstrates a complete full-stack blog platform using Django REST Framework for the backend and React.js for the frontend. It includes secure authentication, REST APIs, responsive UI, PostgreSQL database integration, Cloudinary image storage, and production deployment.
+This project demonstrates a complete full-stack blog platform using Django REST Framework for the backend and React.js for the frontend. It includes secure authentication with email verification, REST APIs, responsive UI, PostgreSQL database integration, Cloudinary image storage, and production deployment.
 
 ---
 
@@ -31,6 +31,8 @@ This project demonstrates a complete full-stack blog platform using Django REST 
 ## Authentication
 
 * User Registration
+* Email Verification (OTP via Brevo)
+* Resend OTP
 * Secure Login (JWT Authentication)
 * Logout
 * Protected Routes
@@ -93,6 +95,10 @@ This project demonstrates a complete full-stack blog platform using Django REST 
 ## Media Storage
 
 * Cloudinary
+
+## Email Service
+
+* Brevo (Transactional Email API — used for OTP-based email verification)
 
 ## Deployment
 
@@ -178,7 +184,7 @@ cd blog_project
 
 python -m venv venv
 
-# Windows
+
 venv\Scripts\activate
 
 pip install -r requirements.txt
@@ -219,6 +225,10 @@ CLOUDINARY_API_KEY
 
 CLOUDINARY_API_SECRET
 
+BREVO_API_KEY
+
+DEFAULT_FROM_EMAIL
+
 
 ---
 
@@ -228,20 +238,29 @@ This project uses **JWT Authentication**.
 
 Protected endpoints require an access token.
 
+## Email Verification Flow
+
+* On registration, the user account is created with `is_active=False` and a 6-digit OTP is generated.
+* The OTP is sent to the user's email via **Brevo's Transactional Email API** (HTTPS-based, not SMTP).
+* The user submits the OTP to `/api/verify-otp/` to activate their account.
+* If the OTP expires or is lost, a new one can be requested via `/api/resend-otp/`.
+
 ---
 
 # 📌 Main API Endpoints
 
-| Method | Endpoint                    | Description   |
-| ------ | --------------------------- | ------------- |
-| POST   | `/api/register/`            | Register User |
-| POST   | `/api/token/`               | Login         |
-| GET    | `/api/posts/`               | All Posts     |
-| GET    | `/api/posts/<slug>/`        | Post Details  |
-| POST   | `/api/posts/create/`        | Create Post   |
-| PUT    | `/api/posts/<slug>/update/` | Update Post   |
-| DELETE | `/api/posts/<slug>/delete/` | Delete Post   |
-| GET    | `/api/profile/`             | User Profile  |
+| Method | Endpoint                    | Description             |
+| ------ | ---------------------------- | ------------------------ |
+| POST   | `/api/register/`             | Register User             |
+| POST   | `/api/verify-otp/`           | Verify Email OTP          |
+| POST   | `/api/resend-otp/`           | Resend Email OTP          |
+| POST   | `/api/token/`                | Login                     |
+| GET    | `/api/posts/`                | All Posts                 |
+| GET    | `/api/posts/<slug>/`         | Post Details              |
+| POST   | `/api/posts/create/`         | Create Post               |
+| PUT    | `/api/posts/<slug>/update/`  | Update Post               |
+| DELETE | `/api/posts/<slug>/delete/`  | Delete Post               |
+| GET    | `/api/profile/`              | User Profile              |
 
 ---
 
@@ -263,11 +282,14 @@ Protected endpoints require an access token.
 
 * Cloudinary
 
+## Email
+
+* Brevo (used via REST API to avoid SMTP port restrictions on hosting providers like Render's free tier)
+
 ---
 
 # 📚 Future Improvements
 
-* Email Verification
 * Password Reset
 * Rich Text Editor
 * User Avatar Upload
