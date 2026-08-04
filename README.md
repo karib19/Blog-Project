@@ -33,6 +33,7 @@ This project demonstrates a complete full-stack blog platform using Django REST 
 * User Registration
 * Email Verification (OTP via Brevo)
 * Resend OTP
+* Password Reset
 * Secure Login (JWT Authentication)
 * Logout
 * Protected Routes
@@ -290,7 +291,6 @@ Protected endpoints require an access token.
 
 # 📚 Future Improvements
 
-* Password Reset
 * Rich Text Editor
 * User Avatar Upload
 * Dark Mode
