@@ -13,7 +13,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.parsers import MultiPartParser, FormParser
 from .models import EmailOTP
 from django.utils import timezone
-from .utils import send_otp_email
+from .utils import send_otp_email, send_password_reset_email
 from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.conf import settings
