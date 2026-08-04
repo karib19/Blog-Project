@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import PostListAPIView, PostDetailAPIView, CategoryListAPIView, TagListAPIView, CommentListCreateAPIView, LikeAPIView, ProfileAPIView, RegisterAPIView, VerifyOTPAPIView, test_email, ResendOTPAPIView, CustomTokenObtainPairView, PostCreateAPIView, PostUpdateAPIView, PostDeleteAPIView, BookmarkAPIView, MyPostsAPIView, MyBookmarksAPIView,DashboardAPIView, ChangePasswordAPIView
+from .views import PostListAPIView, PostDetailAPIView, CategoryListAPIView, TagListAPIView, CommentListCreateAPIView, LikeAPIView, ProfileAPIView, RegisterAPIView, VerifyOTPAPIView, test_email, ResendOTPAPIView, CustomTokenObtainPairView, PostCreateAPIView, PostUpdateAPIView, PostDeleteAPIView, BookmarkAPIView, MyPostsAPIView, MyBookmarksAPIView,DashboardAPIView, ChangePasswordAPIView, PasswordResetRequestAPIView, PasswordResetConfirmAPIView
 
 
 urlpatterns = [
@@ -23,6 +23,8 @@ urlpatterns = [
     path('api/posts/<slug:slug>/like/',LikeAPIView.as_view(),name='post-like'),
     path('api/posts/<slug:slug>/bookmark/',BookmarkAPIView.as_view(),name='post-bookmark'),
     path("api/change-password/",ChangePasswordAPIView.as_view(),name="change-password",),
+    path("api/password-reset/request/", PasswordResetRequestAPIView.as_view(), name="password-reset-request"),
+    path("api/password-reset/confirm/", PasswordResetConfirmAPIView.as_view(), name="password-reset-confirm"),
 
 
 ]

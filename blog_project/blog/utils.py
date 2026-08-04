@@ -48,3 +48,33 @@ def send_otp_email(user):
         # log it so you can see the real reason in Render logs
         print("Brevo API error:", response.status_code, response.text)
         response.raise_for_status()
+
+
+def send_password_reset_email(user, token):
+    reset_link = f"https://blog-project-mu-one.vercel.app/reset-password/{token}/"
+
+    url = "https://api.brevo.com/v3/smtp/email"
+
+    headers = {
+        "accept": "application/json",
+        "api-key": settings.BREVO_API_KEY,
+        "content-type": "application/json",
+    }
+
+    payload = {
+        "sender": {"email": settings.DEFAULT_FROM_EMAIL},
+        "to": [{"email": user.email}],
+        "subject": "Reset Your Password",
+        "htmlContent": f"""
+            <p>Hello {user.username},</p>
+            <p>Click the link below to reset your password:</p>
+            <p><a href="{reset_link}">{reset_link}</a></p>
+            <p>This link will expire in 15 minutes. If you didn't request this, ignore this email.</p>
+        """,
+    }
+
+    response = requests.post(url, json=payload, headers=headers, timeout=10)
+
+    if response.status_code not in (200, 201):
+        print("Brevo API error:", response.status_code, response.text)
+        response.raise_for_status()

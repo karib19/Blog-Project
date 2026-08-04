@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User
 from rest_framework import generics, filters, status
-from .serializers import PostSerializer, CategorySerializer, TagSerializer, RegisterSerializer, VerifyOTPSerializer, CustomTokenObtainPairSerializer, CommentSerializer, LikeSerializer, BookmarkSerializer, PostCreateUpdateSerializer, UserSerializer
+from .serializers import PostSerializer, CategorySerializer, TagSerializer, RegisterSerializer, VerifyOTPSerializer, CustomTokenObtainPairSerializer, CommentSerializer, LikeSerializer, BookmarkSerializer, PostCreateUpdateSerializer, UserSerializer, PasswordResetRequestSerializer, PasswordResetConfirmSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .models import Post, Category, Tag, Comment, Like, Bookmark
+from .models import Post, Category, Tag, Comment, Like, Bookmark, PasswordResetToken
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -11,14 +11,9 @@ from .permissions import IsAuthorOrReadOnly
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.parsers import MultiPartParser, FormParser
-
-
-
 from .models import EmailOTP
 from django.utils import timezone
 from .utils import send_otp_email
-
-
 from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.conf import settings
@@ -382,4 +377,44 @@ class ChangePasswordAPIView(APIView):
         return Response(
             {"message": "Password changed successfully."},
             status=status.HTTP_200_OK
+        )
+
+
+class PasswordResetRequestAPIView(APIView):
+    def post(self, request):
+        serializer = PasswordResetRequestSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        user = User.objects.get(email=serializer.validated_data["email"])
+
+        # invalidate old tokens
+        PasswordResetToken.objects.filter(user=user, is_used=False).delete()
+
+        reset_token = PasswordResetToken.objects.create(user=user)
+
+        send_password_reset_email(user, reset_token.token)
+
+        return Response(
+            {"message": "Password reset link sent to your email."},
+            status=status.HTTP_200_OK,
+        )
+
+
+class PasswordResetConfirmAPIView(APIView):
+    def post(self, request):
+        serializer = PasswordResetConfirmSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        reset_token = serializer.reset_token
+        user = reset_token.user
+
+        user.set_password(serializer.validated_data["new_password"])
+        user.save()
+
+        reset_token.is_used = True
+        reset_token.save()
+
+        return Response(
+            {"message": "Password reset successful."},
+            status=status.HTTP_200_OK,
         )

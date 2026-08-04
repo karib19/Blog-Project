@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import Post, Category, Tag, Comment, Like, Bookmark
+from .models import Post, Category, Tag, Comment, Like, Bookmark, PasswordResetToken
 from .utils import send_otp_email
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import EmailOTP
@@ -91,7 +91,6 @@ class UserSerializer(serializers.ModelSerializer):
             "email",
         ]
         read_only_fields = ["id"]
-
 
 
 
@@ -202,3 +201,29 @@ class BookmarkSerializer(serializers.ModelSerializer):
         model = Bookmark
         fields = '__all__'
         read_only_fields = ['user', 'post']
+
+
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    def validate_email(self, value):
+        if not User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("No user found with this email.")
+        return value
+
+
+class PasswordResetConfirmSerializer(serializers.Serializer):
+    token = serializers.UUIDField()
+    new_password = serializers.CharField(min_length=6, write_only=True)
+
+    def validate_token(self, value):
+        try:
+            reset_token = PasswordResetToken.objects.get(token=value)
+        except PasswordResetToken.DoesNotExist:
+            raise serializers.ValidationError("Invalid token.")
+
+        if not reset_token.is_valid():
+            raise serializers.ValidationError("Token expired or already used.")
+
+        self.reset_token = reset_token
+        return value
