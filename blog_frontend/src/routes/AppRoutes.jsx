@@ -15,6 +15,8 @@ import PostDetail from "../pages/PostDetail/PostDetail";
 import MyBookmarks from "../pages/MyBookmarks/MyBookmarks";
 import NotFound from "../pages/NotFound/NotFound";
 import ProtectedRoute from "./ProtectedRoute";
+import ForgotPassword from "../pages/PasswordReset/ForgotPassword";
+import ResetPassword from "../pages/PasswordReset/ResetPassword";
 
 function AppRoutes() {
   return (
@@ -36,6 +38,8 @@ function AppRoutes() {
     <Route path="/posts/:slug/edit" element={<ProtectedRoute><EditPost /></ProtectedRoute>} />
     <Route path="/my-bookmarks" element={<ProtectedRoute><MyBookmarks /></ProtectedRoute>} />
     <Route path="*" element={<NotFound />} />
+    <Route path="/forgot-password" element={<ForgotPassword />} />
+    <Route path="/reset-password/:token" element={<ResetPassword />} />
   </Route>
 
 </Routes>

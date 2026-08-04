@@ -148,12 +148,22 @@ function Login() {
             Don't have an account?
           </p>
 
-          <Link
+
+            <div className="flex justify-center gap-4 mt-2inline-block mt-2 font-semibold text-blue-600 hover:text-blue-700 hover:underline">
+
+            <Link
             to="/register"
             className="inline-block mt-2 font-semibold text-blue-600 hover:text-blue-700 hover:underline"
           >
             Create Account
           </Link>
+
+            <Link to="/forgot-password" className="inline-block mt-2 font-semibold text-blue-600 hover:text-blue-700 hover:underline">
+          Forgot password?
+          </Link>
+
+          </div>
+
 
         </div>
 
