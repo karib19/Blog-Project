@@ -149,20 +149,23 @@ function Login() {
           </p>
 
 
-            <div className="flex justify-center gap-4 mt-2inline-block mt-2 font-semibold text-blue-600 hover:text-blue-700 hover:underline">
+           <div className="flex justify-center items-center gap-3 mt-2">
+      <Link
+    to="/register"
+    className="font-semibold text-blue-600 hover:text-blue-700 hover:underline transition-colors"
+    >
+    Create Account
+  </Link>
 
-            <Link
-            to="/register"
-            className="inline-block mt-2 font-semibold text-blue-600 hover:text-blue-700 hover:underline"
-          >
-            Create Account
-          </Link>
+  <span className="text-gray-300">|</span>
 
-            <Link to="/forgot-password" className="inline-block mt-2 font-semibold text-blue-600 hover:text-blue-700 hover:underline">
-          Forgot password?
-          </Link>
-
-          </div>
+  <Link
+    to="/forgot-password"
+    className="font-semibold text-blue-600 hover:text-blue-700 hover:underline transition-colors"
+  >
+    Forgot password?
+  </Link>
+      </div>
 
 
         </div>
