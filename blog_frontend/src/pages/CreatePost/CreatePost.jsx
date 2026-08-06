@@ -1,6 +1,20 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 import api from "../../api/axios";
+
+const quillModules = {
+  toolbar: [
+    [{ header: [1, 2, 3, false] }],
+    ["bold", "italic", "underline", "strike"],
+    [{ list: "ordered" }, { list: "bullet" }],
+    ["blockquote", "code-block"],
+    ["link", "image"],
+    [{ align: [] }],
+    ["clean"],
+  ],
+};
 
 function CreatePost() {
   const navigate = useNavigate();
@@ -91,6 +105,13 @@ function CreatePost() {
     }));
   };
 
+  const handleContentChange = (value) => {
+    setFormData((prev) => ({
+      ...prev,
+      content: value,
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -113,7 +134,8 @@ function CreatePost() {
       );
     }
 
-    try {      const response = await api.post(
+    try {
+      const response = await api.post(
         "posts/create/",
         data,
         {
@@ -286,15 +308,16 @@ function CreatePost() {
             Content
           </label>
 
-          <textarea
-            name="content"
-            rows="12"
-            placeholder="Write your article here..."
-            value={formData.content}
-            onChange={handleChange}
-            required
-            className="w-full rounded-2xl border border-gray-300 px-4 py-4 resize-none focus:ring-2 focus:ring-blue-500 outline-none"
-          />
+          <div className="rounded-2xl overflow-hidden border border-gray-300 focus-within:ring-2 focus-within:ring-blue-500">
+            <ReactQuill
+              theme="snow"
+              value={formData.content}
+              onChange={handleContentChange}
+              modules={quillModules}
+              placeholder="Write your article here..."
+              className="bg-white [&_.ql-container]:min-h-70] [&_.ql-container]:text-base"
+            />
+          </div>
 
         </div>
 

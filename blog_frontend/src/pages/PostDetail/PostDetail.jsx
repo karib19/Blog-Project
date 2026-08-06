@@ -196,13 +196,10 @@ function PostDetail() {
 
       {/* Article */}
 
-      <article className="prose prose-lg max-w-none leading-8 text-gray-700">
-
-        <p className="whitespace-pre-line">
-          {post.content}
-        </p>
-
-      </article>
+      <article
+        className="prose prose-lg max-w-none leading-8 text-gray-700"
+        dangerouslySetInnerHTML={{ __html: post.content }}
+      />
 
       {/* Comments */}
 

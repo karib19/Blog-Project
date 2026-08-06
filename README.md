@@ -56,6 +56,7 @@ This project demonstrates a complete full-stack blog platform using Django REST 
 * Filter by Tags
 * Ordering
 * Pagination
+* Rich Text Editor
 
 ---
 
@@ -291,7 +292,6 @@ Protected endpoints require an access token.
 
 # 📚 Future Improvements
 
-* Rich Text Editor
 * User Avatar Upload
 * Dark Mode
 * Social Sharing

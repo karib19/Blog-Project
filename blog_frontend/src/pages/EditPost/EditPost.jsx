@@ -1,6 +1,20 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 import api from "../../api/axios";
+
+const quillModules = {
+  toolbar: [
+    [{ header: [1, 2, 3, false] }],
+    ["bold", "italic", "underline", "strike"],
+    [{ list: "ordered" }, { list: "bullet" }],
+    ["blockquote", "code-block"],
+    ["link", "image"],
+    [{ align: [] }],
+    ["clean"],
+  ],
+};
 
 function EditPost() {
   const { slug } = useParams();
@@ -125,6 +139,13 @@ function EditPost() {
     }));
   };
 
+  const handleContentChange = (value) => {
+    setFormData((prev) => ({
+      ...prev,
+      content: value,
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -147,7 +168,8 @@ function EditPost() {
       );
     }
 
-    try {      await api.put(
+    try {
+      await api.put(
         `posts/${slug}/update/`,
         data,
         {
@@ -298,15 +320,16 @@ function EditPost() {
             Content
           </label>
 
-          <textarea
-            name="content"
-            rows="12"
-            value={formData.content}
-            onChange={handleChange}
-            placeholder="Update your article..."
-            required
-            className="w-full rounded-xl border border-gray-300 px-4 py-4 resize-none focus:ring-2 focus:ring-orange-500 outline-none"
-          />
+          <div className="rounded-xl overflow-hidden border border-gray-300 focus-within:ring-2 focus-within:ring-orange-500">
+            <ReactQuill
+              theme="snow"
+              value={formData.content}
+              onChange={handleContentChange}
+              modules={quillModules}
+              placeholder="Update your article..."
+              className="bg-white [&_.ql-container]:min-h-70] [&_.ql-container]:text-base"
+            />
+          </div>
 
         </div>
 
