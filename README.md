@@ -38,6 +38,7 @@ This project demonstrates a complete full-stack blog platform using Django REST 
 * Logout
 * Protected Routes
 * User Profile
+* User Avatar Upload
 
 ---
 
@@ -292,7 +293,6 @@ Protected endpoints require an access token.
 
 # 📚 Future Improvements
 
-* User Avatar Upload
 * Dark Mode
 * Social Sharing
 * Notifications

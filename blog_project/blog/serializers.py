@@ -81,6 +81,9 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    avatar = serializers.SerializerMethodField()
+    avatar_upload = serializers.ImageField(write_only=True, required=False)
+
     class Meta:
         model = User
         fields = [
@@ -89,8 +92,26 @@ class UserSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "email",
+            "avatar",
+            "avatar_upload",
         ]
         read_only_fields = ["id"]
+
+    def get_avatar(self, obj):
+        if hasattr(obj, "profile") and obj.profile.avatar:
+            return obj.profile.avatar.url
+        return None
+
+    def update(self, instance, validated_data):
+        avatar_file = validated_data.pop("avatar_upload", None)
+
+        instance = super().update(instance, validated_data)
+
+        if avatar_file:
+            instance.profile.avatar = avatar_file
+            instance.profile.save()
+
+        return instance
 
 
 

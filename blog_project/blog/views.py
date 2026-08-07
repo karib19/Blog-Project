@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from .permissions import IsAuthorOrReadOnly
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from .models import EmailOTP
 from django.utils import timezone
 from .utils import send_otp_email, send_password_reset_email
@@ -139,6 +139,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 class ProfileAPIView(generics.RetrieveUpdateAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def get_object(self):
         return self.request.user

@@ -4,12 +4,17 @@ import api from "../../api/axios";
 
 function Profile() {
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState(null);
 
   const [formData, setFormData] = useState({
     username: "",
     first_name: "",
     last_name: "",
     email: "",
+    avatar: null,
   });
 
   const loadProfile = () => {
@@ -21,7 +26,11 @@ function Profile() {
           first_name: response.data.first_name || "",
           last_name: response.data.last_name || "",
           email: response.data.email || "",
+          avatar: response.data.avatar || null,
         });
+
+        setAvatarFile(null);
+        setAvatarPreview(null);
 
         setLoading(false);
       })
@@ -42,11 +51,37 @@ function Profile() {
     });
   };
 
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    setAvatarFile(file);
+    setAvatarPreview(URL.createObjectURL(file));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setSaving(true);
+
+    const data = new FormData();
+
+    data.append("username", formData.username);
+    data.append("first_name", formData.first_name);
+    data.append("last_name", formData.last_name);
+    data.append("email", formData.email);
+
+    if (avatarFile) {
+      data.append("avatar_upload", avatarFile);
+    }
+
     try {
-      await api.put("profile/", formData);
+      await api.put("profile/", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       alert("Profile Updated Successfully");
 
@@ -54,6 +89,8 @@ function Profile() {
     } catch (error) {
       console.error(error.response?.data);
       alert("Profile Update Failed");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -65,6 +102,8 @@ function Profile() {
     );
   }
 
+  const displayAvatar = avatarPreview || formData.avatar;
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-10">
 
@@ -72,11 +111,19 @@ function Profile() {
 
         <div className="flex flex-col md:flex-row items-center gap-6">
 
-          <div className="w-28 h-28 rounded-full bg-white text-blue-700 flex items-center justify-center text-4xl font-bold shadow-lg">
-            {formData.first_name
-              ? formData.first_name.charAt(0).toUpperCase()
-              : formData.username.charAt(0).toUpperCase()}
-          </div>
+          {displayAvatar ? (
+            <img
+              src={displayAvatar}
+              alt="Avatar"
+              className="w-28 h-28 rounded-full object-cover shadow-lg border-4 border-white"
+            />
+          ) : (
+            <div className="w-28 h-28 rounded-full bg-white text-blue-700 flex items-center justify-center text-4xl font-bold shadow-lg">
+              {formData.first_name
+                ? formData.first_name.charAt(0).toUpperCase()
+                : formData.username.charAt(0).toUpperCase()}
+            </div>
+          )}
 
           <div>
 
@@ -100,6 +147,44 @@ function Profile() {
           onSubmit={handleSubmit}
           className="space-y-6"
         >
+
+          <div>
+
+            <label className="block text-gray-700 font-semibold mb-2">
+              Profile Picture
+            </label>
+
+            <div className="flex items-center gap-5">
+
+              {displayAvatar ? (
+                <img
+                  src={displayAvatar}
+                  alt="Avatar preview"
+                  className="w-20 h-20 rounded-full object-cover border shadow-sm"
+                />
+              ) : (
+                <div className="w-20 h-20 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-2xl font-bold">
+                  {formData.first_name
+                    ? formData.first_name.charAt(0).toUpperCase()
+                    : formData.username.charAt(0).toUpperCase()}
+                </div>
+              )}
+
+              <input
+                type="file"
+                name="avatar"
+                accept="image/*"
+                onChange={handleAvatarChange}
+                className="block flex-1 rounded-xl border border-gray-300 p-2.5 file:bg-blue-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-lg file:cursor-pointer file:mr-4"
+              />
+
+            </div>
+
+            <p className="text-sm text-gray-500 mt-2">
+              PNG or JPG recommended. Square images look best.
+            </p>
+
+          </div>
 
           <div>
 
@@ -173,9 +258,14 @@ function Profile() {
 
             <button
               type="submit"
-              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition duration-300 shadow-md hover:shadow-lg"
+              disabled={saving}
+              className={`flex-1 font-semibold py-3 rounded-xl transition duration-300 shadow-md hover:shadow-lg text-white ${
+                saving
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-blue-600 hover:bg-blue-700"
+              }`}
             >
-              💾 Update Profile
+              {saving ? "Saving..." : "💾 Update Profile"}
             </button>
 
             <Link
