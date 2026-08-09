@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import NotificationBell from "./NotificationBell";
 
 function Navbar() {
   const { isAuthenticated, logout } = useAuth();
@@ -36,6 +37,8 @@ function Navbar() {
           {/* Desktop Menu */}
           <nav className="hidden md:flex items-center gap-6">
 
+            <NotificationBell />
+
             <NavLink
               to="/"
               className={linkClass}
@@ -45,6 +48,7 @@ function Navbar() {
 
             {isAuthenticated ? (
               <>
+
                 <NavLink
                   to="/dashboard"
                   className={linkClass}
@@ -93,6 +97,7 @@ function Navbar() {
           </nav>
 
           {/* Mobile Button */}
+
           <button
             className="md:hidden text-3xl"
             onClick={() =>
@@ -103,10 +108,12 @@ function Navbar() {
           </button>
         </div>
 
+
+
         {/* Mobile Menu */}
         {menuOpen && (
           <nav className="md:hidden flex flex-col gap-4 pb-5">
-
+                    <NotificationBell />
             <NavLink
               to="/"
               className={linkClass}
@@ -116,14 +123,15 @@ function Navbar() {
             </NavLink>
 
             {isAuthenticated ? (
-              <>
-                <NavLink
-                  to="/dashboard"
-                  className={linkClass}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Dashboard
-                </NavLink>
+  <>
+
+    <NavLink
+      to="/dashboard"
+      className={linkClass}
+      onClick={() => setMenuOpen(false)}
+    >
+      Dashboard
+    </NavLink>
 
                 <NavLink
                   to="/my-bookmarks"

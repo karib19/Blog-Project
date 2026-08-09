@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import PostListAPIView, PostDetailAPIView, CategoryListAPIView, TagListAPIView, CommentListCreateAPIView, LikeAPIView, ProfileAPIView, RegisterAPIView, VerifyOTPAPIView, test_email, ResendOTPAPIView, CustomTokenObtainPairView, PostCreateAPIView, PostUpdateAPIView, PostDeleteAPIView, BookmarkAPIView, MyPostsAPIView, MyBookmarksAPIView,DashboardAPIView, ChangePasswordAPIView, PasswordResetRequestAPIView, PasswordResetConfirmAPIView
+from .views import PostListAPIView, PostDetailAPIView, CategoryListAPIView, TagListAPIView, CommentListCreateAPIView, LikeAPIView, ProfileAPIView, RegisterAPIView, VerifyOTPAPIView, test_email, ResendOTPAPIView, CustomTokenObtainPairView, PostCreateAPIView, PostUpdateAPIView, PostDeleteAPIView, BookmarkAPIView, MyPostsAPIView, MyBookmarksAPIView,DashboardAPIView, ChangePasswordAPIView, PasswordResetRequestAPIView, PasswordResetConfirmAPIView, NotificationListAPIView, MarkNotificationReadAPIView, MarkAllNotificationsReadAPIView, UnreadNotificationCountAPIView
 
 
 urlpatterns = [
@@ -25,6 +25,8 @@ urlpatterns = [
     path("api/change-password/",ChangePasswordAPIView.as_view(),name="change-password",),
     path("api/password-reset/request/", PasswordResetRequestAPIView.as_view(), name="password-reset-request"),
     path("api/password-reset/confirm/", PasswordResetConfirmAPIView.as_view(), name="password-reset-confirm"),
-
-
+    path("api/notifications/", NotificationListAPIView.as_view(), name="notification-list"),
+    path("api/notifications/unread-count/", UnreadNotificationCountAPIView.as_view(), name="notification-unread-count"),
+    path("api/notifications/mark-all-read/", MarkAllNotificationsReadAPIView.as_view(), name="notification-mark-all-read"),
+    path("api/notifications/<int:pk>/read/", MarkNotificationReadAPIView.as_view(), name="notification-read"),
 ]

@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User
 from rest_framework import generics, filters, status
-from .serializers import PostSerializer, CategorySerializer, TagSerializer, RegisterSerializer, VerifyOTPSerializer, CustomTokenObtainPairSerializer, CommentSerializer, LikeSerializer, BookmarkSerializer, PostCreateUpdateSerializer, UserSerializer, PasswordResetRequestSerializer, PasswordResetConfirmSerializer
+from .serializers import PostSerializer, CategorySerializer, TagSerializer, RegisterSerializer, VerifyOTPSerializer, CustomTokenObtainPairSerializer, CommentSerializer, LikeSerializer, BookmarkSerializer, PostCreateUpdateSerializer, UserSerializer, PasswordResetRequestSerializer, PasswordResetConfirmSerializer, NotificationSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .models import Post, Category, Tag, Comment, Like, Bookmark, PasswordResetToken
+from .models import Post, Category, Tag, Comment, Like, Bookmark, PasswordResetToken, Notification
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -419,3 +419,43 @@ class PasswordResetConfirmAPIView(APIView):
             {"message": "Password reset successful."},
             status=status.HTTP_200_OK,
         )
+
+
+class NotificationListAPIView(generics.ListAPIView):
+    serializer_class = NotificationSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Notification.objects.filter(recipient=self.request.user)
+
+
+class MarkNotificationReadAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        notification = get_object_or_404(
+            Notification, pk=pk, recipient=request.user
+        )
+        notification.is_read = True
+        notification.save()
+        return Response({"message": "Marked as read"})
+
+
+class MarkAllNotificationsReadAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        Notification.objects.filter(
+            recipient=request.user, is_read=False
+        ).update(is_read=True)
+        return Response({"message": "All marked as read"})
+
+
+class UnreadNotificationCountAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        count = Notification.objects.filter(
+            recipient=request.user, is_read=False
+        ).count()
+        return Response({"unread_count": count})

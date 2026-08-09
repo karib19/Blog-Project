@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import Post, Category, Tag, Comment, Like, Bookmark, PasswordResetToken
+from .models import Post, Category, Tag, Comment, Like, Bookmark, PasswordResetToken, Notification
 from .utils import send_otp_email
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import EmailOTP
@@ -248,3 +248,22 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
 
         self.reset_token = reset_token
         return value
+
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+    sender_username = serializers.CharField(source='sender.username', read_only=True)
+    post_slug = serializers.CharField(source='post.slug', read_only=True)
+    post_title = serializers.CharField(source='post.title', read_only=True)
+
+    class Meta:
+        model = Notification
+        fields = [
+            'id',
+            'notification_type',
+            'sender_username',
+            'post_slug',
+            'post_title',
+            'is_read',
+            'created_at',
+        ]

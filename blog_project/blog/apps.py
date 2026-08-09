@@ -7,3 +7,5 @@ class BlogConfig(AppConfig):
 
     def ready(self):
         import blog.models
+        import blog.signals
+
