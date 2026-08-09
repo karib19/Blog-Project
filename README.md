@@ -58,6 +58,8 @@ This project demonstrates a complete full-stack blog platform using Django REST 
 * Ordering
 * Pagination
 * Rich Text Editor
+* Social Sharing
+* Notifications
 
 ---
 
@@ -294,8 +296,6 @@ Protected endpoints require an access token.
 # 📚 Future Improvements
 
 * Dark Mode
-* Social Sharing
-* Notifications
 * Related Posts
 * Reading Time Estimation
 
