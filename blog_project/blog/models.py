@@ -7,7 +7,8 @@ from django.dispatch import receiver
 from cloudinary.models import CloudinaryField
 from django.utils import timezone
 from datetime import timedelta
-
+import re
+import math
 
 
 class Category(models.Model):
@@ -87,10 +88,20 @@ class Post(models.Model):
     class Meta:
         ordering = ['-created_at']
 
+    def calculate_reading_time(self):
+        plain_text = re.sub(r'<[^>]+>', ' ', self.content or '')
+        word_count = len(plain_text.split())
+        minutes = math.ceil(word_count / 200)
+        
+        return max(minutes, 1)
+
     def save(self, *args, **kwargs):
-     if not self.slug:
-        self.slug = slugify(self.title)
-     super().save(*args, **kwargs)
+        if not self.slug:
+            self.slug = slugify(self.title)
+
+        self.reading_time = self.calculate_reading_time()
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title
