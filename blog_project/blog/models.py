@@ -1,4 +1,4 @@
-import uuid
+import uuid, re, math
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
@@ -7,8 +7,7 @@ from django.dispatch import receiver
 from cloudinary.models import CloudinaryField
 from django.utils import timezone
 from datetime import timedelta
-import re
-import math
+
 
 
 class Category(models.Model):
@@ -92,7 +91,7 @@ class Post(models.Model):
         plain_text = re.sub(r'<[^>]+>', ' ', self.content or '')
         word_count = len(plain_text.split())
         minutes = math.ceil(word_count / 200)
-        
+
         return max(minutes, 1)
 
     def save(self, *args, **kwargs):
