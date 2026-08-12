@@ -287,9 +287,9 @@ if (loading) {
       {/* Article */}
 
       <article
-        className="prose prose-lg max-w-none leading-8 text-gray-700"
-        dangerouslySetInnerHTML={{ __html: post.content }}
-      />
+  className="prose prose-lg max-w-none leading-8 text-gray-700 wrap-break-word [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-xl [&_pre]:overflow-x-auto [&_table]:block [&_table]:overflow-x-auto"
+  dangerouslySetInnerHTML={{ __html: post.content }}
+/>
 
       {/* Comments */}
 

@@ -2,6 +2,20 @@ import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import api from "../../api/axios";
 
+
+function stripHtml(html) {
+  if (!html) return "";
+
+  const withoutTags = html.replace(/<[^>]+>/g, " ");
+
+  const textarea = document.createElement("textarea");
+  textarea.innerHTML = withoutTags;
+
+  return textarea.value.replace(/\s+/g, " ").trim();
+}
+
+
+
 function PostCard({ post }) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -110,9 +124,9 @@ function PostCard({ post }) {
         </Link>
 
         <p className="text-gray-600 mb-5 flex-1">
-          {post.excerpt ||
-            `${post.content.slice(0, 120)}...`}
-        </p>
+  {post.excerpt ||
+    `${stripHtml(post.content).slice(0, 120)}...`}
+</p>
 
         <div className="flex flex-wrap gap-2 mb-5">
           {post.tags?.length ? (
