@@ -60,6 +60,7 @@ This project demonstrates a complete full-stack blog platform using Django REST 
 * Rich Text Editor
 * Social Sharing
 * Notifications
+* Reading Time Estimation
 
 ---
 
@@ -297,7 +298,6 @@ Protected endpoints require an access token.
 
 * Dark Mode
 * Related Posts
-* Reading Time Estimation
 
 ---
 

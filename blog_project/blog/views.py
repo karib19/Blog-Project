@@ -388,7 +388,7 @@ class PasswordResetRequestAPIView(APIView):
 
         user = User.objects.get(email=serializer.validated_data["email"])
 
-        # invalidate old tokens
+        
         PasswordResetToken.objects.filter(user=user, is_used=False).delete()
 
         reset_token = PasswordResetToken.objects.create(user=user)
