@@ -11,34 +11,42 @@ function Navbar() {
 
   const handleLogout = () => {
     logout();
+    setMenuOpen(false);
     navigate("/login");
   };
 
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
+
   const linkClass = ({ isActive }) =>
-    `transition duration-300 ${
+    `transition duration-200 ${
       isActive
-        ? "text-blue-600 font-semibold"
+        ? "font-semibold text-blue-600"
         : "text-gray-700 hover:text-blue-600"
     }`;
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex items-center justify-between h-16">
+    <header className="sticky top-0 z-50 border-b border-gray-100 bg-white shadow-sm">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="flex h-16 items-center justify-between">
 
-          {/* Logo */}
+          {/* ================= Logo ================= */}
           <NavLink
             to="/"
-            className="text-2xl font-bold text-blue-600"
+            onClick={closeMenu}
+            className="text-2xl font-bold tracking-tight text-blue-600"
           >
             BlogSphere
           </NavLink>
 
-          {/* Desktop Menu */}
-          <nav className="hidden md:flex items-center gap-6">
+          {/* ================= Desktop Menu ================= */}
+          <nav className="hidden items-center gap-6 md:flex">
 
-            <NotificationBell />
+            {/* Notification */}
+            {isAuthenticated && <NotificationBell />}
 
+            {/* Home */}
             <NavLink
               to="/"
               className={linkClass}
@@ -48,7 +56,7 @@ function Navbar() {
 
             {isAuthenticated ? (
               <>
-
+                {/* Dashboard */}
                 <NavLink
                   to="/dashboard"
                   className={linkClass}
@@ -56,6 +64,7 @@ function Navbar() {
                   Dashboard
                 </NavLink>
 
+                {/* Bookmarks */}
                 <NavLink
                   to="/my-bookmarks"
                   className={linkClass}
@@ -63,6 +72,7 @@ function Navbar() {
                   Bookmarks
                 </NavLink>
 
+                {/* Profile */}
                 <NavLink
                   to="/profile"
                   className={linkClass}
@@ -70,15 +80,17 @@ function Navbar() {
                   Profile
                 </NavLink>
 
+                {/* Logout */}
                 <button
                   onClick={handleLogout}
-                  className="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition"
+                  className="rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white transition duration-200 hover:bg-red-600 active:scale-95"
                 >
                   Logout
                 </button>
               </>
             ) : (
               <>
+                {/* Login */}
                 <NavLink
                   to="/login"
                   className={linkClass}
@@ -86,9 +98,10 @@ function Navbar() {
                   Login
                 </NavLink>
 
+                {/* Register */}
                 <NavLink
                   to="/register"
-                  className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition"
+                  className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition duration-200 hover:bg-blue-700 active:scale-95"
                 >
                   Register
                 </NavLink>
@@ -96,85 +109,130 @@ function Navbar() {
             )}
           </nav>
 
-          {/* Mobile Button */}
+          {/* ================= Mobile Actions ================= */}
+          <div className="flex items-center gap-2 md:hidden">
 
-          <button
-            className="md:hidden text-3xl"
-            onClick={() =>
-              setMenuOpen(!menuOpen)
-            }
-          >
-            ☰
-          </button>
+            {/* Notification */}
+            {isAuthenticated && <NotificationBell />}
+
+            {/* Menu Button */}
+            <button
+              type="button"
+              onClick={() => setMenuOpen((prev) => !prev)}
+              className="flex h-10 w-10 items-center justify-center rounded-full text-2xl text-gray-700 transition duration-200 hover:bg-gray-100 active:scale-95"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+            >
+              {menuOpen ? "✕" : "☰"}
+            </button>
+          </div>
         </div>
 
-
-
-        {/* Mobile Menu */}
+        {/* ================= Mobile Menu ================= */}
         {menuOpen && (
-          <nav className="md:hidden flex flex-col gap-4 pb-5">
-                    <NotificationBell />
-            <NavLink
-              to="/"
-              className={linkClass}
-              onClick={() => setMenuOpen(false)}
-            >
-              Home
-            </NavLink>
+          <nav className="border-t border-gray-100 py-4 md:hidden">
 
-            {isAuthenticated ? (
-  <>
+            <div className="flex flex-col gap-1">
 
-    <NavLink
-      to="/dashboard"
-      className={linkClass}
-      onClick={() => setMenuOpen(false)}
-    >
-      Dashboard
-    </NavLink>
+              {/* Home */}
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  `rounded-lg px-3 py-2.5 transition duration-200 ${
+                    isActive
+                      ? "bg-blue-50 font-semibold text-blue-600"
+                      : "text-gray-700 hover:bg-gray-50 hover:text-blue-600"
+                  }`
+                }
+                onClick={closeMenu}
+              >
+                Home
+              </NavLink>
 
-                <NavLink
-                  to="/my-bookmarks"
-                  className={linkClass}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Bookmarks
-                </NavLink>
+              {isAuthenticated ? (
+                <>
+                  {/* Dashboard */}
+                  <NavLink
+                    to="/dashboard"
+                    className={({ isActive }) =>
+                      `rounded-lg px-3 py-2.5 transition duration-200 ${
+                        isActive
+                          ? "bg-blue-50 font-semibold text-blue-600"
+                          : "text-gray-700 hover:bg-gray-50 hover:text-blue-600"
+                      }`
+                    }
+                    onClick={closeMenu}
+                  >
+                    Dashboard
+                  </NavLink>
 
-                <NavLink
-                  to="/profile"
-                  className={linkClass}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Profile
-                </NavLink>
+                  {/* Bookmarks */}
+                  <NavLink
+                    to="/my-bookmarks"
+                    className={({ isActive }) =>
+                      `rounded-lg px-3 py-2.5 transition duration-200 ${
+                        isActive
+                          ? "bg-blue-50 font-semibold text-blue-600"
+                          : "text-gray-700 hover:bg-gray-50 hover:text-blue-600"
+                      }`
+                    }
+                    onClick={closeMenu}
+                  >
+                    Bookmarks
+                  </NavLink>
 
-                <button
-                  onClick={handleLogout}
-                  className="w-full rounded-lg bg-red-500 py-2 text-white hover:bg-red-600"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <NavLink
-                  to="/login"
-                  className={linkClass}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Login
-                </NavLink>
+                  {/* Profile */}
+                  <NavLink
+                    to="/profile"
+                    className={({ isActive }) =>
+                      `rounded-lg px-3 py-2.5 transition duration-200 ${
+                        isActive
+                          ? "bg-blue-50 font-semibold text-blue-600"
+                          : "text-gray-700 hover:bg-gray-50 hover:text-blue-600"
+                      }`
+                    }
+                    onClick={closeMenu}
+                  >
+                    Profile
+                  </NavLink>
 
-                <NavLink
-                  to="/register"
-                  className="rounded-lg bg-blue-600 py-2 text-center text-white hover:bg-blue-700"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Register
-                </NavLink>
-              </>
-            )}
+                  {/* Logout */}
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="mt-2 w-full rounded-lg bg-red-500 px-3 py-2.5 text-left font-medium text-white transition duration-200 hover:bg-red-600"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  {/* Login */}
+                  <NavLink
+                    to="/login"
+                    className={({ isActive }) =>
+                      `rounded-lg px-3 py-2.5 transition duration-200 ${
+                        isActive
+                          ? "bg-blue-50 font-semibold text-blue-600"
+                          : "text-gray-700 hover:bg-gray-50 hover:text-blue-600"
+                      }`
+                    }
+                    onClick={closeMenu}
+                  >
+                    Login
+                  </NavLink>
+
+                  {/* Register */}
+                  <NavLink
+                    to="/register"
+                    className="mt-2 rounded-lg bg-blue-600 px-3 py-2.5 text-center font-medium text-white transition duration-200 hover:bg-blue-700"
+                    onClick={closeMenu}
+                  >
+                    Register
+                  </NavLink>
+                </>
+              )}
+            </div>
           </nav>
         )}
       </div>

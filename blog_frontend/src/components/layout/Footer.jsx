@@ -1,7 +1,9 @@
+import { NavLink } from "react-router-dom";
+
 function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-300 mt-16">
-      <div className="max-w-7xl mx-auto px-6 py-12 grid gap-10 md:grid-cols-4">
+    <footer className="mt-16 bg-gray-900 text-gray-300">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 py-12 sm:px-6 md:grid-cols-2 lg:grid-cols-4">
 
         {/* Brand */}
         <div>
@@ -9,7 +11,7 @@ function Footer() {
             BlogSphere
           </h2>
 
-          <p className="mt-4 text-sm leading-6">
+          <p className="mt-4 max-w-sm text-sm leading-6 text-gray-400">
             Discover programming, web development,
             technology and modern software engineering
             articles written by passionate developers.
@@ -18,56 +20,56 @@ function Footer() {
 
         {/* Quick Links */}
         <div>
-          <h3 className="text-lg font-semibold text-white mb-4">
+          <h3 className="mb-4 text-lg font-semibold text-white">
             Quick Links
           </h3>
 
-          <ul className="space-y-2">
+          <ul className="space-y-2 text-sm">
             <li>
-              <a
-                href="/"
-                className="hover:text-white"
+              <NavLink
+                to="/"
+                className="transition hover:text-white"
               >
                 Home
-              </a>
+              </NavLink>
             </li>
 
             <li>
-              <a
-                href="/login"
-                className="hover:text-white"
+              <NavLink
+                to="/login"
+                className="transition hover:text-white"
               >
                 Login
-              </a>
+              </NavLink>
             </li>
 
             <li>
-              <a
-                href="/register"
-                className="hover:text-white"
+              <NavLink
+                to="/register"
+                className="transition hover:text-white"
               >
                 Register
-              </a>
+              </NavLink>
             </li>
 
             <li>
-              <a
-                href="/dashboard"
-                className="hover:text-white"
+              <NavLink
+                to="/dashboard"
+                className="transition hover:text-white"
               >
                 Dashboard
-              </a>
+              </NavLink>
             </li>
           </ul>
         </div>
 
         {/* Categories */}
         <div>
-          <h3 className="text-lg font-semibold text-white mb-4">
+          <h3 className="mb-4 text-lg font-semibold text-white">
             Categories
           </h3>
 
-          <ul className="space-y-2">
+          <ul className="space-y-2 text-sm text-gray-400">
             <li>Programming</li>
             <li>Python</li>
             <li>React</li>
@@ -78,60 +80,77 @@ function Footer() {
 
         {/* Contact */}
         <div>
-          <h3 className="text-lg font-semibold text-white mb-4">
+          <h3 className="mb-4 text-lg font-semibold text-white">
             Contact
           </h3>
 
-          <p>Email</p>
-          <p>support@blogsphere.com</p>
+          <p className="text-sm text-gray-400">
+            Email
+          </p>
 
-          <div className="flex gap-3 mt-5">
-            <button className="bg-gray-800 hover:bg-blue-600 transition px-3 py-2 rounded">
+          <a
+            href="mailto:support@blogsphere.com"
+            className="mt-1 block break-all text-sm text-gray-300 transition hover:text-white"
+          >
+            support@blogsphere.com
+          </a>
+
+          {/* Social Buttons */}
+          <div className="mt-5 flex flex-wrap gap-2">
+            <a
+              href="#"
+              className="rounded-lg bg-gray-800 px-3 py-2 text-sm transition hover:bg-blue-600 hover:text-white"
+            >
               Facebook
-            </button>
+            </a>
 
-            <button className="bg-gray-800 hover:bg-sky-500 transition px-3 py-2 rounded">
+            <a
+              href="#"
+              className="rounded-lg bg-gray-800 px-3 py-2 text-sm transition hover:bg-sky-500 hover:text-white"
+            >
               Twitter
-            </button>
+            </a>
 
-            <button className="bg-gray-800 hover:bg-pink-600 transition px-3 py-2 rounded">
+            <a
+              href="#"
+              className="rounded-lg bg-gray-800 px-3 py-2 text-sm transition hover:bg-pink-600 hover:text-white"
+            >
               Instagram
-            </button>
+            </a>
           </div>
         </div>
-
       </div>
 
-      <div className="border-t border-gray-700 py-6">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+      {/* Bottom Footer */}
+      <div className="border-t border-gray-800">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-6 text-center sm:px-6 md:flex-row md:text-left">
 
-          <p className="text-sm">
+          <p className="text-sm text-gray-400">
             © 2026 BlogSphere. All rights reserved.
           </p>
 
-          <div className="flex gap-6 text-sm">
-            <a
-              href="/"
-              className="hover:text-white"
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
+            <NavLink
+              to="/privacy"
+              className="transition hover:text-white"
             >
               Privacy Policy
-            </a>
+            </NavLink>
 
-            <a
-              href="/"
-              className="hover:text-white"
+            <NavLink
+              to="/terms"
+              className="transition hover:text-white"
             >
               Terms of Service
-            </a>
+            </NavLink>
 
-            <a
-              href="/"
-              className="hover:text-white"
+            <NavLink
+              to="/cookies"
+              className="transition hover:text-white"
             >
               Cookies
-            </a>
+            </NavLink>
           </div>
-
         </div>
       </div>
     </footer>

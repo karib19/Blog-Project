@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import api from "../../api/axios";
 
 function timeAgo(dateString) {
-  const seconds = Math.floor((new Date() - new Date(dateString)) / 1000);
+  const seconds = Math.floor(
+    (new Date() - new Date(dateString)) / 1000
+  );
 
   if (seconds < 60) return "just now";
 
@@ -45,9 +47,7 @@ function NotificationBell() {
     api
       .get("notifications/")
       .then((response) => {
-        setNotifications(
-          response.data.results || response.data
-        );
+        setNotifications(response.data.results || response.data);
       })
       .catch((error) => {
         console.error(error.response?.data);
@@ -57,7 +57,7 @@ function NotificationBell() {
       });
   };
 
-  // poll unread count every 30s
+  // Poll unread count every 30 seconds
   useEffect(() => {
     loadUnreadCount();
 
@@ -66,7 +66,7 @@ function NotificationBell() {
     return () => clearInterval(interval);
   }, []);
 
-  // close dropdown on outside click
+  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (
@@ -78,8 +78,12 @@ function NotificationBell() {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
+
     return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener(
+        "mousedown",
+        handleClickOutside
+      );
   }, []);
 
   const handleToggle = () => {
@@ -96,7 +100,10 @@ function NotificationBell() {
       await api.post("notifications/mark-all-read/");
 
       setNotifications((prev) =>
-        prev.map((n) => ({ ...n, is_read: true }))
+        prev.map((n) => ({
+          ...n,
+          is_read: true,
+        }))
       );
 
       setUnreadCount(0);
@@ -108,11 +115,15 @@ function NotificationBell() {
   const handleNotificationClick = async (notification) => {
     if (!notification.is_read) {
       try {
-        await api.post(`notifications/${notification.id}/read/`);
+        await api.post(
+          `notifications/${notification.id}/read/`
+        );
 
         setNotifications((prev) =>
           prev.map((n) =>
-            n.id === notification.id ? { ...n, is_read: true } : n
+            n.id === notification.id
+              ? { ...n, is_read: true }
+              : n
           )
         );
 
@@ -133,11 +144,11 @@ function NotificationBell() {
     if (notification.notification_type === "like") {
       return (
         <>
-          <span className="font-semibold">
+          <span className="font-semibold text-gray-900">
             {notification.sender_username}
           </span>{" "}
           liked your post{" "}
-          <span className="font-semibold">
+          <span className="font-semibold text-gray-900">
             "{notification.post_title}"
           </span>
         </>
@@ -147,11 +158,11 @@ function NotificationBell() {
     if (notification.notification_type === "comment") {
       return (
         <>
-          <span className="font-semibold">
+          <span className="font-semibold text-gray-900">
             {notification.sender_username}
           </span>{" "}
           commented on{" "}
-          <span className="font-semibold">
+          <span className="font-semibold text-gray-900">
             "{notification.post_title}"
           </span>
         </>
@@ -168,15 +179,19 @@ function NotificationBell() {
   };
 
   return (
-    <div className="relative" ref={dropdownRef}>
-
+    <div
+      className="relative flex items-center"
+      ref={dropdownRef}
+    >
+      {/* Notification Button */}
       <button
         onClick={handleToggle}
-        className="relative p-2 rounded-full hover:bg-gray-100 transition"
+        className="relative flex h-10 w-10 items-center justify-center rounded-full text-gray-600 transition-all duration-200 hover:bg-gray-100 hover:text-blue-600 active:scale-95"
         title="Notifications"
+        aria-label="Notifications"
       >
         <svg
-          className="w-6 h-6 text-gray-700"
+          className="h-6 w-6"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -189,76 +204,150 @@ function NotificationBell() {
           />
         </svg>
 
+        {/* Unread Badge */}
         {unreadCount > 0 && (
-          <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+          <span className="absolute right-0.5 top-0.5 flex min-h-4.5 min-w-4.5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold leading-none text-white ring-2 ring-white">
             {unreadCount > 9 ? "9+" : unreadCount}
           </span>
         )}
       </button>
 
+      {/* Notification Dropdown */}
       {open && (
-        <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-gray-200 z-50 overflow-hidden">
+        <div
+          className="
+            absolute
+            right-0
+            top-12
+            z-100
+            w-[calc(100vw-2rem)]
+            max-w-sm
+            overflow-hidden
+            rounded-2xl
+            border
+            border-gray-200
+            bg-white
+            shadow-xl
+            sm:w-80
+          "
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between border-b border-gray-100 px-4 py-3.5">
+            <div className="flex items-center gap-2">
+              <h3 className="font-semibold text-gray-900">
+                Notifications
+              </h3>
 
-          <div className="flex items-center justify-between px-5 py-4 border-b">
-            <h3 className="font-bold text-gray-800">
-              Notifications
-            </h3>
+              {unreadCount > 0 && (
+                <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[11px] font-semibold text-blue-600">
+                  {unreadCount} new
+                </span>
+              )}
+            </div>
 
             {unreadCount > 0 && (
               <button
                 onClick={handleMarkAllRead}
-                className="text-sm text-blue-600 hover:underline font-medium"
+                className="text-xs font-medium text-blue-600 transition hover:text-blue-700"
               >
                 Mark all read
               </button>
             )}
           </div>
 
-          <div className="max-h-96 overflow-y-auto">
-
+          {/* Notification List */}
+          <div className="max-h-[min(24rem,70vh)] overflow-y-auto">
             {loading ? (
-              <div className="py-10 flex justify-center">
-                <div className="h-6 w-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+              <div className="flex justify-center py-10">
+                <div className="h-6 w-6 animate-spin rounded-full border-2 border-gray-200 border-t-blue-600"></div>
               </div>
             ) : notifications.length === 0 ? (
-              <div className="py-10 text-center text-gray-500 text-sm">
-                No notifications yet.
+              <div className="px-5 py-10 text-center">
+                <div className="mb-2 text-3xl">🔔</div>
+
+                <p className="text-sm font-medium text-gray-700">
+                  No notifications yet
+                </p>
+
+                <p className="mt-1 text-xs text-gray-400">
+                  You're all caught up.
+                </p>
               </div>
             ) : (
               notifications.map((notification) => (
                 <button
                   key={notification.id}
-                  onClick={() => handleNotificationClick(notification)}
-                  className={`w-full text-left px-5 py-4 border-b last:border-b-0 flex gap-3 items-start hover:bg-gray-50 transition ${
-                    !notification.is_read ? "bg-blue-50" : ""
-                  }`}
+                  onClick={() =>
+                    handleNotificationClick(notification)
+                  }
+                  className={`
+                    flex
+                    w-full
+                    items-start
+                    gap-3
+                    border-b
+                    border-gray-100
+                    px-4
+                    py-3.5
+                    text-left
+                    transition
+                    last:border-b-0
+                    hover:bg-gray-50
+                    ${
+                      !notification.is_read
+                        ? "bg-blue-50/70"
+                        : "bg-white"
+                    }
+                  `}
                 >
-                  <span className="text-xl leading-none mt-0.5">
-                    {getIcon(notification.notification_type)}
+                  {/* Type Icon */}
+                  <span
+                    className={`
+                      flex
+                      h-9
+                      w-9
+                      shrink-0
+                      items-center
+                      justify-center
+                      rounded-full
+                      text-base
+                      ${
+                        notification.notification_type ===
+                        "like"
+                          ? "bg-red-50"
+                          : notification.notification_type ===
+                            "comment"
+                          ? "bg-blue-50"
+                          : "bg-gray-100"
+                      }
+                    `}
+                  >
+                    {getIcon(
+                      notification.notification_type
+                    )}
                   </span>
 
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm text-gray-800 leading-snug">
+                  {/* Content */}
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm leading-snug text-gray-700">
                       {getMessage(notification)}
                     </p>
 
-                    <p className="text-xs text-gray-400 mt-1">
+                    <p className="mt-1 text-[11px] text-gray-400">
                       {timeAgo(notification.created_at)}
                     </p>
                   </div>
 
+                  {/* Unread Dot */}
                   {!notification.is_read && (
-                    <span className="w-2 h-2 rounded-full bg-blue-600 mt-2 shrink-0"></span>
+                    <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-blue-600"></span>
                   )}
                 </button>
               ))
             )}
-
           </div>
-
         </div>
       )}
-
     </div>
   );
 }
