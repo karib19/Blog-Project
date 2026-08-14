@@ -199,7 +199,7 @@ class PostUpdateAPIView(generics.UpdateAPIView):
     parser_classes = [MultiPartParser, FormParser]
 
     def perform_update(self, serializer):
-        serializer.save(author=self.request.user)
+        serializer.save()
 
 
 class PostDeleteAPIView(generics.DestroyAPIView):
@@ -388,7 +388,7 @@ class PasswordResetRequestAPIView(APIView):
 
         user = User.objects.get(email=serializer.validated_data["email"])
 
-        
+
         PasswordResetToken.objects.filter(user=user, is_used=False).delete()
 
         reset_token = PasswordResetToken.objects.create(user=user)
