@@ -185,6 +185,7 @@ class PostCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         exclude = ["author"]
+        read_only_fields = ["reading_time"]
 
     def validate_title(self, value):
         if len(value) < 5:
