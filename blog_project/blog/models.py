@@ -1,4 +1,4 @@
-import uuid, re, math
+import uuid, re, math, html
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
@@ -87,12 +87,13 @@ class Post(models.Model):
     class Meta:
         ordering = ['-created_at']
 
-    def calculate_reading_time(self):
-        plain_text = re.sub(r'<[^>]+>', ' ', self.content or '')
-        word_count = len(plain_text.split())
-        minutes = math.ceil(word_count / 200)
-
-        return max(minutes, 1)
+def calculate_reading_time(self):
+    text_without_tags = re.sub(r'<[^>]+>', ' ', self.content or '')
+    text_decoded = html.unescape(text_without_tags)
+    text_decoded = text_decoded.replace('\xa0', ' ')
+    word_count = len(text_decoded.split())
+    minutes = math.ceil(word_count / 200)
+    return max(minutes, 1)
 
     def save(self, *args, **kwargs):
         if not self.slug:
