@@ -53,17 +53,20 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-blue-600 via-indigo-600 to-purple-700 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-linear-to-br from-rose-900 via-rose-950 to-slate-900 flex items-center justify-center px-4">
 
       <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8">
 
         <div className="text-center mb-8">
 
-          <h1 className="text-4xl font-bold text-gray-800">
+          <h1
+            className="text-4xl font-semibold text-slate-900"
+            style={{ fontFamily: "var(--font-serif, serif)" }}
+          >
             Welcome Back 👋
           </h1>
 
-          <p className="text-gray-500 mt-2">
+          <p className="text-slate-500 mt-2">
             Sign in to continue to your account
           </p>
 
@@ -76,7 +79,7 @@ function Login() {
 
           <div>
 
-            <label className="block mb-2 font-medium text-gray-700">
+            <label className="block mb-2 font-medium text-slate-700">
               Username
             </label>
 
@@ -87,14 +90,14 @@ function Login() {
               value={formData.username}
               onChange={handleChange}
               required
-              className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-slate-300 rounded-xl px-4 py-3 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-800"
             />
 
           </div>
 
           <div>
 
-            <label className="block mb-2 font-medium text-gray-700">
+            <label className="block mb-2 font-medium text-slate-700">
               Password
             </label>
 
@@ -107,11 +110,11 @@ function Login() {
                 value={formData.password}
                 onChange={handleChange}
                 required
-                className="w-full border border-gray-300 rounded-xl px-4 py-3 pr-24 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-slate-300 rounded-xl px-4 py-3 pr-24 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-800"
               />
 
               {error && (
-    <p className="text-red-500 text-center mb-4">
+    <p className="text-rose-600 text-center mb-4">
       {error}
     </p>
   )}
@@ -119,7 +122,7 @@ function Login() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-blue-600 hover:text-blue-800 transition"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-rose-800 hover:text-rose-900 transition"
               >
                 {showPassword ? "Hide" : "Show"}
               </button>
@@ -133,8 +136,8 @@ function Login() {
             disabled={loading}
             className={`w-full py-3 rounded-xl font-semibold text-white transition ${
               loading
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
+                ? "bg-slate-400 cursor-not-allowed"
+                : "bg-rose-800 hover:bg-rose-900"
             }`}
           >
             {loading ? "Signing In..." : "Login"}
@@ -144,7 +147,7 @@ function Login() {
 
         <div className="mt-8 text-center">
 
-          <p className="text-gray-600">
+          <p className="text-slate-600">
             Don't have an account?
           </p>
 
@@ -152,16 +155,16 @@ function Login() {
            <div className="flex justify-center items-center gap-3 mt-2">
       <Link
     to="/register"
-    className="font-semibold text-blue-600 hover:text-blue-700 hover:underline transition-colors"
+    className="font-semibold text-rose-800 hover:text-rose-900 hover:underline transition-colors"
     >
     Create Account
   </Link>
 
-  <span className="text-gray-300">|</span>
+  <span className="text-slate-300">|</span>
 
   <Link
     to="/forgot-password"
-    className="font-semibold text-blue-600 hover:text-blue-700 hover:underline transition-colors"
+    className="font-semibold text-rose-800 hover:text-rose-900 hover:underline transition-colors"
   >
     Forgot password?
   </Link>

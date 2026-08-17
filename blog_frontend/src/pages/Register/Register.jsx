@@ -105,17 +105,20 @@ localStorage.setItem(
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-blue-600 via-indigo-600 to-purple-700 flex items-center justify-center px-4 py-10">
+    <div className="min-h-screen bg-linear-to-br from-rose-900 via-rose-950 to-slate-900 flex items-center justify-center px-4 py-10">
 
       <div className="w-full max-w-2xl bg-white rounded-3xl shadow-2xl p-8">
 
         <div className="text-center mb-8">
 
-          <h1 className="text-4xl font-bold text-gray-800">
+          <h1
+            className="text-4xl font-semibold text-slate-900"
+            style={{ fontFamily: "var(--font-serif, serif)" }}
+          >
             Create Account 🚀
           </h1>
 
-          <p className="text-gray-500 mt-2">
+          <p className="text-slate-500 mt-2">
             Join our blog community today
           </p>
 
@@ -130,7 +133,7 @@ localStorage.setItem(
 
             <div>
 
-              <label className="block mb-2 font-medium text-gray-700">
+              <label className="block mb-2 font-medium text-slate-700">
                 First Name
               </label>
 
@@ -140,11 +143,11 @@ localStorage.setItem(
                 placeholder="First name"
                 value={formData.first_name}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full border border-slate-300 rounded-xl px-4 py-3 bg-white text-slate-900 focus:ring-2 focus:ring-rose-800 focus:outline-none"
               />
 
               {errors.first_name && (
-                <p className="text-red-500 text-sm mt-1">
+                <p className="text-rose-600 text-sm mt-1">
                   {errors.first_name[0]}
                 </p>
               )}
@@ -153,7 +156,7 @@ localStorage.setItem(
 
             <div>
 
-              <label className="block mb-2 font-medium text-gray-700">
+              <label className="block mb-2 font-medium text-slate-700">
                 Last Name
               </label>
 
@@ -163,11 +166,11 @@ localStorage.setItem(
                 placeholder="Last name"
                 value={formData.last_name}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full border border-slate-300 rounded-xl px-4 py-3 bg-white text-slate-900 focus:ring-2 focus:ring-rose-800 focus:outline-none"
               />
 
               {errors.last_name && (
-                <p className="text-red-500 text-sm mt-1">
+                <p className="text-rose-600 text-sm mt-1">
                   {errors.last_name[0]}
                 </p>
               )}
@@ -178,7 +181,7 @@ localStorage.setItem(
 
           <div>
 
-            <label className="block mb-2 font-medium text-gray-700">
+            <label className="block mb-2 font-medium text-slate-700">
               Username
             </label>
 
@@ -189,11 +192,11 @@ localStorage.setItem(
               value={formData.username}
               onChange={handleChange}
               required
-              className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full border border-slate-300 rounded-xl px-4 py-3 bg-white text-slate-900 focus:ring-2 focus:ring-rose-800 focus:outline-none"
             />
 
             {errors.username && (
-              <p className="text-red-500 text-sm mt-1">
+              <p className="text-rose-600 text-sm mt-1">
                 {errors.username[0]}
               </p>
             )}
@@ -202,7 +205,7 @@ localStorage.setItem(
 
           <div>
 
-            <label className="block mb-2 font-medium text-gray-700">
+            <label className="block mb-2 font-medium text-slate-700">
               Email Address
             </label>
 
@@ -213,11 +216,11 @@ localStorage.setItem(
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full border border-slate-300 rounded-xl px-4 py-3 bg-white text-slate-900 focus:ring-2 focus:ring-rose-800 focus:outline-none"
             />
 
             {errors.email && (
-              <p className="text-red-500 text-sm mt-1">
+              <p className="text-rose-600 text-sm mt-1">
                 {errors.email[0]}
               </p>
             )}
@@ -226,7 +229,7 @@ localStorage.setItem(
 
           <div>
 
-            <label className="block mb-2 font-medium text-gray-700">
+            <label className="block mb-2 font-medium text-slate-700">
               Password
             </label>
 
@@ -239,13 +242,13 @@ localStorage.setItem(
                 value={formData.password}
                 onChange={handleChange}
                 required
-                className="w-full border border-gray-300 rounded-xl px-4 py-3 pr-20 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full border border-slate-300 rounded-xl px-4 py-3 pr-20 bg-white text-slate-900 focus:ring-2 focus:ring-rose-800 focus:outline-none"
               />
 
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-blue-600 font-medium hover:text-blue-800"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-rose-800 font-medium hover:text-rose-900"
               >
                 {showPassword ? "Hide" : "Show"}
               </button>
@@ -253,24 +256,24 @@ localStorage.setItem(
             </div>
 
             {errors.password && (
-              <p className="text-red-500 text-sm mt-2">
+              <p className="text-rose-600 text-sm mt-2">
                 {errors.password[0]}
               </p>
             )}
 
             <div className="mt-3 flex items-center gap-3">
 
-              <span className="text-sm font-medium">
+              <span className="text-sm font-medium text-slate-700">
                 Password Strength:
               </span>
 
               <span
                 className={`px-3 py-1 rounded-full text-xs font-semibold ${
                   passwordStrength() === "Strong"
-                    ? "bg-green-100 text-green-700"
+                    ? "bg-emerald-100 text-emerald-700"
                     : passwordStrength() === "Medium"
-                    ? "bg-yellow-100 text-yellow-700"
-                    : "bg-red-100 text-red-700"
+                    ? "bg-amber-100 text-amber-700"
+                    : "bg-rose-100 text-rose-700"
                 }`}
               >
                 {passwordStrength()}
@@ -282,7 +285,7 @@ localStorage.setItem(
 
           <div>
 
-            <label className="block mb-2 font-medium text-gray-700">
+            <label className="block mb-2 font-medium text-slate-700">
               Confirm Password
             </label>
 
@@ -299,7 +302,7 @@ localStorage.setItem(
                 value={formData.confirm_password}
                 onChange={handleChange}
                 required
-                className="w-full border border-gray-300 rounded-xl px-4 py-3 pr-20 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full border border-slate-300 rounded-xl px-4 py-3 pr-20 bg-white text-slate-900 focus:ring-2 focus:ring-rose-800 focus:outline-none"
               />
 
               <button
@@ -309,7 +312,7 @@ localStorage.setItem(
                     !showConfirmPassword
                   )
                 }
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-blue-600 font-medium hover:text-blue-800"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-rose-800 font-medium hover:text-rose-900"
               >
                 {showConfirmPassword ? "Hide" : "Show"}
               </button>
@@ -321,8 +324,8 @@ localStorage.setItem(
               <p
                 className={`mt-2 text-sm font-medium ${
                   passwordsMatch
-                    ? "text-green-600"
-                    : "text-red-600"
+                    ? "text-emerald-600"
+                    : "text-rose-600"
                 }`}
               >
                 {passwordsMatch
@@ -345,8 +348,8 @@ localStorage.setItem(
               loading ||
               !passwordsMatch ||
               passwordStrength() === "Weak"
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
+                ? "bg-slate-400 cursor-not-allowed"
+                : "bg-rose-800 hover:bg-rose-900"
             }`}
           >
             {loading
@@ -356,15 +359,15 @@ localStorage.setItem(
 
         </form>
 
-        <div className="mt-8 text-center border-t pt-6">
+        <div className="mt-8 text-center border-t border-slate-100 pt-6">
 
-          <p className="text-gray-600">
+          <p className="text-slate-600">
             Already have an account?
           </p>
 
           <Link
             to="/login"
-            className="inline-block mt-2 font-semibold text-blue-600 hover:text-blue-700 hover:underline"
+            className="inline-block mt-2 font-semibold text-rose-800 hover:text-rose-900 hover:underline"
           >
             Sign In
           </Link>

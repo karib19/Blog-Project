@@ -48,41 +48,71 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-16 p-6 bg-white rounded-lg shadow">
-      <h2 className="text-2xl font-semibold mb-4">Reset Password</h2>
+    <div className="min-h-screen bg-linear-to-br from-rose-900 via-rose-950 to-slate-900 flex items-center justify-center px-4">
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="password"
-          placeholder="New password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          required
-          minLength={6}
-          className="w-full border rounded px-3 py-2"
-        />
+      <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8">
 
-        <input
-          type="password"
-          placeholder="Confirm new password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-          minLength={6}
-          className="w-full border rounded px-3 py-2"
-        />
+        <div className="text-center mb-6">
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 disabled:opacity-50"
-        >
-          {loading ? "Resetting..." : "Reset Password"}
-        </button>
-      </form>
+          <h1
+            className="text-3xl font-semibold text-slate-900"
+            style={{ fontFamily: "var(--font-serif, serif)" }}
+          >
+            Reset Password
+          </h1>
 
-      {message && <p className="text-green-600 mt-4">{message}</p>}
-      {error && <p className="text-red-600 mt-4">{error}</p>}
+          <p className="text-slate-500 mt-2">
+            Choose a new password for your account.
+          </p>
+
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+
+          <input
+            type="password"
+            placeholder="New password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            required
+            minLength={6}
+            className="w-full border border-slate-300 rounded-xl px-4 py-3 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-800"
+          />
+
+          <input
+            type="password"
+            placeholder="Confirm new password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+            minLength={6}
+            className="w-full border border-slate-300 rounded-xl px-4 py-3 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-800"
+          />
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-rose-800 text-white py-3 rounded-xl font-semibold hover:bg-rose-900 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? "Resetting..." : "Reset Password"}
+          </button>
+
+        </form>
+
+        {message && (
+          <p className="text-emerald-600 mt-4 text-center font-medium">
+            {message}
+          </p>
+        )}
+
+        {error && (
+          <p className="text-rose-600 mt-4 text-center font-medium">
+            {error}
+          </p>
+        )}
+
+      </div>
+
     </div>
   );
 }

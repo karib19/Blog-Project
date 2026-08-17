@@ -32,9 +32,9 @@ function MyBookmarks() {
 
         <div className="text-center">
 
-          <div className="h-12 w-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <div className="h-12 w-12 border-4 border-rose-800 border-t-transparent rounded-full animate-spin mx-auto dark:border-rose-400"></div>
 
-          <p className="mt-4 text-gray-600">
+          <p className="mt-4 text-slate-600 dark:text-slate-400">
             Loading bookmarks...
           </p>
 
@@ -47,35 +47,38 @@ function MyBookmarks() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
 
-      <div className="bg-linear-to-r from-indigo-600 via-blue-600 to-cyan-600 rounded-3xl shadow-xl p-8 text-white mb-10">
+      <div className="bg-linear-to-r from-rose-800 to-slate-800 rounded-3xl shadow-xl p-8 text-white mb-10">
 
-        <h1 className="text-4xl font-bold">
+        <h1
+          className="text-4xl font-semibold"
+          style={{ fontFamily: "var(--font-serif, serif)" }}
+        >
           🔖 My Bookmarks
         </h1>
 
-        <p className="mt-3 text-blue-100 text-lg">
+        <p className="mt-3 text-rose-100 text-lg">
           Your saved articles in one place.
         </p>
 
       </div>
 
-      {bookmarks.length === 0 ? (        <div className="bg-white rounded-3xl shadow-lg border border-gray-200 p-12 text-center">
+      {bookmarks.length === 0 ? (        <div className="bg-white rounded-3xl shadow-lg border border-slate-200 p-12 text-center dark:bg-slate-900 dark:border-slate-800">
 
           <div className="text-6xl mb-4">
             📑
           </div>
 
-          <h2 className="text-2xl font-bold text-gray-800">
+          <h2 className="text-2xl font-bold text-slate-800 dark:text-white">
             No Bookmarks Yet
           </h2>
 
-          <p className="mt-3 text-gray-500">
+          <p className="mt-3 text-slate-500 dark:text-slate-400">
             Start saving your favorite articles and they'll appear here.
           </p>
 
           <Link
             to="/"
-            className="inline-block mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition"
+            className="inline-block mt-6 bg-rose-800 hover:bg-rose-900 text-white px-6 py-3 rounded-xl font-semibold transition dark:bg-rose-600 dark:hover:bg-rose-500"
           >
             Explore Posts
           </Link>
@@ -89,7 +92,7 @@ function MyBookmarks() {
 
             <article
               key={bookmark.id}
-              className="bg-white rounded-3xl shadow-lg overflow-hidden border border-gray-200 hover:-translate-y-2 hover:shadow-2xl transition duration-300"
+              className="bg-white rounded-3xl shadow-lg overflow-hidden border border-slate-200 hover:-translate-y-2 hover:shadow-2xl transition duration-300 dark:bg-slate-900 dark:border-slate-800"
             >
 
               {bookmark.post.featured_image ? (
@@ -102,7 +105,7 @@ function MyBookmarks() {
 
               ) : (
 
-                <div className="h-56 bg-linear-to-r from-slate-200 to-slate-300 flex items-center justify-center text-5xl">
+                <div className="h-56 bg-linear-to-r from-slate-200 to-slate-300 flex items-center justify-center text-5xl dark:from-slate-800 dark:to-slate-700">
                   📰
                 </div>
 
@@ -110,18 +113,21 @@ function MyBookmarks() {
 
               <div className="p-6">
 
-                <h2 className="text-2xl font-bold text-gray-800 line-clamp-2">
+                <h2
+                  className="text-2xl font-semibold text-slate-800 line-clamp-2 dark:text-white"
+                  style={{ fontFamily: "var(--font-serif, serif)" }}
+                >
                   {bookmark.post.title}
                 </h2>
 
-                <div className="flex items-center justify-between mt-4 text-sm text-gray-500">
+                <div className="flex items-center justify-between mt-4 text-sm text-slate-500 dark:text-slate-400">
 
                   <span>
                     👤 {bookmark.post.author.username}
                   </span>
 
                   {bookmark.post.category && (
-                    <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
+                    <span className="bg-rose-50 text-rose-800 px-3 py-1 rounded-full dark:bg-rose-950/40 dark:text-rose-400">
                       {bookmark.post.category.name}
                     </span>
                   )}
@@ -130,7 +136,7 @@ function MyBookmarks() {
 
                 <Link
                   to={`/posts/${bookmark.post.slug}`}
-                  className="inline-flex items-center justify-center mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition"
+                  className="inline-flex items-center justify-center mt-6 w-full bg-rose-800 hover:bg-rose-900 text-white py-3 rounded-xl font-semibold transition dark:bg-rose-600 dark:hover:bg-rose-500"
                 >
                   Read Article →
                 </Link>

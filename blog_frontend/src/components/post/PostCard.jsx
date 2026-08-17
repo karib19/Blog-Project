@@ -78,7 +78,7 @@ function PostCard({ post }) {
 };
 
   return (
-    <article className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden flex flex-col">
+    <article className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 overflow-hidden flex flex-col dark:bg-slate-900 dark:border-slate-800">
 
       <div className="relative">
 
@@ -86,79 +86,91 @@ function PostCard({ post }) {
           <img
             src={post.featured_image}
             alt={post.title}
-            className="w-full h-60 object-cover"
+            className="w-full h-56 object-cover"
           />
         ) : (
-          <div className="h-60 bg-gray-200 flex items-center justify-center text-gray-500">
+          <div className="h-56 bg-slate-100 flex items-center justify-center text-slate-400 dark:bg-slate-800 dark:text-slate-600">
             No Image
           </div>
         )}
 
         {post.is_featured && (
-          <span className="absolute top-4 left-4 bg-yellow-400 text-black px-3 py-1 rounded-full text-xs font-semibold">
-            Featured
+          <span className="absolute top-3 left-3 bg-amber-400 text-slate-900 px-2.5 py-1 rounded-full text-xs font-semibold tracking-wide">
+            ★ Featured
           </span>
         )}
       </div>
 
       <div className="p-6 flex flex-col flex-1">
 
-        <div className="flex items-center justify-between text-sm text-gray-500 mb-3">
-
-          <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
+        <div
+          className="flex items-center gap-2 text-xs uppercase tracking-widest text-slate-500 mb-3 dark:text-slate-400"
+          style={{ fontFamily: "var(--font-mono, monospace)" }}
+        >
+          <span className="text-rose-800 font-semibold dark:text-rose-400">
             {post.category?.name || "General"}
           </span>
-
+          <span className="text-slate-300 dark:text-slate-600">·</span>
           <span>
             {post.created_at
               ? new Date(post.created_at).toLocaleDateString()
               : ""}
           </span>
-
         </div>
 
         <Link to={`/posts/${post.slug}`}>
-          <h2 className="text-2xl font-bold text-gray-800 hover:text-blue-600 transition mb-3">
+          <h2
+            className="text-2xl font-semibold leading-snug text-slate-900 hover:text-rose-800 transition mb-3 dark:text-white dark:hover:text-rose-400"
+            style={{ fontFamily: "var(--font-serif, serif)" }}
+          >
             {post.title}
           </h2>
         </Link>
 
-        <p className="text-gray-600 mb-5 flex-1">
-  {post.excerpt ||
-    `${stripHtml(post.content).slice(0, 120)}...`}
-</p>
+        <p className="text-slate-600 mb-5 flex-1 dark:text-slate-400">
+          {post.excerpt ||
+            `${stripHtml(post.content).slice(0, 120)}...`}
+        </p>
 
         <div className="flex flex-wrap gap-2 mb-5">
           {post.tags?.length ? (
             post.tags.map((tag) => (
               <span
                 key={tag.id}
-                className="bg-gray-100 text-gray-700 text-sm px-3 py-1 rounded-full"
+                className="bg-slate-100 text-slate-600 text-xs px-2.5 py-1 rounded-md dark:bg-slate-800 dark:text-slate-400"
               >
                 #{tag.name}
               </span>
             ))
           ) : (
-            <span className="text-gray-400 text-sm">
+            <span className="text-slate-400 text-xs dark:text-slate-600">
               No Tags
             </span>
           )}
         </div>
 
-        <div className="flex items-center justify-between border-t pt-4 text-sm text-gray-500">
+        <div className="flex items-center justify-between border-t border-slate-100 pt-4 text-sm text-slate-500 dark:border-slate-800 dark:text-slate-400">
 
           <div>
-            <p className="font-medium text-gray-700">
+            <p className="font-medium text-slate-700 dark:text-slate-200">
               {post.author.username}
             </p>
 
-            <p>
+            <p
+              className="text-xs tracking-wide"
+              style={{ fontFamily: "var(--font-mono, monospace)" }}
+            >
               ⏱ {post.reading_time} min read
             </p>
           </div>
 
           <div className="text-right">
-            <p>👁 {post.views}</p>
+            <p
+              className="text-xs tracking-wide"
+              style={{ fontFamily: "var(--font-mono, monospace)" }}
+            >
+              👁 {post.views}
+            </p>
           </div>
 
         </div>
@@ -167,10 +179,10 @@ function PostCard({ post }) {
 
           <button
             onClick={handleLike}
-            className={`flex-1 rounded-lg py-2 transition ${
+            className={`flex-1 rounded-lg py-2 text-sm font-medium transition ${
               liked
-                ? "bg-red-500 text-white"
-                : "bg-gray-100 hover:bg-red-100"
+                ? "bg-rose-800 text-white"
+                : "bg-slate-100 text-slate-600 hover:bg-rose-50 hover:text-rose-800 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-rose-950/40 dark:hover:text-rose-400"
             }`}
           >
             ❤️ {likesCount}
@@ -178,10 +190,10 @@ function PostCard({ post }) {
 
           <button
             onClick={handleBookmark}
-            className={`flex-1 rounded-lg py-2 transition ${
+            className={`flex-1 rounded-lg py-2 text-sm font-medium transition ${
               bookmarked
-                ? "bg-blue-600 text-white"
-                : "bg-gray-100 hover:bg-blue-100"
+                ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
+                : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
             }`}
           >
             🔖 {bookmarksCount}
@@ -193,7 +205,7 @@ function PostCard({ post }) {
           to={`/posts/${post.slug}`}
           className="mt-5"
         >
-          <button className="w-full bg-gray-900 text-white py-3 rounded-lg hover:bg-blue-600 transition">
+          <button className="w-full bg-slate-900 text-white py-3 rounded-lg text-sm font-medium hover:bg-rose-800 transition dark:bg-white dark:text-slate-900 dark:hover:bg-rose-400">
             Read More →
           </button>
         </Link>

@@ -2,16 +2,20 @@ import { NavLink } from "react-router-dom";
 
 function Footer() {
   return (
-    <footer className="mt-16 bg-gray-900 text-gray-300">
+    <footer className="mt-16 bg-slate-950 text-slate-300">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 py-12 sm:px-6 md:grid-cols-2 lg:grid-cols-4">
 
         {/* Brand */}
         <div>
-          <h2 className="text-2xl font-bold text-white">
-            BlogSphere
+          <h2
+            className="text-2xl font-semibold text-white"
+            style={{ fontFamily: "var(--font-serif, serif)" }}
+          >
+            <span className="italic">Blog</span>
+            <span className="text-rose-400">Sphere</span>
           </h2>
 
-          <p className="mt-4 max-w-sm text-sm leading-6 text-gray-400">
+          <p className="mt-4 max-w-sm text-sm leading-6 text-slate-400">
             Discover programming, web development,
             technology and modern software engineering
             articles written by passionate developers.
@@ -28,7 +32,7 @@ function Footer() {
             <li>
               <NavLink
                 to="/"
-                className="transition hover:text-white"
+                className="transition hover:text-rose-400"
               >
                 Home
               </NavLink>
@@ -37,7 +41,7 @@ function Footer() {
             <li>
               <NavLink
                 to="/login"
-                className="transition hover:text-white"
+                className="transition hover:text-rose-400"
               >
                 Login
               </NavLink>
@@ -46,7 +50,7 @@ function Footer() {
             <li>
               <NavLink
                 to="/register"
-                className="transition hover:text-white"
+                className="transition hover:text-rose-400"
               >
                 Register
               </NavLink>
@@ -55,7 +59,7 @@ function Footer() {
             <li>
               <NavLink
                 to="/dashboard"
-                className="transition hover:text-white"
+                className="transition hover:text-rose-400"
               >
                 Dashboard
               </NavLink>
@@ -69,7 +73,7 @@ function Footer() {
             Categories
           </h3>
 
-          <ul className="space-y-2 text-sm text-gray-400">
+          <ul className="space-y-2 text-sm text-slate-400">
             <li>Programming</li>
             <li>Python</li>
             <li>React</li>
@@ -84,13 +88,13 @@ function Footer() {
             Contact
           </h3>
 
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-slate-400">
             Email
           </p>
 
           <a
             href="mailto:support@blogsphere.com"
-            className="mt-1 block break-all text-sm text-gray-300 transition hover:text-white"
+            className="mt-1 block break-all text-sm text-slate-300 transition hover:text-rose-400"
           >
             support@blogsphere.com
           </a>
@@ -99,21 +103,21 @@ function Footer() {
           <div className="mt-5 flex flex-wrap gap-2">
             <a
               href="#"
-              className="rounded-lg bg-gray-800 px-3 py-2 text-sm transition hover:bg-blue-600 hover:text-white"
+              className="rounded-lg bg-slate-900 px-3 py-2 text-sm transition hover:bg-rose-800 hover:text-white"
             >
               Facebook
             </a>
 
             <a
               href="#"
-              className="rounded-lg bg-gray-800 px-3 py-2 text-sm transition hover:bg-sky-500 hover:text-white"
+              className="rounded-lg bg-slate-900 px-3 py-2 text-sm transition hover:bg-rose-800 hover:text-white"
             >
               Twitter
             </a>
 
             <a
               href="#"
-              className="rounded-lg bg-gray-800 px-3 py-2 text-sm transition hover:bg-pink-600 hover:text-white"
+              className="rounded-lg bg-slate-900 px-3 py-2 text-sm transition hover:bg-rose-800 hover:text-white"
             >
               Instagram
             </a>
@@ -122,31 +126,31 @@ function Footer() {
       </div>
 
       {/* Bottom Footer */}
-      <div className="border-t border-gray-800">
+      <div className="border-t border-slate-800">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-6 text-center sm:px-6 md:flex-row md:text-left">
 
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-slate-400">
             © 2026 BlogSphere. All rights reserved.
           </p>
 
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
             <NavLink
               to="/privacy"
-              className="transition hover:text-white"
+              className="transition hover:text-rose-400"
             >
               Privacy Policy
             </NavLink>
 
             <NavLink
               to="/terms"
-              className="transition hover:text-white"
+              className="transition hover:text-rose-400"
             >
               Terms of Service
             </NavLink>
 
             <NavLink
               to="/cookies"
-              className="transition hover:text-white"
+              className="transition hover:text-rose-400"
             >
               Cookies
             </NavLink>

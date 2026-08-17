@@ -173,13 +173,16 @@ function CreatePost() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
 
-      <div className="bg-linear-to-r from-blue-600 via-indigo-600 to-purple-700 rounded-3xl p-8 shadow-xl text-white mb-8">
+      <div className="bg-linear-to-r from-rose-800 via-rose-900 to-slate-800 rounded-3xl p-8 shadow-xl text-white mb-8">
 
-        <h1 className="text-4xl font-bold">
+        <h1
+          className="text-4xl font-semibold"
+          style={{ fontFamily: "var(--font-serif, serif)" }}
+        >
           ✍️ Create New Post
         </h1>
 
-        <p className="mt-3 text-blue-100 text-lg">
+        <p className="mt-3 text-rose-100 text-lg">
           Share your knowledge with the world.
         </p>
 
@@ -187,12 +190,12 @@ function CreatePost() {
 
       <form
         onSubmit={handleSubmit}
-        className="bg-white rounded-3xl shadow-xl border border-gray-200 p-8 space-y-7"
+        className="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 space-y-7 dark:bg-slate-900 dark:border-slate-800"
       >
 
         <div>
 
-          <label className="block font-semibold mb-2">
+          <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
             Post Title
           </label>
 
@@ -203,7 +206,7 @@ function CreatePost() {
             value={formData.title}
             onChange={handleChange}
             required
-            className="w-full rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
+            className="w-full rounded-xl border border-slate-300 px-4 py-3 bg-white text-slate-900 focus:ring-2 focus:ring-rose-800 outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white dark:placeholder:text-slate-500"
           />
 
         </div>
@@ -212,7 +215,7 @@ function CreatePost() {
 
           <div>
 
-            <label className="block font-semibold mb-2">
+            <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
               Category
             </label>
 
@@ -221,7 +224,7 @@ function CreatePost() {
               value={formData.category}
               onChange={handleChange}
               required
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
+              className="w-full rounded-xl border border-slate-300 px-4 py-3 bg-white text-slate-900 focus:ring-2 focus:ring-rose-800 outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
             >
               <option value="">
                 Select Category
@@ -242,7 +245,7 @@ function CreatePost() {
 
           <div>
 
-            <label className="block font-semibold mb-2">
+            <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
               Tags
             </label>
 
@@ -251,7 +254,7 @@ function CreatePost() {
               name="tags"
               value={formData.tags}
               onChange={handleChange}
-              className="w-full h-36 rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-blue-500 outline-none"
+              className="w-full h-36 rounded-xl border border-slate-300 px-4 py-3 bg-white text-slate-900 focus:ring-2 focus:ring-rose-800 outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
             >
               {tags.map((tag) => (
                 <option
@@ -263,7 +266,7 @@ function CreatePost() {
               ))}
             </select>
 
-            <p className="text-sm text-gray-500 mt-2">
+            <p className="text-sm text-slate-500 mt-2 dark:text-slate-400">
               Hold Ctrl (Windows) or Cmd (Mac) to
               select multiple tags.
             </p>
@@ -274,7 +277,7 @@ function CreatePost() {
 
         <div>
 
-          <label className="block font-semibold mb-2">
+          <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
             Featured Image
           </label>
 
@@ -283,7 +286,7 @@ function CreatePost() {
             name="featured_image"
             accept="image/*"
             onChange={handleChange}
-            className="block w-full rounded-xl border border-gray-300 p-3 file:bg-blue-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-lg file:cursor-pointer"
+            className="block w-full rounded-xl border border-slate-300 p-3 text-slate-700 file:bg-rose-800 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-lg file:cursor-pointer dark:border-slate-700 dark:text-slate-300 dark:file:bg-rose-600"
           />
 
           {imagePreview && (
@@ -293,7 +296,7 @@ function CreatePost() {
               <img
                 src={imagePreview}
                 alt="Preview"
-                className="rounded-2xl w-full md:w-96 h-60 object-cover shadow-md border"
+                className="rounded-2xl w-full md:w-96 h-60 object-cover shadow-md border border-slate-200 dark:border-slate-700"
               />
 
             </div>
@@ -304,18 +307,25 @@ function CreatePost() {
 
         <div>
 
-          <label className="block font-semibold mb-2">
+          <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
             Content
           </label>
 
-          <div className="rounded-2xl overflow-hidden border border-gray-300 focus-within:ring-2 focus-within:ring-blue-500">
+          <div
+            className="rounded-2xl overflow-hidden border border-slate-300 focus-within:ring-2 focus-within:ring-rose-800 dark:border-slate-700
+            [&_.ql-toolbar]:dark:bg-slate-800 [&_.ql-toolbar]:dark:border-slate-700
+            [&_.ql-container]:dark:bg-slate-800 [&_.ql-container]:dark:border-slate-700
+            [&_.ql-editor]:dark:text-slate-100 [&_.ql-editor.ql-blank::before]:dark:text-slate-500
+            [&_.ql-stroke]:dark:stroke-slate-300 [&_.ql-fill]:dark:fill-slate-300
+            [&_.ql-picker-label]:dark:text-slate-300"
+          >
             <ReactQuill
               theme="snow"
               value={formData.content}
               onChange={handleContentChange}
               modules={quillModules}
               placeholder="Write your article here..."
-              className="bg-white [&_.ql-container]:min-h-70] [&_.ql-container]:text-base"
+              className="bg-white dark:bg-slate-800 [&_.ql-container]:min-h-70 [&_.ql-container]:text-base"
             />
           </div>
 
@@ -328,8 +338,8 @@ function CreatePost() {
             disabled={loading}
             className={`flex-1 py-3 rounded-xl font-semibold text-white transition ${
               loading
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
+                ? "bg-slate-400 cursor-not-allowed dark:bg-slate-700"
+                : "bg-rose-800 hover:bg-rose-900 dark:bg-rose-600 dark:hover:bg-rose-500"
             }`}
           >
 
@@ -375,13 +385,13 @@ function CreatePost() {
 
       </form>
 
-      <div className="mt-8 bg-blue-50 border border-blue-200 rounded-2xl p-6">
+      <div className="mt-8 bg-rose-100 border border-rose-100 rounded-2xl p-6 dark:bg-rose-950/20 dark:border-rose-900/40">
 
-        <h2 className="text-xl font-bold text-gray-800 mb-3">
+        <h2 className="text-xl font-bold text-slate-800 mb-3 dark:text-white">
           Writing Tips
         </h2>
 
-        <ul className="space-y-2 text-gray-700 list-disc list-inside">
+        <ul className="space-y-2 text-slate-700 list-disc list-inside dark:text-slate-300">
 
           <li>Create a short, clear and attractive title.</li>
 

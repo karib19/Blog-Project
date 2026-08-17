@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import api from "../../api/axios";
 
 export default function ForgotPassword() {
@@ -28,33 +29,71 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-16 p-6 bg-white rounded-lg shadow">
-      <h2 className="text-2xl font-semibold mb-4">Forgot Password</h2>
-      <p className="text-gray-600 mb-6">
-        Enter your email and we'll send you a link to reset your password.
-      </p>
+    <div className="min-h-screen bg-linear-to-br from-rose-900 via-rose-950 to-slate-900 flex items-center justify-center px-4">
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="email"
-          placeholder="Your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className="w-full border rounded px-3 py-2"
-        />
+      <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8">
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 disabled:opacity-50"
-        >
-          {loading ? "Sending..." : "Send Reset Link"}
-        </button>
-      </form>
+        <div className="text-center mb-6">
 
-      {message && <p className="text-green-600 mt-4">{message}</p>}
-      {error && <p className="text-red-600 mt-4">{error}</p>}
+          <h1
+            className="text-3xl font-semibold text-slate-900"
+            style={{ fontFamily: "var(--font-serif, serif)" }}
+          >
+            Forgot Password
+          </h1>
+
+          <p className="text-slate-500 mt-2">
+            Enter your email and we'll send you a link to reset your password.
+          </p>
+
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+
+          <input
+            type="email"
+            placeholder="Your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full border border-slate-300 rounded-xl px-4 py-3 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-800"
+          />
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-rose-800 text-white py-3 rounded-xl font-semibold hover:bg-rose-900 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? "Sending..." : "Send Reset Link"}
+          </button>
+
+        </form>
+
+        {message && (
+          <p className="text-emerald-600 mt-4 text-center font-medium">
+            {message}
+          </p>
+        )}
+
+        {error && (
+          <p className="text-rose-600 mt-4 text-center font-medium">
+            {error}
+          </p>
+        )}
+
+        <div className="mt-8 text-center border-t border-slate-100 pt-6">
+
+          <Link
+            to="/login"
+            className="font-semibold text-rose-800 hover:text-rose-900 hover:underline"
+          >
+            ← Back to Login
+          </Link>
+
+        </div>
+
+      </div>
+
     </div>
   );
 }

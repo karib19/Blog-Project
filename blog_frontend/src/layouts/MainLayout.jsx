@@ -4,7 +4,7 @@ import Footer from "../components/layout/Footer";
 
 function MainLayout() {
   return (
-    <div className="min-h-screen flex flex-col bg-gray-100">
+    <div className="min-h-screen flex flex-col bg-slate-100 dark:bg-slate-900 transition-colors duration-200">
 
       <Navbar />
 

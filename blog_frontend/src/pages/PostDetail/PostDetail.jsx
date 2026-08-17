@@ -82,17 +82,17 @@ if (loading) {
     return (
       <div className="max-w-6xl mx-auto px-4 py-10 animate-pulse">
 
-        <div className="h-96 bg-gray-300 rounded-3xl mb-8"></div>
+        <div className="h-96 bg-slate-200 rounded-3xl mb-8 dark:bg-slate-800"></div>
 
-        <div className="h-10 bg-gray-300 rounded w-2/3 mb-6"></div>
+        <div className="h-10 bg-slate-200 rounded w-2/3 mb-6 dark:bg-slate-800"></div>
 
-        <div className="h-5 bg-gray-300 rounded w-1/3 mb-10"></div>
+        <div className="h-5 bg-slate-200 rounded w-1/3 mb-10 dark:bg-slate-800"></div>
 
         <div className="space-y-4">
 
-          <div className="h-5 bg-gray-300 rounded"></div>
-          <div className="h-5 bg-gray-300 rounded"></div>
-          <div className="h-5 bg-gray-300 rounded w-5/6"></div>
+          <div className="h-5 bg-slate-200 rounded dark:bg-slate-800"></div>
+          <div className="h-5 bg-slate-200 rounded dark:bg-slate-800"></div>
+          <div className="h-5 bg-slate-200 rounded w-5/6 dark:bg-slate-800"></div>
 
         </div>
 
@@ -134,19 +134,27 @@ if (loading) {
 
       {/* Category + Date */}
 
-      <div className="flex flex-wrap items-center gap-3 mb-5">
+      <div
+        className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest text-slate-500 mb-5 dark:text-slate-400"
+        style={{ fontFamily: "var(--font-mono, monospace)" }}
+      >
 
-        <span className="bg-blue-100 text-blue-700 px-4 py-1 rounded-full text-sm font-semibold">
+        <span className="text-rose-800 font-semibold dark:text-rose-400">
           {post.category?.name || "General"}
         </span>
 
         {post.is_featured && (
-          <span className="bg-yellow-400 text-black px-4 py-1 rounded-full text-sm font-semibold">
-            ⭐ Featured
-          </span>
+          <>
+            <span className="text-slate-300 dark:text-slate-600">·</span>
+            <span className="text-amber-600 font-semibold dark:text-amber-400">
+              ★ Featured
+            </span>
+          </>
         )}
 
-        <span className="text-gray-500 text-sm">
+        <span className="text-slate-300 dark:text-slate-600">·</span>
+
+        <span>
           {post.created_at
             ? new Date(post.created_at).toLocaleDateString()
             : ""}
@@ -156,27 +164,33 @@ if (loading) {
 
       {/* Title */}
 
-      <h1 className="text-5xl font-bold text-gray-900 leading-tight mb-6">
+      <h1
+        className="text-4xl sm:text-5xl font-semibold text-slate-900 leading-tight mb-6 dark:text-white"
+        style={{ fontFamily: "var(--font-serif, serif)" }}
+      >
         {post.title}
       </h1>
 
       {/* Author */}
 
-      <div className="flex flex-wrap justify-between gap-6 border-y py-5 mb-8">
+      <div className="flex flex-wrap justify-between gap-6 border-y border-slate-200 py-5 mb-8 dark:border-slate-800">
 
         <div>
 
-          <p className="font-semibold text-lg">
+          <p className="font-semibold text-lg text-slate-900 dark:text-white">
             {post.author.username}
           </p>
 
-          <p className="text-gray-500">
+          <p className="text-slate-500 text-sm dark:text-slate-400">
             Author
           </p>
 
         </div>
 
-        <div className="flex flex-wrap gap-6 text-gray-600">
+        <div
+          className="flex flex-wrap gap-6 text-slate-600 text-sm dark:text-slate-400"
+          style={{ fontFamily: "var(--font-mono, monospace)" }}
+        >
 
           <span>
             ❤️ {post.likes_count}
@@ -206,7 +220,7 @@ if (loading) {
           {post.tags.map((tag) => (
             <span
               key={tag.id}
-              className="bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-700"
+              className="bg-slate-100 px-3 py-1 rounded-md text-sm text-slate-600 dark:bg-slate-800 dark:text-slate-400"
             >
               #{tag.name}
             </span>
@@ -217,9 +231,9 @@ if (loading) {
 
       {/* Share Buttons */}
 
-      <div className="flex flex-wrap items-center gap-3 mb-8 py-5 border-y">
+      <div className="flex flex-wrap items-center gap-3 mb-8 py-5 border-y border-slate-200 dark:border-slate-800">
 
-        <span className="text-gray-700 font-semibold mr-2">
+        <span className="text-slate-700 font-semibold mr-2 dark:text-slate-200">
           Share:
         </span>
 
@@ -262,11 +276,11 @@ if (loading) {
 
         <button
           onClick={handleCopyLink}
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-gray-700 transition"
+          className="w-10 h-10 flex items-center justify-center rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 transition dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
           title="Copy Link"
         >
           {copied ? (
-            <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-5 h-5 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
             </svg>
           ) : (
@@ -277,7 +291,7 @@ if (loading) {
         </button>
 
         {copied && (
-          <span className="text-sm text-green-600 font-medium">
+          <span className="text-sm text-green-600 font-medium dark:text-green-400">
             Link copied!
           </span>
         )}
@@ -287,9 +301,9 @@ if (loading) {
       {/* Article */}
 
       <article
-  className="prose prose-lg max-w-none leading-8 text-gray-700 wrap-break-word [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-xl [&_pre]:overflow-x-auto [&_table]:block [&_table]:overflow-x-auto"
-  dangerouslySetInnerHTML={{ __html: post.content }}
-/>
+        className="prose prose-lg dark:prose-invert max-w-none leading-8 text-slate-700 dark:text-slate-300 wrap-break-word [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-xl [&_pre]:overflow-x-auto [&_table]:block [&_table]:overflow-x-auto"
+        dangerouslySetInnerHTML={{ __html: post.content }}
+      />
 
       {/* Comments */}
 
@@ -297,11 +311,14 @@ if (loading) {
 
         <div className="flex items-center justify-between mb-8">
 
-          <h2 className="text-3xl font-bold">
+          <h2
+            className="text-3xl font-semibold text-slate-900 dark:text-white"
+            style={{ fontFamily: "var(--font-serif, serif)" }}
+          >
             Comments
           </h2>
 
-          <span className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-semibold">
+          <span className="bg-rose-50 text-rose-800 px-4 py-2 rounded-full font-semibold text-sm dark:bg-rose-950/40 dark:text-rose-400">
             {comments.length} Comments
           </span>
 
@@ -309,13 +326,13 @@ if (loading) {
 
         {comments.length === 0 ? (
 
-          <div className="bg-gray-50 border rounded-2xl p-10 text-center">
+          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-10 text-center dark:bg-slate-900 dark:border-slate-800">
 
-            <h3 className="text-xl font-semibold mb-2">
+            <h3 className="text-xl font-semibold mb-2 text-slate-900 dark:text-white">
               No comments yet
             </h3>
 
-            <p className="text-gray-500">
+            <p className="text-slate-500 dark:text-slate-400">
               Be the first person to comment on this article.
             </p>
 
@@ -329,18 +346,18 @@ if (loading) {
 
               <div
                 key={item.id}
-                className="bg-white shadow rounded-2xl p-6"
+                className="bg-white shadow-sm border border-slate-100 rounded-2xl p-6 dark:bg-slate-900 dark:border-slate-800"
               >
 
                 <div className="flex justify-between items-center mb-3">
 
                   <div>
 
-                    <h4 className="font-bold">
+                    <h4 className="font-bold text-slate-900 dark:text-white">
                       {item.user?.username}
                     </h4>
 
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
                       {item.created_at
                         ? new Date(item.created_at).toLocaleString()
                         : "Just now"}
@@ -350,7 +367,7 @@ if (loading) {
 
                 </div>
 
-                <p className="text-gray-700 whitespace-pre-line">
+                <p className="text-slate-700 whitespace-pre-line dark:text-slate-300">
                   {item.content}
                 </p>
 
@@ -368,9 +385,9 @@ if (loading) {
 
       <section className="mt-14">
 
-  <div className="bg-white rounded-3xl shadow-lg p-8">
+  <div className="bg-white shadow-lg border border-slate-100 rounded-3xl p-8 dark:bg-slate-900 dark:border-slate-800">
 
-    <h3 className="text-2xl font-bold mb-6">
+    <h3 className="text-2xl font-semibold mb-6 text-slate-900 dark:text-white">
       Leave a Comment
     </h3>
 
@@ -386,12 +403,12 @@ if (loading) {
           placeholder="Write your thoughts..."
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          className="w-full border rounded-xl px-5 py-4 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full border border-slate-200 rounded-xl px-5 py-4 resize-none focus:outline-none focus:ring-2 focus:ring-rose-800 bg-white text-slate-900 placeholder:text-slate-400 dark:bg-slate-800 dark:border-slate-700 dark:text-white dark:placeholder:text-slate-500"
         />
 
         <button
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold transition"
+          className="bg-rose-800 hover:bg-rose-900 text-white px-8 py-3 rounded-xl font-semibold transition dark:bg-rose-600 dark:hover:bg-rose-500"
         >
           Post Comment
         </button>
@@ -402,7 +419,7 @@ if (loading) {
 
       <div className="text-center">
 
-        <p className="text-gray-600 mb-5">
+        <p className="text-slate-600 mb-5 dark:text-slate-400">
           You must login to post a comment.
         </p>
 
@@ -414,7 +431,7 @@ if (loading) {
               },
             })
           }
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition"
+          className="bg-rose-800 hover:bg-rose-900 text-white px-6 py-3 rounded-xl font-semibold transition dark:bg-rose-600 dark:hover:bg-rose-500"
         >
           Login to Comment
         </button>

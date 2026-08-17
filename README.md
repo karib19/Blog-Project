@@ -72,6 +72,7 @@ This project demonstrates a complete full-stack blog platform using Django REST 
 * Loading Spinner
 * Custom 404 Page
 * Dashboard Layout
+* Dark Mode
 
 ---
 
@@ -296,9 +297,7 @@ Protected endpoints require an access token.
 
 # 📚 Future Improvements
 
-* Dark Mode
 * Related Posts
-
 ---
 
 # 👨‍💻 Author

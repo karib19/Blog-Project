@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import NotificationBell from "./NotificationBell";
+import ThemeToggle from "./ThemeToggle";
 
 function Navbar() {
   const { isAuthenticated, logout } = useAuth();
@@ -20,14 +21,21 @@ function Navbar() {
   };
 
   const linkClass = ({ isActive }) =>
-    `transition duration-200 ${
+    `text-sm font-medium tracking-wide transition duration-200 ${
       isActive
-        ? "font-semibold text-blue-600"
-        : "text-gray-700 hover:text-blue-600"
+        ? "text-rose-800 dark:text-rose-400"
+        : "text-slate-600 hover:text-rose-800 dark:text-slate-300 dark:hover:text-rose-400"
+    }`;
+
+  const mobileLinkClass = ({ isActive }) =>
+    `rounded-lg px-3 py-2.5 text-sm font-medium transition duration-200 ${
+      isActive
+        ? "bg-rose-50 text-rose-800 dark:bg-rose-950/40 dark:text-rose-400"
+        : "text-slate-600 hover:bg-slate-50 hover:text-rose-800 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-rose-400"
     }`;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-100 bg-white shadow-sm">
+    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur-sm shadow-sm dark:border-slate-800 dark:bg-slate-950/95">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex h-16 items-center justify-between">
 
@@ -35,73 +43,61 @@ function Navbar() {
           <NavLink
             to="/"
             onClick={closeMenu}
-            className="text-2xl font-bold tracking-tight text-blue-600"
+            className="flex items-baseline gap-1.5"
           >
-            BlogSphere
+            <span
+              className="text-[22px] font-semibold italic tracking-tight text-slate-900 dark:text-white"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
+              Blog
+            </span>
+            <span className="text-[22px] font-semibold tracking-tight text-rose-800 dark:text-rose-400">
+              Sphere
+            </span>
           </NavLink>
 
           {/* ================= Desktop Menu ================= */}
           <nav className="hidden items-center gap-6 md:flex">
 
-            {/* Notification */}
-            {isAuthenticated && <NotificationBell />}
+            <div className="flex items-center gap-1 border-r border-slate-200 pr-5 dark:border-slate-800">
+              <ThemeToggle />
+              {isAuthenticated && <NotificationBell />}
+            </div>
 
-            {/* Home */}
-            <NavLink
-              to="/"
-              className={linkClass}
-            >
+            <NavLink to="/" className={linkClass}>
               Home
             </NavLink>
 
             {isAuthenticated ? (
               <>
-                {/* Dashboard */}
-                <NavLink
-                  to="/dashboard"
-                  className={linkClass}
-                >
+                <NavLink to="/dashboard" className={linkClass}>
                   Dashboard
                 </NavLink>
 
-                {/* Bookmarks */}
-                <NavLink
-                  to="/my-bookmarks"
-                  className={linkClass}
-                >
+                <NavLink to="/my-bookmarks" className={linkClass}>
                   Bookmarks
                 </NavLink>
 
-                {/* Profile */}
-                <NavLink
-                  to="/profile"
-                  className={linkClass}
-                >
+                <NavLink to="/profile" className={linkClass}>
                   Profile
                 </NavLink>
 
-                {/* Logout */}
                 <button
                   onClick={handleLogout}
-                  className="rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white transition duration-200 hover:bg-red-600 active:scale-95"
+                  className="rounded-full bg-slate-900 px-4 py-2 text-sm font-medium text-white transition duration-200 hover:bg-rose-800 active:scale-95 dark:bg-white dark:text-slate-900 dark:hover:bg-rose-400"
                 >
                   Logout
                 </button>
               </>
             ) : (
               <>
-                {/* Login */}
-                <NavLink
-                  to="/login"
-                  className={linkClass}
-                >
+                <NavLink to="/login" className={linkClass}>
                   Login
                 </NavLink>
 
-                {/* Register */}
                 <NavLink
                   to="/register"
-                  className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition duration-200 hover:bg-blue-700 active:scale-95"
+                  className="rounded-full bg-rose-800 px-4 py-2 text-sm font-medium text-white transition duration-200 hover:bg-rose-900 active:scale-95 dark:bg-rose-600 dark:hover:bg-rose-500"
                 >
                   Register
                 </NavLink>
@@ -110,16 +106,14 @@ function Navbar() {
           </nav>
 
           {/* ================= Mobile Actions ================= */}
-          <div className="flex items-center gap-2 md:hidden">
-
-            {/* Notification */}
+          <div className="flex items-center gap-1 md:hidden">
+            <ThemeToggle />
             {isAuthenticated && <NotificationBell />}
 
-            {/* Menu Button */}
             <button
               type="button"
               onClick={() => setMenuOpen((prev) => !prev)}
-              className="flex h-10 w-10 items-center justify-center rounded-full text-2xl text-gray-700 transition duration-200 hover:bg-gray-100 active:scale-95"
+              className="flex h-10 w-10 items-center justify-center rounded-full text-xl text-slate-700 transition duration-200 hover:bg-slate-100 active:scale-95 dark:text-slate-300 dark:hover:bg-slate-800"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
               aria-expanded={menuOpen}
             >
@@ -130,102 +124,44 @@ function Navbar() {
 
         {/* ================= Mobile Menu ================= */}
         {menuOpen && (
-          <nav className="border-t border-gray-100 py-4 md:hidden">
-
+          <nav className="border-t border-slate-100 py-4 md:hidden dark:border-slate-800">
             <div className="flex flex-col gap-1">
 
-              {/* Home */}
-              <NavLink
-                to="/"
-                className={({ isActive }) =>
-                  `rounded-lg px-3 py-2.5 transition duration-200 ${
-                    isActive
-                      ? "bg-blue-50 font-semibold text-blue-600"
-                      : "text-gray-700 hover:bg-gray-50 hover:text-blue-600"
-                  }`
-                }
-                onClick={closeMenu}
-              >
+              <NavLink to="/" className={mobileLinkClass} onClick={closeMenu}>
                 Home
               </NavLink>
 
               {isAuthenticated ? (
                 <>
-                  {/* Dashboard */}
-                  <NavLink
-                    to="/dashboard"
-                    className={({ isActive }) =>
-                      `rounded-lg px-3 py-2.5 transition duration-200 ${
-                        isActive
-                          ? "bg-blue-50 font-semibold text-blue-600"
-                          : "text-gray-700 hover:bg-gray-50 hover:text-blue-600"
-                      }`
-                    }
-                    onClick={closeMenu}
-                  >
+                  <NavLink to="/dashboard" className={mobileLinkClass} onClick={closeMenu}>
                     Dashboard
                   </NavLink>
 
-                  {/* Bookmarks */}
-                  <NavLink
-                    to="/my-bookmarks"
-                    className={({ isActive }) =>
-                      `rounded-lg px-3 py-2.5 transition duration-200 ${
-                        isActive
-                          ? "bg-blue-50 font-semibold text-blue-600"
-                          : "text-gray-700 hover:bg-gray-50 hover:text-blue-600"
-                      }`
-                    }
-                    onClick={closeMenu}
-                  >
+                  <NavLink to="/my-bookmarks" className={mobileLinkClass} onClick={closeMenu}>
                     Bookmarks
                   </NavLink>
 
-                  {/* Profile */}
-                  <NavLink
-                    to="/profile"
-                    className={({ isActive }) =>
-                      `rounded-lg px-3 py-2.5 transition duration-200 ${
-                        isActive
-                          ? "bg-blue-50 font-semibold text-blue-600"
-                          : "text-gray-700 hover:bg-gray-50 hover:text-blue-600"
-                      }`
-                    }
-                    onClick={closeMenu}
-                  >
+                  <NavLink to="/profile" className={mobileLinkClass} onClick={closeMenu}>
                     Profile
                   </NavLink>
 
-                  {/* Logout */}
                   <button
                     type="button"
                     onClick={handleLogout}
-                    className="mt-2 w-full rounded-lg bg-red-500 px-3 py-2.5 text-left font-medium text-white transition duration-200 hover:bg-red-600"
+                    className="mt-2 w-full rounded-lg bg-slate-900 px-3 py-2.5 text-left text-sm font-medium text-white transition duration-200 hover:bg-rose-800 dark:bg-white dark:text-slate-900 dark:hover:bg-rose-400"
                   >
                     Logout
                   </button>
                 </>
               ) : (
                 <>
-                  {/* Login */}
-                  <NavLink
-                    to="/login"
-                    className={({ isActive }) =>
-                      `rounded-lg px-3 py-2.5 transition duration-200 ${
-                        isActive
-                          ? "bg-blue-50 font-semibold text-blue-600"
-                          : "text-gray-700 hover:bg-gray-50 hover:text-blue-600"
-                      }`
-                    }
-                    onClick={closeMenu}
-                  >
+                  <NavLink to="/login" className={mobileLinkClass} onClick={closeMenu}>
                     Login
                   </NavLink>
 
-                  {/* Register */}
                   <NavLink
                     to="/register"
-                    className="mt-2 rounded-lg bg-blue-600 px-3 py-2.5 text-center font-medium text-white transition duration-200 hover:bg-blue-700"
+                    className="mt-2 rounded-lg bg-rose-800 px-3 py-2.5 text-center text-sm font-medium text-white transition duration-200 hover:bg-rose-900 dark:bg-rose-600 dark:hover:bg-rose-500"
                     onClick={closeMenu}
                   >
                     Register

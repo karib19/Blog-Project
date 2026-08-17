@@ -195,9 +195,12 @@ function EditPost() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
 
-      <div className="bg-linear-to-r from-amber-500 via-orange-500 to-red-500 rounded-3xl p-8 shadow-xl text-white mb-8">
+      <div className="bg-linear-to-r from-rose-800 via-rose-900 to-slate-800 rounded-3xl p-8 shadow-xl text-white mb-8">
 
-        <h1 className="text-4xl font-bold">
+        <h1
+          className="text-4xl font-semibold"
+          style={{ fontFamily: "var(--font-serif, serif)" }}
+        >
           ✏️ Edit Your Post
         </h1>
 
@@ -209,12 +212,12 @@ function EditPost() {
 
       <form
         onSubmit={handleSubmit}
-        className="bg-white rounded-3xl shadow-xl border border-gray-200 p-8 space-y-7"
+        className="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 space-y-7 dark:bg-slate-900 dark:border-slate-800"
       >
 
         <div>
 
-          <label className="block font-semibold mb-2">
+          <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
             Post Title
           </label>
 
@@ -224,7 +227,7 @@ function EditPost() {
             value={formData.title}
             onChange={handleChange}
             required
-            className="w-full rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-orange-500 outline-none"
+            className="w-full rounded-xl border border-slate-300 px-4 py-3 bg-white text-slate-900 focus:ring-2 focus:ring-orange-600 outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
           />
 
         </div>
@@ -233,7 +236,7 @@ function EditPost() {
 
           <div>
 
-            <label className="block font-semibold mb-2">
+            <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
               Category
             </label>
 
@@ -242,7 +245,7 @@ function EditPost() {
               value={formData.category}
               onChange={handleChange}
               required
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-orange-500 outline-none"
+              className="w-full rounded-xl border border-slate-300 px-4 py-3 bg-white text-slate-900 focus:ring-2 focus:ring-orange-600 outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
             >
               <option value="">
                 Select Category
@@ -263,7 +266,7 @@ function EditPost() {
 
           <div>
 
-            <label className="block font-semibold mb-2">
+            <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
               Tags
             </label>
 
@@ -272,7 +275,7 @@ function EditPost() {
               name="tags"
               value={formData.tags}
               onChange={handleChange}
-              className="w-full h-36 rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-orange-500 outline-none"
+              className="w-full h-36 rounded-xl border border-slate-300 px-4 py-3 bg-white text-slate-900 focus:ring-2 focus:ring-orange-600 outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
             >
               {tags.map((tag) => (
                 <option
@@ -290,7 +293,7 @@ function EditPost() {
 
         <div>
 
-          <label className="block font-semibold mb-2">
+          <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
             Featured Image
           </label>
 
@@ -299,7 +302,7 @@ function EditPost() {
             <img
               src={previewImage}
               alt="Preview"
-              className="w-full md:w-96 h-60 object-cover rounded-2xl border shadow-md mb-4"
+              className="w-full md:w-96 h-60 object-cover rounded-2xl border border-slate-200 shadow-md mb-4 dark:border-slate-700"
             />
 
           )}
@@ -309,25 +312,32 @@ function EditPost() {
             name="featured_image"
             accept="image/*"
             onChange={handleChange}
-            className="block w-full rounded-xl border border-gray-300 p-3 file:bg-orange-500 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-lg file:cursor-pointer"
+            className="block w-full rounded-xl border border-slate-300 p-3 text-slate-700 file:bg-orange-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-lg file:cursor-pointer dark:border-slate-700 dark:text-slate-300"
           />
 
         </div>
 
         <div>
 
-          <label className="block font-semibold mb-2">
+          <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
             Content
           </label>
 
-          <div className="rounded-xl overflow-hidden border border-gray-300 focus-within:ring-2 focus-within:ring-orange-500">
+          <div
+            className="rounded-xl overflow-hidden border border-slate-300 focus-within:ring-2 focus-within:ring-orange-600 dark:border-slate-700
+            [&_.ql-toolbar]:dark:bg-slate-800 [&_.ql-toolbar]:dark:border-slate-700
+            [&_.ql-container]:dark:bg-slate-800 [&_.ql-container]:dark:border-slate-700
+            [&_.ql-editor]:dark:text-slate-100 [&_.ql-editor.ql-blank::before]:dark:text-slate-500
+            [&_.ql-stroke]:dark:stroke-slate-300 [&_.ql-fill]:dark:fill-slate-300
+            [&_.ql-picker-label]:dark:text-slate-300"
+          >
             <ReactQuill
               theme="snow"
               value={formData.content}
               onChange={handleContentChange}
               modules={quillModules}
               placeholder="Update your article..."
-              className="bg-white [&_.ql-container]:min-h-70] [&_.ql-container]:text-base"
+              className="bg-white dark:bg-slate-800 [&_.ql-container]:min-h-70 [&_.ql-container]:text-base"
             />
           </div>
 
@@ -340,8 +350,8 @@ function EditPost() {
             disabled={loading}
             className={`w-full py-4 rounded-xl font-semibold text-lg transition ${
               loading
-                ? "bg-gray-400 cursor-not-allowed text-white"
-                : "bg-orange-600 hover:bg-orange-700 text-white"
+                ? "bg-slate-400 cursor-not-allowed text-white dark:bg-slate-700"
+                : "bg-orange-700 hover:bg-orange-800 text-white dark:bg-orange-600 dark:hover:bg-orange-500"
             }`}
           >
 
@@ -385,13 +395,13 @@ function EditPost() {
 
       </form>
 
-      <div className="mt-8 rounded-2xl border border-orange-200 bg-orange-50 p-6">
+      <div className="mt-8 bg-rose-100 border border-rose-100 rounded-2xl p-6 dark:bg-rose-950/20 dark:border-rose-900/40">
 
-        <h2 className="text-xl font-bold text-gray-800 mb-3">
+        <h2 className="text-xl font-bold text-slate-800 mb-3 dark:text-white">
           Editing Tips
         </h2>
 
-        <ul className="space-y-2 text-gray-700 list-disc list-inside">
+        <ul className="space-y-2 text-slate-700 list-disc list-inside dark:text-slate-300">
 
           <li>Keep the title short and descriptive.</li>
 

@@ -97,7 +97,7 @@ function Profile() {
   if (loading) {
     return (
       <div className="min-h-[70vh] flex items-center justify-center">
-        <div className="h-14 w-14 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+        <div className="h-14 w-14 border-4 border-rose-800 border-t-transparent rounded-full animate-spin dark:border-rose-400"></div>
       </div>
     );
   }
@@ -107,7 +107,7 @@ function Profile() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-10">
 
-      <div className="bg-linear-to-r from-blue-600 to-indigo-700 rounded-3xl shadow-xl text-white p-8">
+      <div className="bg-linear-to-r from-rose-800 to-slate-800 rounded-3xl shadow-xl text-white p-8">
 
         <div className="flex flex-col md:flex-row items-center gap-6">
 
@@ -118,7 +118,7 @@ function Profile() {
               className="w-28 h-28 rounded-full object-cover shadow-lg border-4 border-white"
             />
           ) : (
-            <div className="w-28 h-28 rounded-full bg-white text-blue-700 flex items-center justify-center text-4xl font-bold shadow-lg">
+            <div className="w-28 h-28 rounded-full bg-white text-rose-800 flex items-center justify-center text-4xl font-bold shadow-lg">
               {formData.first_name
                 ? formData.first_name.charAt(0).toUpperCase()
                 : formData.username.charAt(0).toUpperCase()}
@@ -127,11 +127,14 @@ function Profile() {
 
           <div>
 
-            <h1 className="text-4xl font-bold">
+            <h1
+              className="text-4xl font-semibold"
+              style={{ fontFamily: "var(--font-serif, serif)" }}
+            >
               My Profile
             </h1>
 
-            <p className="mt-2 text-blue-100">
+            <p className="mt-2 text-rose-100">
               Manage your account information.
             </p>
 
@@ -141,7 +144,7 @@ function Profile() {
 
       </div>
 
-      <div className="mt-8 bg-white rounded-3xl shadow-lg border p-8">
+      <div className="mt-8 bg-white rounded-3xl shadow-lg border border-slate-100 p-8 dark:bg-slate-900 dark:border-slate-800">
 
         <form
           onSubmit={handleSubmit}
@@ -150,7 +153,7 @@ function Profile() {
 
           <div>
 
-            <label className="block text-gray-700 font-semibold mb-2">
+            <label className="block text-slate-700 font-semibold mb-2 dark:text-slate-200">
               Profile Picture
             </label>
 
@@ -160,10 +163,10 @@ function Profile() {
                 <img
                   src={displayAvatar}
                   alt="Avatar preview"
-                  className="w-20 h-20 rounded-full object-cover border shadow-sm"
+                  className="w-20 h-20 rounded-full object-cover border border-slate-200 shadow-sm dark:border-slate-700"
                 />
               ) : (
-                <div className="w-20 h-20 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-2xl font-bold">
+                <div className="w-20 h-20 rounded-full bg-rose-50 text-rose-800 flex items-center justify-center text-2xl font-bold dark:bg-rose-950/40 dark:text-rose-400">
                   {formData.first_name
                     ? formData.first_name.charAt(0).toUpperCase()
                     : formData.username.charAt(0).toUpperCase()}
@@ -175,12 +178,12 @@ function Profile() {
                 name="avatar"
                 accept="image/*"
                 onChange={handleAvatarChange}
-                className="block flex-1 rounded-xl border border-gray-300 p-2.5 file:bg-blue-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-lg file:cursor-pointer file:mr-4"
+                className="block flex-1 rounded-xl border border-slate-300 p-2.5 text-slate-700 file:bg-rose-800 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-lg file:cursor-pointer file:mr-4 dark:border-slate-700 dark:text-slate-300 dark:file:bg-rose-600"
               />
 
             </div>
 
-            <p className="text-sm text-gray-500 mt-2">
+            <p className="text-sm text-slate-500 mt-2 dark:text-slate-400">
               PNG or JPG recommended. Square images look best.
             </p>
 
@@ -188,7 +191,7 @@ function Profile() {
 
           <div>
 
-            <label className="block text-gray-700 font-semibold mb-2">
+            <label className="block text-slate-700 font-semibold mb-2 dark:text-slate-200">
               Username
             </label>
 
@@ -197,7 +200,7 @@ function Profile() {
               name="username"
               value={formData.username}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full border border-slate-300 rounded-xl px-4 py-3 bg-white text-slate-900 focus:ring-2 focus:ring-rose-800 focus:outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
             />
 
           </div>
@@ -206,7 +209,7 @@ function Profile() {
 
             <div>
 
-              <label className="block text-gray-700 font-semibold mb-2">
+              <label className="block text-slate-700 font-semibold mb-2 dark:text-slate-200">
                 First Name
               </label>
 
@@ -215,14 +218,14 @@ function Profile() {
                 name="first_name"
                 value={formData.first_name}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full border border-slate-300 rounded-xl px-4 py-3 bg-white text-slate-900 focus:ring-2 focus:ring-rose-800 focus:outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
               />
 
             </div>
 
             <div>
 
-              <label className="block text-gray-700 font-semibold mb-2">
+              <label className="block text-slate-700 font-semibold mb-2 dark:text-slate-200">
                 Last Name
               </label>
 
@@ -231,7 +234,7 @@ function Profile() {
                 name="last_name"
                 value={formData.last_name}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full border border-slate-300 rounded-xl px-4 py-3 bg-white text-slate-900 focus:ring-2 focus:ring-rose-800 focus:outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
               />
 
             </div>
@@ -240,7 +243,7 @@ function Profile() {
 
           <div>
 
-            <label className="block text-gray-700 font-semibold mb-2">
+            <label className="block text-slate-700 font-semibold mb-2 dark:text-slate-200">
               Email Address
             </label>
 
@@ -249,7 +252,7 @@ function Profile() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full border border-slate-300 rounded-xl px-4 py-3 bg-white text-slate-900 focus:ring-2 focus:ring-rose-800 focus:outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
             />
 
           </div>
@@ -261,8 +264,8 @@ function Profile() {
               disabled={saving}
               className={`flex-1 font-semibold py-3 rounded-xl transition duration-300 shadow-md hover:shadow-lg text-white ${
                 saving
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-blue-600 hover:bg-blue-700"
+                  ? "bg-slate-400 cursor-not-allowed dark:bg-slate-700"
+                  : "bg-rose-800 hover:bg-rose-900 dark:bg-rose-600 dark:hover:bg-rose-500"
               }`}
             >
               {saving ? "Saving..." : "💾 Update Profile"}
@@ -274,7 +277,7 @@ function Profile() {
             >
               <button
                 type="button"
-                className="w-full bg-gray-800 hover:bg-black text-white font-semibold py-3 rounded-xl transition duration-300 shadow-md hover:shadow-lg"
+                className="w-full bg-slate-900 hover:bg-black text-white font-semibold py-3 rounded-xl transition duration-300 shadow-md hover:shadow-lg dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
               >
                 🔒 Change Password
               </button>
@@ -286,37 +289,37 @@ function Profile() {
 
       </div>
 
-      <div className="mt-8 bg-blue-50 border border-blue-200 rounded-2xl p-6">
+      <div className="mt-8 bg-rose-100 border border-rose-100 rounded-2xl p-6 dark:bg-rose-950/20 dark:border-rose-900/40">
 
-        <h2 className="text-xl font-bold text-gray-800 mb-2">
+        <h2 className="text-xl font-bold text-slate-800 mb-2 dark:text-white">
           Account Information
         </h2>
 
-        <div className="grid sm:grid-cols-2 gap-4 text-gray-700">
+        <div className="grid sm:grid-cols-2 gap-4 text-slate-700 dark:text-slate-300">
 
           <div>
-            <span className="font-semibold">
+            <span className="font-semibold text-slate-900 dark:text-white">
               Username:
             </span>
             <p>{formData.username}</p>
           </div>
 
           <div>
-            <span className="font-semibold">
+            <span className="font-semibold text-slate-900 dark:text-white">
               Email:
             </span>
             <p>{formData.email}</p>
           </div>
 
           <div>
-            <span className="font-semibold">
+            <span className="font-semibold text-slate-900 dark:text-white">
               First Name:
             </span>
             <p>{formData.first_name || "Not set"}</p>
           </div>
 
           <div>
-            <span className="font-semibold">
+            <span className="font-semibold text-slate-900 dark:text-white">
               Last Name:
             </span>
             <p>{formData.last_name || "Not set"}</p>

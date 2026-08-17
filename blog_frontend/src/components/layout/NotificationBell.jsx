@@ -144,11 +144,11 @@ function NotificationBell() {
     if (notification.notification_type === "like") {
       return (
         <>
-          <span className="font-semibold text-gray-900">
+          <span className="font-semibold text-slate-900 dark:text-white">
             {notification.sender_username}
           </span>{" "}
           liked your post{" "}
-          <span className="font-semibold text-gray-900">
+          <span className="font-semibold text-slate-900 dark:text-white">
             "{notification.post_title}"
           </span>
         </>
@@ -158,11 +158,11 @@ function NotificationBell() {
     if (notification.notification_type === "comment") {
       return (
         <>
-          <span className="font-semibold text-gray-900">
+          <span className="font-semibold text-slate-900 dark:text-white">
             {notification.sender_username}
           </span>{" "}
           commented on{" "}
-          <span className="font-semibold text-gray-900">
+          <span className="font-semibold text-slate-900 dark:text-white">
             "{notification.post_title}"
           </span>
         </>
@@ -186,7 +186,7 @@ function NotificationBell() {
       {/* Notification Button */}
       <button
         onClick={handleToggle}
-        className="relative flex h-10 w-10 items-center justify-center rounded-full text-gray-600 transition-all duration-200 hover:bg-gray-100 hover:text-blue-600 active:scale-95"
+        className="relative flex h-10 w-10 items-center justify-center rounded-full text-slate-600 transition-all duration-200 hover:bg-slate-100 hover:text-rose-800 active:scale-95 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-rose-400"
         title="Notifications"
         aria-label="Notifications"
       >
@@ -206,7 +206,7 @@ function NotificationBell() {
 
         {/* Unread Badge */}
         {unreadCount > 0 && (
-          <span className="absolute right-0.5 top-0.5 flex min-h-4.5 min-w-4.5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold leading-none text-white ring-2 ring-white">
+          <span className="absolute right-0.5 top-0.5 flex min-h-4.5 min-w-4.5 items-center justify-center rounded-full bg-rose-700 px-1 text-[10px] font-bold leading-none text-white ring-2 ring-white dark:ring-slate-950">
             {unreadCount > 9 ? "9+" : unreadCount}
           </span>
         )}
@@ -225,21 +225,23 @@ function NotificationBell() {
             overflow-hidden
             rounded-2xl
             border
-            border-gray-200
+            border-slate-200
             bg-white
             shadow-xl
             sm:w-80
+            dark:border-slate-800
+            dark:bg-slate-900
           "
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-gray-100 px-4 py-3.5">
+          <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3.5 dark:border-slate-800">
             <div className="flex items-center gap-2">
-              <h3 className="font-semibold text-gray-900">
+              <h3 className="font-semibold text-slate-900 dark:text-white">
                 Notifications
               </h3>
 
               {unreadCount > 0 && (
-                <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[11px] font-semibold text-blue-600">
+                <span className="rounded-full bg-rose-50 px-2 py-0.5 text-[11px] font-semibold text-rose-800 dark:bg-rose-950/40 dark:text-rose-400">
                   {unreadCount} new
                 </span>
               )}
@@ -248,7 +250,7 @@ function NotificationBell() {
             {unreadCount > 0 && (
               <button
                 onClick={handleMarkAllRead}
-                className="text-xs font-medium text-blue-600 transition hover:text-blue-700"
+                className="text-xs font-medium text-rose-800 transition hover:text-rose-900 dark:text-rose-400 dark:hover:text-rose-300"
               >
                 Mark all read
               </button>
@@ -259,17 +261,17 @@ function NotificationBell() {
           <div className="max-h-[min(24rem,70vh)] overflow-y-auto">
             {loading ? (
               <div className="flex justify-center py-10">
-                <div className="h-6 w-6 animate-spin rounded-full border-2 border-gray-200 border-t-blue-600"></div>
+                <div className="h-6 w-6 animate-spin rounded-full border-2 border-slate-200 border-t-rose-800 dark:border-slate-700 dark:border-t-rose-400"></div>
               </div>
             ) : notifications.length === 0 ? (
               <div className="px-5 py-10 text-center">
                 <div className="mb-2 text-3xl">🔔</div>
 
-                <p className="text-sm font-medium text-gray-700">
+                <p className="text-sm font-medium text-slate-700 dark:text-slate-200">
                   No notifications yet
                 </p>
 
-                <p className="mt-1 text-xs text-gray-400">
+                <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
                   You're all caught up.
                 </p>
               </div>
@@ -286,17 +288,19 @@ function NotificationBell() {
                     items-start
                     gap-3
                     border-b
-                    border-gray-100
+                    border-slate-100
                     px-4
                     py-3.5
                     text-left
                     transition
                     last:border-b-0
-                    hover:bg-gray-50
+                    hover:bg-slate-50
+                    dark:border-slate-800
+                    dark:hover:bg-slate-800
                     ${
                       !notification.is_read
-                        ? "bg-blue-50/70"
-                        : "bg-white"
+                        ? "bg-rose-50/70 dark:bg-rose-950/20"
+                        : "bg-white dark:bg-slate-900"
                     }
                   `}
                 >
@@ -314,11 +318,11 @@ function NotificationBell() {
                       ${
                         notification.notification_type ===
                         "like"
-                          ? "bg-red-50"
+                          ? "bg-rose-50 dark:bg-rose-950/40"
                           : notification.notification_type ===
                             "comment"
-                          ? "bg-blue-50"
-                          : "bg-gray-100"
+                          ? "bg-slate-100 dark:bg-slate-800"
+                          : "bg-slate-100 dark:bg-slate-800"
                       }
                     `}
                   >
@@ -329,18 +333,18 @@ function NotificationBell() {
 
                   {/* Content */}
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm leading-snug text-gray-700">
+                    <p className="text-sm leading-snug text-slate-700 dark:text-slate-300">
                       {getMessage(notification)}
                     </p>
 
-                    <p className="mt-1 text-[11px] text-gray-400">
+                    <p className="mt-1 text-[11px] text-slate-400 dark:text-slate-500">
                       {timeAgo(notification.created_at)}
                     </p>
                   </div>
 
                   {/* Unread Dot */}
                   {!notification.is_read && (
-                    <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-blue-600"></span>
+                    <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-rose-700 dark:bg-rose-400"></span>
                   )}
                 </button>
               ))

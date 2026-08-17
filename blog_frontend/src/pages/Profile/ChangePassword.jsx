@@ -92,13 +92,16 @@ function ChangePassword() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-10">
 
-      <div className="bg-linear-to-r from-red-600 to-pink-600 rounded-3xl p-8 text-white shadow-xl">
+      <div className="bg-linear-to-r from-rose-800 to-slate-900 rounded-3xl p-8 text-white shadow-xl">
 
-        <h1 className="text-4xl font-bold">
+        <h1
+          className="text-4xl font-semibold"
+          style={{ fontFamily: "var(--font-serif, serif)" }}
+        >
           Change Password
         </h1>
 
-        <p className="mt-3 text-red-100">
+        <p className="mt-3 text-rose-100">
           Keep your account secure by using a strong password.
         </p>
 
@@ -106,12 +109,12 @@ function ChangePassword() {
 
       <form
         onSubmit={handleSubmit}
-        className="mt-8 bg-white rounded-3xl shadow-lg border p-8 space-y-6"
+        className="mt-8 bg-white rounded-3xl shadow-lg border border-slate-200 p-8 space-y-6 dark:bg-slate-900 dark:border-slate-800"
       >
 
         <div>
 
-          <label className="block font-semibold mb-2">
+          <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
             Current Password
           </label>
 
@@ -124,13 +127,13 @@ function ChangePassword() {
                 value={formData.old_password}
                 onChange={handleChange}
                 required
-                className="w-full border border-gray-300 rounded-xl px-4 py-3 pr-24 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-slate-300 rounded-xl px-4 py-3 pr-24 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-800 dark:bg-slate-800 dark:border-slate-700 dark:text-white"
               />
 
               <button
                 type="button"
                 onClick={() => setShowOldPassword(!showOldPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-blue-600 hover:text-blue-800 transition"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-rose-800 hover:text-rose-900 transition dark:text-rose-400 dark:hover:text-rose-300"
               >
                 {showOldPassword ? "Hide" : "Show"}
               </button>
@@ -141,7 +144,7 @@ function ChangePassword() {
 
         <div>
 
-          <label className="block font-semibold mb-2">
+          <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
             New Password
           </label>
 
@@ -157,7 +160,7 @@ function ChangePassword() {
               placeholder="New Password"
               value={formData.new_password}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-xl px-4 py-3 pr-24 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-slate-300 rounded-xl px-4 py-3 pr-24 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-800 dark:bg-slate-800 dark:border-slate-700 dark:text-white"
               required
             />
 
@@ -168,22 +171,22 @@ function ChangePassword() {
                   !showNewPassword
                 )
               }
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-blue-600 hover:text-blue-800 transition"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-rose-800 hover:text-rose-900 transition dark:text-rose-400 dark:hover:text-rose-300"
             >
               {showNewPassword ? "Hide" : "Show"}
             </button>
 
           </div>
 
-          <p className="mt-2 text-sm">
+          <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
             Password Strength:
             <span
               className={`ml-2 font-semibold ${
                 passwordStrength() === "Strong"
-                  ? "text-green-600"
+                  ? "text-emerald-600 dark:text-emerald-400"
                   : passwordStrength() === "Medium"
-                  ? "text-yellow-600"
-                  : "text-red-600"
+                  ? "text-amber-600 dark:text-amber-400"
+                  : "text-rose-600 dark:text-rose-400"
               }`}
             >
               {passwordStrength()}
@@ -194,7 +197,7 @@ function ChangePassword() {
 
         <div>
 
-          <label className="block font-semibold mb-2">
+          <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
             Confirm New Password
           </label>
 
@@ -210,7 +213,7 @@ function ChangePassword() {
               placeholder="Confirm Password"
               value={formData.confirm_password}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-xl px-4 py-3 pr-24 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-slate-300 rounded-xl px-4 py-3 pr-24 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-800 dark:bg-slate-800 dark:border-slate-700 dark:text-white"
               required
             />
 
@@ -221,7 +224,7 @@ function ChangePassword() {
                   !showConfirmPassword
                 )
               }
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-blue-600 hover:text-blue-800 transition"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-rose-800 hover:text-rose-900 transition dark:text-rose-400 dark:hover:text-rose-300"
             >
               {showConfirmPassword ? "Hide" : "Show"}
             </button>
@@ -232,8 +235,8 @@ function ChangePassword() {
             <p
               className={`mt-2 text-sm font-medium ${
                 passwordsMatch
-                  ? "text-green-600"
-                  : "text-red-600"
+                  ? "text-emerald-600 dark:text-emerald-400"
+                  : "text-rose-600 dark:text-rose-400"
               }`}
             >
               {passwordsMatch
@@ -255,8 +258,8 @@ function ChangePassword() {
                 loading ||
                 !passwordsMatch ||
                 passwordStrength() === "Weak"
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-red-600 hover:bg-red-700"
+                  ? "bg-slate-400 cursor-not-allowed dark:bg-slate-700"
+                  : "bg-rose-800 hover:bg-rose-900 dark:bg-rose-600 dark:hover:bg-rose-500"
               }`}
             >
               {loading ? (
@@ -299,13 +302,13 @@ function ChangePassword() {
 
       </form>
 
-      <div className="mt-8 bg-yellow-50 border border-yellow-300 rounded-2xl p-6">
+      <div className="mt-8 bg-amber-50 border border-amber-200 rounded-2xl p-6 dark:bg-amber-950/20 dark:border-amber-900/40">
 
-        <h2 className="text-xl font-bold text-gray-800 mb-3">
+        <h2 className="text-xl font-bold text-slate-800 mb-3 dark:text-white">
           Security Tips
         </h2>
 
-        <ul className="space-y-2 text-gray-700 list-disc list-inside">
+        <ul className="space-y-2 text-slate-700 list-disc list-inside dark:text-slate-300">
 
           <li>
             Use at least <strong>8 characters</strong>.

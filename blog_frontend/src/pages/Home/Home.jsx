@@ -68,15 +68,25 @@ function Home() {
 
       {/* Hero */}
 
-      <section className="rounded-3xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white p-10 shadow-xl">
+      <section className="rounded-3xl bg-linear-to-r from-rose-900 via-rose-950 to-slate-800 text-white p-10 shadow-xl">
 
         <div className="max-w-3xl">
 
-          <h1 className="text-5xl font-bold mb-4">
+          <p
+            className="uppercase tracking-widest text-rose-300 text-xs mb-3"
+            style={{ fontFamily: "var(--font-mono, monospace)" }}
+          >
+            History · Sports · Politics · and more
+          </p>
+
+          <h1
+            className="text-5xl font-semibold mb-4"
+            style={{ fontFamily: "var(--font-serif, serif)" }}
+          >
             Discover Amazing Stories
           </h1>
 
-          <p className="text-blue-100 text-lg mb-8">
+          <p className="text-rose-100 text-lg mb-8">
             Programming, AI, Technology, Lifestyle
             and everything in between.
           </p>
@@ -91,11 +101,11 @@ function Home() {
                 setSearch(e.target.value);
                 setPage(1);
               }}
-              className="flex-1 rounded-xl px-5 py-4 text-gray-700 outline-none"
+              className="flex-1 rounded-xl px-5 py-4 text-slate-900 outline-none"
             />
 
             <button
-              className="bg-white text-blue-700 px-8 rounded-xl font-semibold hover:bg-gray-100"
+              className="bg-white text-rose-800 px-8 rounded-xl font-semibold hover:bg-rose-50 transition"
             >
               Search
             </button>
@@ -108,13 +118,13 @@ function Home() {
 
       {/* Filters */}
 
-      <section className="bg-white rounded-2xl shadow-lg p-6">
+      <section className="bg-white rounded-2xl shadow-lg p-6 dark:bg-slate-900 dark:border dark:border-slate-800">
 
         <div className="grid md:grid-cols-3 gap-6">
 
           <div>
 
-            <label className="font-semibold mb-2 block">
+            <label className="font-semibold mb-2 block text-slate-700 dark:text-slate-200">
               Category
             </label>
 
@@ -124,7 +134,7 @@ function Home() {
                 setCategory(e.target.value);
                 setPage(1);
               }}
-              className="w-full border rounded-xl px-4 py-3"
+              className="w-full border border-slate-300 rounded-xl px-4 py-3 bg-white text-slate-900 focus:ring-2 focus:ring-rose-800 focus:outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
             >
               <option value="">
                 All Categories
@@ -145,7 +155,7 @@ function Home() {
 
           <div>
 
-            <label className="font-semibold mb-2 block">
+            <label className="font-semibold mb-2 block text-slate-700 dark:text-slate-200">
               Tag
             </label>
 
@@ -155,7 +165,7 @@ function Home() {
                 setTag(e.target.value);
                 setPage(1);
               }}
-              className="w-full border rounded-xl px-4 py-3"
+              className="w-full border border-slate-300 rounded-xl px-4 py-3 bg-white text-slate-900 focus:ring-2 focus:ring-rose-800 focus:outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
             >
               <option value="">
                 All Tags
@@ -176,7 +186,7 @@ function Home() {
 
           <div>
 
-            <label className="font-semibold mb-2 block">
+            <label className="font-semibold mb-2 block text-slate-700 dark:text-slate-200">
               Sort
             </label>
 
@@ -186,7 +196,7 @@ function Home() {
                 setOrdering(e.target.value);
                 setPage(1);
               }}
-              className="w-full border rounded-xl px-4 py-3"
+              className="w-full border border-slate-300 rounded-xl px-4 py-3 bg-white text-slate-900 focus:ring-2 focus:ring-rose-800 focus:outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
             >
               <option value="-created_at">
                 Newest
@@ -216,11 +226,14 @@ function Home() {
 
       <div className="flex justify-between items-center">
 
-        <h2 className="text-3xl font-bold">
+        <h2
+          className="text-3xl font-semibold text-slate-900 dark:text-white"
+          style={{ fontFamily: "var(--font-serif, serif)" }}
+        >
           Latest Articles
         </h2>
 
-        <span className="text-gray-500">
+        <span className="text-slate-500 dark:text-slate-400">
           {posts.length} Posts
         </span>
 
@@ -232,19 +245,19 @@ function Home() {
           {[1, 2, 3, 4, 5, 6].map((item) => (
             <div
               key={item}
-              className="bg-white rounded-2xl shadow-md overflow-hidden animate-pulse"
+              className="bg-white rounded-2xl shadow-md overflow-hidden animate-pulse dark:bg-slate-900"
             >
-              <div className="h-60 bg-gray-300"></div>
+              <div className="h-60 bg-slate-300 dark:bg-slate-800"></div>
 
               <div className="p-6 space-y-4">
 
-                <div className="h-4 bg-gray-300 rounded w-1/3"></div>
+                <div className="h-4 bg-slate-300 rounded w-1/3 dark:bg-slate-800"></div>
 
-                <div className="h-6 bg-gray-300 rounded"></div>
+                <div className="h-6 bg-slate-300 rounded dark:bg-slate-800"></div>
 
-                <div className="h-4 bg-gray-300 rounded"></div>
+                <div className="h-4 bg-slate-300 rounded dark:bg-slate-800"></div>
 
-                <div className="h-4 bg-gray-300 rounded w-2/3"></div>
+                <div className="h-4 bg-slate-300 rounded w-2/3 dark:bg-slate-800"></div>
 
               </div>
 
@@ -255,13 +268,13 @@ function Home() {
 
       ) : posts.length === 0 ? (
 
-        <div className="bg-white rounded-2xl shadow-lg p-20 text-center">
+        <div className="bg-white rounded-2xl shadow-lg p-20 text-center dark:bg-slate-900 dark:border dark:border-slate-800">
 
-          <h3 className="text-3xl font-bold mb-3">
+          <h3 className="text-3xl font-bold mb-3 text-slate-900 dark:text-white">
             No Posts Found
           </h3>
 
-          <p className="text-gray-500">
+          <p className="text-slate-500 dark:text-slate-400">
             Try changing your search or filters.
           </p>
 
@@ -291,14 +304,14 @@ function Home() {
           disabled={!previousPage}
           className={`px-6 py-3 rounded-xl font-semibold transition ${
             previousPage
-              ? "bg-blue-600 hover:bg-blue-700 text-white"
-              : "bg-gray-200 text-gray-400 cursor-not-allowed"
+              ? "bg-rose-800 hover:bg-rose-900 text-white dark:bg-rose-600 dark:hover:bg-rose-500"
+              : "bg-slate-200 text-slate-400 cursor-not-allowed dark:bg-slate-800 dark:text-slate-600"
           }`}
         >
           ← Previous
         </button>
 
-        <div className="bg-white shadow rounded-xl px-6 py-3 font-semibold">
+        <div className="bg-white shadow rounded-xl px-6 py-3 font-semibold text-slate-900 dark:bg-slate-900 dark:text-white dark:border dark:border-slate-800">
 
           Page {page}
 
@@ -309,8 +322,8 @@ function Home() {
           disabled={!nextPage}
           className={`px-6 py-3 rounded-xl font-semibold transition ${
             nextPage
-              ? "bg-blue-600 hover:bg-blue-700 text-white"
-              : "bg-gray-200 text-gray-400 cursor-not-allowed"
+              ? "bg-rose-800 hover:bg-rose-900 text-white dark:bg-rose-600 dark:hover:bg-rose-500"
+              : "bg-slate-200 text-slate-400 cursor-not-allowed dark:bg-slate-800 dark:text-slate-600"
           }`}
         >
           Next →
