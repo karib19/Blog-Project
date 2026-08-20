@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
 import api from "../../api/axios";
 
 function PostDetail() {
@@ -12,6 +12,7 @@ function PostDetail() {
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
+
 
 
   const loadPost = () => {
@@ -304,6 +305,70 @@ if (loading) {
         className="prose prose-lg dark:prose-invert max-w-none leading-8 text-slate-700 dark:text-slate-300 wrap-break-word [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-xl [&_pre]:overflow-x-auto [&_table]:block [&_table]:overflow-x-auto"
         dangerouslySetInnerHTML={{ __html: post.content }}
       />
+
+
+        {/* Related Posts */}
+
+{post.related_posts?.length > 0 && (
+  <section className="mt-16">
+
+    <h2
+      className="text-3xl font-semibold text-slate-900 mb-8 dark:text-white"
+      style={{ fontFamily: "var(--font-serif, serif)" }}
+    >
+      Related Articles
+    </h2>
+
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+
+      {post.related_posts.map((related) => (
+
+        <Link
+          key={related.slug}
+          to={`/posts/${related.slug}`}
+          className="group block bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg transition overflow-hidden dark:bg-slate-900 dark:border-slate-800"
+        >
+
+          {related.featured_image ? (
+            <img
+              src={related.featured_image}
+              alt={related.title}
+              className="w-full h-36 object-cover"
+            />
+          ) : (
+            <div className="w-full h-36 bg-slate-100 flex items-center justify-center text-2xl dark:bg-slate-800">
+              📰
+            </div>
+          )}
+
+          <div className="p-4">
+
+            <p
+              className="text-xs uppercase tracking-widest text-rose-800 font-semibold mb-2 dark:text-rose-400"
+              style={{ fontFamily: "var(--font-mono, monospace)" }}
+            >
+              {related.category}
+            </p>
+
+            <h3 className="font-semibold text-slate-800 leading-snug line-clamp-2 group-hover:text-rose-800 transition dark:text-white dark:group-hover:text-rose-400">
+              {related.title}
+            </h3>
+
+            <p className="text-xs text-slate-400 mt-2 dark:text-slate-500">
+              {related.reading_time} min read
+            </p>
+
+          </div>
+
+        </Link>
+
+      ))}
+
+    </div>
+
+  </section>
+)}
+
 
       {/* Comments */}
 
