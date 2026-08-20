@@ -133,12 +133,15 @@ WSGI_APPLICATION = 'blog_project.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 
-
 DATABASES = {
     "default": dj_database_url.config(
         default=os.environ.get("DATABASE_URL")
     )
 }
+
+
+
+
 
 
 # Password validation
@@ -219,4 +222,4 @@ DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
 
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
-FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  
+FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024

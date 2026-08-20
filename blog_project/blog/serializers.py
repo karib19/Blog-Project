@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.db.models import Count, Q
 from rest_framework import serializers
 from .models import Post, Category, Tag, Comment, Like, Bookmark, PasswordResetToken, Notification
 from .utils import send_otp_email
@@ -137,6 +138,26 @@ class CommentSerializer(serializers.ModelSerializer):
         read_only_fields = ['user', 'post']
 
 
+from django.db.models import Count, Q
+
+
+class RelatedPostMiniSerializer(serializers.ModelSerializer):
+    category = serializers.CharField(source="category.name", default="General")
+    author = serializers.CharField(source="author.username")
+
+    class Meta:
+        model = Post
+        fields = [
+            "slug",
+            "title",
+            "featured_image",
+            "category",
+            "author",
+            "reading_time",
+            "created_at",
+        ]
+
+
 class PostSerializer(serializers.ModelSerializer):
     author = UserSerializer(read_only=True)
     category = CategorySerializer(read_only=True)
@@ -147,10 +168,34 @@ class PostSerializer(serializers.ModelSerializer):
     is_liked = serializers.SerializerMethodField()
     bookmarks_count = serializers.SerializerMethodField()
     is_bookmarked = serializers.SerializerMethodField()
+    related_posts = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
-        fields = "__all__"
+        fields = [
+            "id",
+            "title",
+            "slug",
+            "excerpt",
+            "content",
+            "featured_image",
+            "author",
+            "category",
+            "tags",
+            "comments",
+            "status",
+            "views",
+            "reading_time",
+            "is_featured",
+            "created_at",
+            "updated_at",
+            "published_at",
+            "likes_count",
+            "is_liked",
+            "bookmarks_count",
+            "is_bookmarked",
+            "related_posts",
+        ]
 
     def get_likes_count(self, obj):
         return obj.likes.count()
@@ -164,20 +209,45 @@ class PostSerializer(serializers.ModelSerializer):
                 post=obj
             ).exists()
 
+        return False
+
     def get_bookmarks_count(self, obj):
-     return obj.bookmarked_by.count()
+        return obj.bookmarked_by.count()
 
     def get_is_bookmarked(self, obj):
-            request = self.context.get("request")
+        request = self.context.get("request")
 
-            if request and request.user.is_authenticated:
-                return Bookmark.objects.filter(
-                    user=request.user,
-                    post=obj
-                ).exists()
+        if request and request.user.is_authenticated:
+            return Bookmark.objects.filter(
+                user=request.user,
+                post=obj
+            ).exists()
 
-            return False
+        return False
 
+    def get_related_posts(self, obj):
+        request = self.context.get("request")
+
+        tag_ids = obj.tags.values_list("id", flat=True)
+
+        related = (
+            Post.objects.filter(
+                status="published",
+                category=obj.category,
+            )
+            .exclude(id=obj.id)
+            .annotate(
+                common_tags=Count(
+                    "tags",
+                    filter=Q(tags__in=tag_ids),
+                )
+            )
+            .order_by("-common_tags", "-created_at")[:4]
+        )
+
+        return RelatedPostMiniSerializer(
+            related, many=True, context={"request": request}
+        ).data
 
 class PostCreateUpdateSerializer(serializers.ModelSerializer):
     featured_image = serializers.ImageField(required=False)
