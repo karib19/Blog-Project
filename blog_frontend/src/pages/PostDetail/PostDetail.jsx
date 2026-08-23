@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
+import CommentItem from "../../components/post/CommentItem";
 import api from "../../api/axios";
 
 function PostDetail() {
@@ -12,6 +13,7 @@ function PostDetail() {
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState(null);
 
 
 
@@ -46,6 +48,15 @@ function PostDetail() {
         setComments([]);
       });
   };
+  useEffect(() => {
+  if (token) {
+    api.get("profile/").then((response) => {
+      setCurrentUserId(response.data.id);
+    }).catch(() => {});
+  }
+}, [token]);
+
+
 
   useEffect(() => {
     loadPost();
@@ -370,81 +381,60 @@ if (loading) {
 )}
 
 
-      {/* Comments */}
+{/* Comments */}
 
-      <section className="mt-16">
+<section className="mt-16">
 
-        <div className="flex items-center justify-between mb-8">
+  <div className="flex items-center justify-between mb-8">
 
-          <h2
-            className="text-3xl font-semibold text-slate-900 dark:text-white"
-            style={{ fontFamily: "var(--font-serif, serif)" }}
-          >
-            Comments
-          </h2>
+    <h2
+      className="text-3xl font-semibold text-slate-900 dark:text-white"
+      style={{ fontFamily: "var(--font-serif, serif)" }}
+    >
+      Comments
+    </h2>
 
-          <span className="bg-rose-50 text-rose-800 px-4 py-2 rounded-full font-semibold text-sm dark:bg-rose-950/40 dark:text-rose-400">
-            {comments.length} Comments
-          </span>
+    <span className="bg-rose-50 text-rose-800 px-4 py-2 rounded-full font-semibold text-sm dark:bg-rose-950/40 dark:text-rose-400">
+      {comments.length} Comments
+    </span>
 
-        </div>
+  </div>
 
-        {comments.length === 0 ? (
+  {comments.length === 0 ? (
 
-          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-10 text-center dark:bg-slate-900 dark:border-slate-800">
+    <div className="bg-slate-50 border border-slate-200 rounded-2xl p-10 text-center dark:bg-slate-900 dark:border-slate-800">
 
-            <h3 className="text-xl font-semibold mb-2 text-slate-900 dark:text-white">
-              No comments yet
-            </h3>
+      <h3 className="text-xl font-semibold mb-2 text-slate-900 dark:text-white">
+        No comments yet
+      </h3>
 
-            <p className="text-slate-500 dark:text-slate-400">
-              Be the first person to comment on this article.
-            </p>
+      <p className="text-slate-500 dark:text-slate-400">
+        Be the first person to comment on this article.
+      </p>
 
-          </div>
+    </div>
 
-        ) : (
+  ) : (
 
-          <div className="space-y-6">
+    <div className="space-y-6">
+  {comments.map((item) => (
+    <CommentItem
+      key={item.id}
+      comment={item}
+      slug={slug}
+      token={token}
+      currentUserId={currentUserId}
+      onLoginRequired={() =>
+        navigate("/login", { state: { from: location.pathname } })
+      }
+      onCommentPosted={loadComments}
+    />
+  ))}
+</div>
 
-            {comments.map((item) => (
+  )}
 
-              <div
-                key={item.id}
-                className="bg-white shadow-sm border border-slate-100 rounded-2xl p-6 dark:bg-slate-900 dark:border-slate-800"
-              >
-
-                <div className="flex justify-between items-center mb-3">
-
-                  <div>
-
-                    <h4 className="font-bold text-slate-900 dark:text-white">
-                      {item.user?.username}
-                    </h4>
-
-                    <p className="text-sm text-slate-500 dark:text-slate-400">
-                      {item.created_at
-                        ? new Date(item.created_at).toLocaleString()
-                        : "Just now"}
-                    </p>
-
-                  </div>
-
-                </div>
-
-                <p className="text-slate-700 whitespace-pre-line dark:text-slate-300">
-                  {item.content}
-                </p>
-
-              </div>
-
-            ))}
-
-          </div>
-
-        )}
-
-      </section>
+</section>
 
       {/* Comment Form */}
 

@@ -61,6 +61,7 @@ This project demonstrates a complete full-stack blog platform using Django REST 
 * Social Sharing
 * Notifications
 * Reading Time Estimation
+* Related Posts
 
 ---
 
@@ -297,7 +298,7 @@ Protected endpoints require an access token.
 
 # 📚 Future Improvements
 
-* Related Posts
+
 ---
 
 # 👨‍💻 Author

@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import PermissionDenied
 from .permissions import IsAuthorOrReadOnly
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
@@ -271,7 +272,8 @@ class CommentListCreateAPIView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         return Comment.objects.filter(
-            post__slug=self.kwargs['slug']
+            post__slug=self.kwargs['slug'],
+            parent__isnull=True,
         ).order_by('-created_at')
 
     def perform_create(self, serializer):
@@ -284,6 +286,24 @@ class CommentListCreateAPIView(generics.ListCreateAPIView):
             post=post
         )
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["request"] = self.request
+        return context
+
+
+class CommentDeleteAPIView(generics.DestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        comment = get_object_or_404(Comment, pk=self.kwargs['pk'])
+
+        if comment.user != self.request.user:
+            raise PermissionDenied("You can only delete your own comments.")
+
+        return comment
 
 
 class LikeAPIView(APIView):

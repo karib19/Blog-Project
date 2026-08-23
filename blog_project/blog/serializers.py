@@ -131,14 +131,20 @@ class TagSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
+    replies = serializers.SerializerMethodField()
 
     class Meta:
         model = Comment
         fields = '__all__'
         read_only_fields = ['user', 'post']
 
+    def get_replies(self, obj):
+        replies = obj.replies.all().order_by('created_at')
 
-from django.db.models import Count, Q
+        return CommentSerializer(
+            replies, many=True, context=self.context
+        ).data
+
 
 
 class RelatedPostMiniSerializer(serializers.ModelSerializer):
