@@ -2,18 +2,17 @@ from django.contrib.auth.models import User
 from rest_framework import generics, filters, status
 from .serializers import PostSerializer, CategorySerializer, TagSerializer, RegisterSerializer, VerifyOTPSerializer, CustomTokenObtainPairSerializer, CommentSerializer, LikeSerializer, BookmarkSerializer, PostCreateUpdateSerializer, UserSerializer, PasswordResetRequestSerializer, PasswordResetConfirmSerializer, NotificationSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .models import Post, Category, Tag, Comment, Like, Bookmark, PasswordResetToken, Notification
+from .models import Post, Category, Tag, Comment, Like, Bookmark, PasswordResetToken, Notification, EmailOTP
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.exceptions import PermissionDenied
 from .permissions import IsAuthorOrReadOnly
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
-from .models import EmailOTP
 from django.utils import timezone
+from datetime import timedelta
 from .utils import send_otp_email, send_password_reset_email
 from django.http import JsonResponse
 from django.core.mail import send_mail
@@ -479,3 +478,41 @@ class UnreadNotificationCountAPIView(APIView):
             recipient=request.user, is_read=False
         ).count()
         return Response({"unread_count": count})
+
+
+
+class TrendingPostsAPIView(generics.ListAPIView):
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        days = int(self.request.query_params.get("days", 7))
+        since = timezone.now() - timedelta(days=days)
+
+        return (
+            Post.objects.filter(status="published", created_at__gte=since)
+            .order_by("-views")[:6]
+        )
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["request"] = self.request
+        return context
+
+
+class PopularPostsAPIView(generics.ListAPIView):
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        exclude_slug = self.request.query_params.get("exclude")
+
+        queryset = Post.objects.filter(status="published").order_by("-views")
+
+        if exclude_slug:
+            queryset = queryset.exclude(slug=exclude_slug)
+
+        return queryset[:5]
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["request"] = self.request
+        return context

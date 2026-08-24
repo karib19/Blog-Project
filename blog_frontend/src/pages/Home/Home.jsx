@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import api from "../../api/axios";
 import PostCard from "../../components/post/PostCard";
+import TrendingStrip from "../../components/post/Trendingstrip";
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -115,6 +116,10 @@ function Home() {
         </div>
 
       </section>
+
+      {/* Trending Strip */}
+
+    <TrendingStrip />
 
       {/* Filters */}
 
