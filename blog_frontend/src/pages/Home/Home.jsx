@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import api from "../../api/axios";
 import PostCard from "../../components/post/PostCard";
-import TrendingStrip from "../../components/post/Trendingstrip";
+import TrendingStrip from "../../components/post/TrendingStrip";
 
 function Home() {
   const [posts, setPosts] = useState([]);
