@@ -43,7 +43,7 @@ function Navbar() {
           <NavLink
             to="/"
             onClick={closeMenu}
-            className="flex items-baseline gap-1.5"
+            className="flex items-baseline "
           >
             <span
               className="text-[22px] font-semibold italic tracking-tight text-slate-900 dark:text-white"
@@ -52,7 +52,7 @@ function Navbar() {
               Blog
             </span>
             <span className="text-[22px] font-semibold tracking-tight text-rose-800 dark:text-rose-400">
-              Sphere
+            Sphere
             </span>
           </NavLink>
 

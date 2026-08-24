@@ -11,6 +11,8 @@ urlpatterns = [
     path('api/profile/',ProfileAPIView.as_view(),name='profile'),
     path('api/posts/',PostListAPIView.as_view(),name='api-post-list'),
     path('api/posts/create/',PostCreateAPIView.as_view(),name='post-create'),
+    path("api/posts/trending/", TrendingPostsAPIView.as_view(), name="trending-posts"),
+    path("api/posts/popular/", PopularPostsAPIView.as_view(), name="popular-posts"),
     path('api/posts/<slug:slug>/',PostDetailAPIView.as_view(),name='api-post-detail'),
     path('api/posts/<slug:slug>/update/',PostUpdateAPIView.as_view(),name='post-update'),
     path('api/posts/<slug:slug>/delete/',PostDeleteAPIView.as_view(),name='post-delete'),
@@ -30,6 +32,4 @@ urlpatterns = [
     path("api/notifications/unread-count/", UnreadNotificationCountAPIView.as_view(), name="notification-unread-count"),
     path("api/notifications/mark-all-read/", MarkAllNotificationsReadAPIView.as_view(), name="notification-mark-all-read"),
     path("api/notifications/<int:pk>/read/", MarkNotificationReadAPIView.as_view(), name="notification-read"),
-    path("api/posts/trending/", TrendingPostsAPIView.as_view(), name="trending-posts"),
-    path("api/posts/popular/", PopularPostsAPIView.as_view(), name="popular-posts"),
 ]
