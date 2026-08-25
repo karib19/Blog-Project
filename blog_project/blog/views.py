@@ -516,3 +516,52 @@ class PopularPostsAPIView(generics.ListAPIView):
         context = super().get_serializer_context()
         context["request"] = self.request
         return context
+
+
+class AuthorProfileAPIView(generics.ListAPIView):
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        username = self.kwargs['username']
+
+        return Post.objects.filter(
+            author__username=username,
+            status='published',
+        ).order_by('-created_at')
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["request"] = self.request
+        return context
+
+    def list(self, request, *args, **kwargs):
+        username = self.kwargs['username']
+        author = get_object_or_404(User, username=username)
+
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+
+        serializer = self.get_serializer(page or queryset, many=True)
+
+        author_data = {
+            "username": author.username,
+            "first_name": author.first_name,
+            "last_name": author.last_name,
+            "avatar": (
+                author.profile.avatar.url
+                if hasattr(author, "profile") and author.profile.avatar
+                else None
+            ),
+            "total_posts": queryset.count(),
+            "joined": author.date_joined,
+        }
+
+        if page is not None:
+            paginated_response = self.get_paginated_response(serializer.data)
+            paginated_response.data["author"] = author_data
+            return paginated_response
+
+        return Response({
+            "author": author_data,
+            "results": serializer.data,
+        })

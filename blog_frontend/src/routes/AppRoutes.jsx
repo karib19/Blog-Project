@@ -17,6 +17,7 @@ import NotFound from "../pages/NotFound/NotFound";
 import ProtectedRoute from "./ProtectedRoute";
 import ForgotPassword from "../pages/PasswordReset/ForgotPassword";
 import ResetPassword from "../pages/PasswordReset/ResetPassword";
+import AuthorProfile from "../pages/Profile/AuthorProfile";
 
 function AppRoutes() {
   return (
@@ -40,6 +41,7 @@ function AppRoutes() {
     <Route path="*" element={<NotFound />} />
     <Route path="/forgot-password" element={<ForgotPassword />} />
     <Route path="/reset-password/:token" element={<ResetPassword />} />
+    <Route path="/author/:username" element={<AuthorProfile />} />
   </Route>
 
 </Routes>

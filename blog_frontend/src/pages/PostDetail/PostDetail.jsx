@@ -206,9 +206,12 @@ return (
 
             <div>
 
-              <p className="font-semibold text-lg text-slate-900 dark:text-white">
-                {post.author.username}
-              </p>
+              <Link
+    to={`/author/${post.author.username}`}
+    className="font-semibold text-lg text-slate-900 hover:text-rose-800 transition dark:text-white dark:hover:text-rose-400"
+  >
+    {post.author.username}
+  </Link>
 
               <p className="text-slate-500 text-sm dark:text-slate-400">
                 Author
