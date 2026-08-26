@@ -2,8 +2,8 @@ import random
 import requests
 
 from django.conf import settings
-
-from .models import EmailOTP
+from django.utils import timezone
+from .models import EmailOTP, Post, Follow, Notification
 
 
 def generate_otp():
