@@ -390,3 +390,9 @@ class NotificationSerializer(serializers.ModelSerializer):
             'is_read',
             'created_at',
         ]
+
+
+class FollowUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'first_name', 'last_name']

@@ -78,3 +78,33 @@ def send_password_reset_email(user, token):
     if response.status_code not in (200, 201):
         print("Brevo API error:", response.status_code, response.text)
         response.raise_for_status()
+
+
+def auto_publish_scheduled_posts():
+    now = timezone.now()
+
+    due_posts = Post.objects.filter(
+        status='scheduled',
+        published_at__lte=now,
+    )
+
+    for post in due_posts:
+        post.status = 'published'
+        post.save()
+        notify_followers_of_new_post(post)
+
+
+def notify_followers_of_new_post(post):
+    followers = Follow.objects.filter(following=post.author).select_related('follower')
+
+    notifications = [
+        Notification(
+            recipient=f.follower,
+            sender=post.author,
+            notification_type='new_post',
+            post=post,
+        )
+        for f in followers
+    ]
+
+    Notification.objects.bulk_create(notifications)

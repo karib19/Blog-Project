@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import PostListAPIView, PostDetailAPIView, CategoryListAPIView, TagListAPIView, CommentListCreateAPIView, CommentDeleteAPIView, LikeAPIView, ProfileAPIView, RegisterAPIView, VerifyOTPAPIView, test_email, ResendOTPAPIView, CustomTokenObtainPairView, PostCreateAPIView, PostUpdateAPIView, PostDeleteAPIView, BookmarkAPIView, MyPostsAPIView, MyBookmarksAPIView,DashboardAPIView, ChangePasswordAPIView, PasswordResetRequestAPIView, PasswordResetConfirmAPIView, NotificationListAPIView, MarkNotificationReadAPIView, MarkAllNotificationsReadAPIView, UnreadNotificationCountAPIView, TrendingPostsAPIView, PopularPostsAPIView, AuthorProfileAPIView, ArchiveSummaryAPIView, ArchiveByMonthAPIView
+from .views import PostListAPIView, PostDetailAPIView, CategoryListAPIView, TagListAPIView, CommentListCreateAPIView, CommentDeleteAPIView, LikeAPIView, ProfileAPIView, RegisterAPIView, VerifyOTPAPIView, test_email, ResendOTPAPIView, CustomTokenObtainPairView, PostCreateAPIView, PostUpdateAPIView, PostDeleteAPIView, BookmarkAPIView, MyPostsAPIView, MyBookmarksAPIView,DashboardAPIView, ChangePasswordAPIView, PasswordResetRequestAPIView, PasswordResetConfirmAPIView, NotificationListAPIView, MarkNotificationReadAPIView, MarkAllNotificationsReadAPIView, UnreadNotificationCountAPIView, TrendingPostsAPIView, PopularPostsAPIView, AuthorProfileAPIView, ArchiveSummaryAPIView, ArchiveByMonthAPIView, FollowToggleAPIView, FollowersListAPIView, FollowingListAPIView
 
 
 urlpatterns = [
@@ -35,4 +35,7 @@ urlpatterns = [
     path("api/author/<str:username>/", AuthorProfileAPIView.as_view(), name="author-profile"),
     path("api/archive/", ArchiveSummaryAPIView.as_view(), name="archive-summary"),
     path("api/archive/<int:year>/<int:month>/", ArchiveByMonthAPIView.as_view(), name="archive-by-month"),
+    path("api/follow/<str:username>/", FollowToggleAPIView.as_view(), name="follow-toggle"),
+    path("api/followers/<str:username>/", FollowersListAPIView.as_view(), name="followers-list"),
+    path("api/following/<str:username>/", FollowingListAPIView.as_view(), name="following-list"),
 ]

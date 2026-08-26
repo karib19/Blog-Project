@@ -1,13 +1,14 @@
 from django.contrib.auth.models import User
 from django.db.models import Count
+from django.db.models.functions import TruncMonth
 from rest_framework import generics, filters, status
-from .serializers import PostSerializer, PostListSerializer, CategorySerializer, TagSerializer, RegisterSerializer, VerifyOTPSerializer, CustomTokenObtainPairSerializer, CommentSerializer, LikeSerializer, BookmarkSerializer, PostCreateUpdateSerializer, UserSerializer, PasswordResetRequestSerializer, PasswordResetConfirmSerializer, NotificationSerializer
+from .serializers import PostSerializer, PostListSerializer, CategorySerializer, TagSerializer, RegisterSerializer, VerifyOTPSerializer, CustomTokenObtainPairSerializer, CommentSerializer, LikeSerializer, BookmarkSerializer, PostCreateUpdateSerializer, UserSerializer, PasswordResetRequestSerializer, PasswordResetConfirmSerializer, NotificationSerializer, FollowUserSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import Post, Category, Tag, Comment, Like, Bookmark, PasswordResetToken, Notification, EmailOTP
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
 from rest_framework.exceptions import PermissionDenied
 from .permissions import IsAuthorOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
@@ -94,15 +95,6 @@ def test_email(request):
         return JsonResponse({"success": True})
 
 
-def auto_publish_scheduled_posts():
-    now = timezone.now()
-
-    Post.objects.filter(
-        status='scheduled',
-        published_at__lte=now,
-    ).update(status='published')
-
-
 class ResendOTPAPIView(APIView):
 
     def post(self, request):
@@ -156,8 +148,12 @@ class ProfileAPIView(generics.RetrieveUpdateAPIView):
 
 
 class PostListAPIView(generics.ListAPIView):
+    queryset = Post.objects.filter(
+        status="published"
+    ).order_by("-created_at")
 
     serializer_class = PostListSerializer
+    permission_classes = [AllowAny]
 
     filter_backends = [
         DjangoFilterBackend,
@@ -167,7 +163,11 @@ class PostListAPIView(generics.ListAPIView):
 
     filterset_fields = ["category", "tags"]
     search_fields = ["title", "content"]
-    ordering_fields = ["created_at", "updated_at", "views"]
+    ordering_fields = [
+        "created_at",
+        "updated_at",
+        "views",
+    ]
 
     def get_queryset(self):
 
@@ -192,6 +192,7 @@ class PostDetailAPIView(generics.RetrieveAPIView):
     )
 
     serializer_class = PostSerializer
+    permission_classes = [AllowAny]
     lookup_field = 'slug'
 
     def get_queryset(self):
@@ -210,7 +211,10 @@ class PostCreateAPIView(generics.CreateAPIView):
     parser_classes = [MultiPartParser, FormParser]
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        post = serializer.save(author=self.request.user)
+
+        if post.status == 'published':
+            notify_followers_of_new_post(post)
 
 
 class PostUpdateAPIView(generics.UpdateAPIView):
@@ -280,11 +284,13 @@ class DashboardAPIView(APIView):
 class CategoryListAPIView(generics.ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [AllowAny]
 
 
 class TagListAPIView(generics.ListAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
+    permission_classes = [AllowAny]
 
 
 class CommentListCreateAPIView(generics.ListCreateAPIView):
@@ -565,6 +571,13 @@ class AuthorProfileAPIView(generics.ListAPIView):
 
         serializer = self.get_serializer(page or queryset, many=True)
 
+        is_following = False
+        if request.user.is_authenticated:
+            is_following = Follow.objects.filter(
+                follower=request.user,
+                following=author
+            ).exists()
+
         author_data = {
             "username": author.username,
             "first_name": author.first_name,
@@ -575,6 +588,9 @@ class AuthorProfileAPIView(generics.ListAPIView):
                 else None
             ),
             "total_posts": queryset.count(),
+            "followers_count": Follow.objects.filter(following=author).count(),
+            "following_count": Follow.objects.filter(follower=author).count(),
+            "is_following": is_following,
             "joined": author.date_joined,
         }
 
@@ -587,11 +603,6 @@ class AuthorProfileAPIView(generics.ListAPIView):
             "author": author_data,
             "results": serializer.data,
         })
-
-
-
-from django.db.models.functions import TruncMonth
-from django.db.models import Count
 
 
 class ArchiveSummaryAPIView(APIView):
@@ -634,3 +645,63 @@ class ArchiveByMonthAPIView(generics.ListAPIView):
         context = super().get_serializer_context()
         context["request"] = self.request
         return context
+
+
+
+class FollowToggleAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, username):
+        target_user = get_object_or_404(User, username=username)
+
+        if target_user == request.user:
+            return Response(
+                {"error": "You cannot follow yourself."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        follow = Follow.objects.filter(
+            follower=request.user,
+            following=target_user
+        ).first()
+
+        if follow:
+            follow.delete()
+            return Response(
+                {"message": "Unfollowed", "is_following": False},
+                status=status.HTTP_200_OK
+            )
+
+        Follow.objects.create(
+            follower=request.user,
+            following=target_user
+        )
+
+        Notification.objects.create(
+            recipient=target_user,
+            sender=request.user,
+            notification_type='follow',
+        )
+
+        return Response(
+            {"message": "Followed", "is_following": True},
+            status=status.HTTP_201_CREATED
+        )
+
+
+class FollowersListAPIView(generics.ListAPIView):
+    serializer_class = FollowUserSerializer
+
+    def get_queryset(self):
+        username = self.kwargs['username']
+        user = get_object_or_404(User, username=username)
+        return User.objects.filter(following__following=user)
+
+
+class FollowingListAPIView(generics.ListAPIView):
+    serializer_class = FollowUserSerializer
+
+    def get_queryset(self):
+        username = self.kwargs['username']
+        user = get_object_or_404(User, username=username)
+        return User.objects.filter(followers__follower=user)

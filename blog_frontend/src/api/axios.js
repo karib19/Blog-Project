@@ -1,11 +1,30 @@
 import axios from "axios";
 
+const API_URL = "https://blog-project-l5o3.onrender.com/api/";
+
 const api = axios.create({
-  baseURL: "https://blog-project-l5o3.onrender.com/api/",
+  baseURL: API_URL,
   headers: {
     "Content-Type": "application/json",
   },
 });
+
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+  failedQueue.forEach((promise) => {
+    if (error) {
+      promise.reject(error);
+    } else {
+      promise.resolve(token);
+    }
+  });
+
+  failedQueue = [];
+};
+
+// ================= REQUEST INTERCEPTOR =================
 
 api.interceptors.request.use(
   (config) => {
@@ -20,6 +39,8 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+// ================= RESPONSE INTERCEPTOR =================
+
 api.interceptors.response.use(
   (response) => response,
 
@@ -27,57 +48,74 @@ api.interceptors.response.use(
     const originalRequest = error.config;
 
     if (
-      error.response?.status === 401 &&
-      !originalRequest._retry
+      error.response?.status !== 401 ||
+      originalRequest?._retry
     ) {
-      originalRequest._retry = true;
+      return Promise.reject(error);
+    }
 
-      const refresh =
-        localStorage.getItem("refresh");
+    const refresh = localStorage.getItem("refresh");
 
-      if (!refresh) {
-        localStorage.clear();
-        window.location.href = "/login";
-        return Promise.reject(error);
-      }
+    if (!refresh) {
+      localStorage.removeItem("access");
+      localStorage.removeItem("refresh");
 
-      try {
-        const response = await axios.post(
-          "https://blog-project-l5o3.onrender.com/api/token/refresh/",
-          {
-            refresh,
-          }
-        );
+      window.location.href = "/login";
 
-        const newAccess = response.data.access;
+      return Promise.reject(error);
+    }
 
-        localStorage.setItem(
-          "access",
-          newAccess
-        );
-
+    // Another request is already refreshing token
+    if (isRefreshing) {
+      return new Promise((resolve, reject) => {
+        failedQueue.push({
+          resolve,
+          reject,
+        });
+      }).then((newAccess) => {
         originalRequest.headers.Authorization =
           `Bearer ${newAccess}`;
 
         return api(originalRequest);
-
-      } catch (refreshError) {
-        localStorage.clear();
-
-        window.location.href = "/login";
-
-        return Promise.reject(refreshError);
-      }
+      });
     }
 
-    if (!error.response) {
-      console.error(
-        "Network Error:",
-        error.message
+    originalRequest._retry = true;
+    isRefreshing = true;
+
+    try {
+      const response = await axios.post(
+        `${API_URL}token/refresh/`,
+        {
+          refresh,
+        }
       );
-    }
 
-    return Promise.reject(error);
+      const newAccess = response.data.access;
+
+      localStorage.setItem("access", newAccess);
+
+      processQueue(null, newAccess);
+
+      originalRequest.headers.Authorization =
+        `Bearer ${newAccess}`;
+
+      return api(originalRequest);
+
+    } catch (refreshError) {
+
+      processQueue(refreshError, null);
+
+      localStorage.removeItem("access");
+      localStorage.removeItem("refresh");
+
+      window.location.href = "/login";
+
+      return Promise.reject(refreshError);
+
+    } finally {
+      isRefreshing = false;
+    }
   }
 );
 
