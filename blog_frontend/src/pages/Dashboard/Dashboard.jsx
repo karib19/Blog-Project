@@ -59,6 +59,10 @@ function Dashboard() {
     (post) => post.status === "published"
   ).length;
 
+  const scheduledPosts = posts.filter(
+    (post) => post.status === "scheduled"
+  ).length;
+
   const draftPosts = posts.filter(
     (post) => post.status === "draft"
   ).length;
@@ -85,7 +89,7 @@ function Dashboard() {
 
       </div>
 
-      <div className="grid gap-6 mt-8 md:grid-cols-3">
+      <div className="grid gap-6 mt-8 md:grid-cols-4">
 
         <div className="bg-white rounded-2xl shadow-lg p-6 border border-slate-100 dark:bg-slate-900 dark:border-slate-800">
 
@@ -107,6 +111,18 @@ function Dashboard() {
 
           <h2 className="text-4xl font-bold mt-2 text-emerald-700 dark:text-emerald-400">
             {publishedPosts}
+          </h2>
+
+        </div>
+
+        <div className="bg-blue-50 rounded-2xl shadow-lg p-6 border border-blue-200 dark:bg-blue-950/20 dark:border-blue-900/40">
+
+          <p className="text-blue-700 text-sm dark:text-blue-400">
+            Scheduled
+          </p>
+
+          <h2 className="text-4xl font-bold mt-2 text-blue-700 dark:text-blue-400">
+            {scheduledPosts}
           </h2>
 
         </div>
@@ -197,13 +213,26 @@ function Dashboard() {
                       className={`px-3 py-1 rounded-full text-sm font-medium ${
                         post.status === "published"
                           ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400"
+                          : post.status === "scheduled"
+                          ? "bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400"
                           : "bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400"
                       }`}
                     >
                       {post.status === "published"
                         ? "✅ Published"
+                        : post.status === "scheduled"
+                        ? "🕒 Scheduled"
                         : "📝 Draft"}
                     </span>
+
+                    {post.status === "scheduled" && post.published_at && (
+                      <span
+                        className="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-sm dark:bg-slate-800 dark:text-slate-300"
+                        style={{ fontFamily: "var(--font-mono, monospace)" }}
+                      >
+                        Goes live {new Date(post.published_at).toLocaleString()}
+                      </span>
+                    )}
 
                     <span className="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm dark:bg-slate-800 dark:text-slate-300">
                       👁 {post.views} Views

@@ -7,7 +7,7 @@ function NotFound() {
       <div className="max-w-2xl w-full text-center">
 
         <div
-          className="text-8xl md:text-9xl font-black text-slate-200 dark:text-slate-800"
+          className="text-8xl md:text-9xl font-black text-slate-300 dark:text-slate-800"
           style={{ fontFamily: "var(--font-serif, serif)" }}
         >
           404

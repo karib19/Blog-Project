@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import PostListAPIView, PostDetailAPIView, CategoryListAPIView, TagListAPIView, CommentListCreateAPIView, CommentDeleteAPIView, LikeAPIView, ProfileAPIView, RegisterAPIView, VerifyOTPAPIView, test_email, ResendOTPAPIView, CustomTokenObtainPairView, PostCreateAPIView, PostUpdateAPIView, PostDeleteAPIView, BookmarkAPIView, MyPostsAPIView, MyBookmarksAPIView,DashboardAPIView, ChangePasswordAPIView, PasswordResetRequestAPIView, PasswordResetConfirmAPIView, NotificationListAPIView, MarkNotificationReadAPIView, MarkAllNotificationsReadAPIView, UnreadNotificationCountAPIView, TrendingPostsAPIView, PopularPostsAPIView, AuthorProfileAPIView
+from .views import PostListAPIView, PostDetailAPIView, CategoryListAPIView, TagListAPIView, CommentListCreateAPIView, CommentDeleteAPIView, LikeAPIView, ProfileAPIView, RegisterAPIView, VerifyOTPAPIView, test_email, ResendOTPAPIView, CustomTokenObtainPairView, PostCreateAPIView, PostUpdateAPIView, PostDeleteAPIView, BookmarkAPIView, MyPostsAPIView, MyBookmarksAPIView,DashboardAPIView, ChangePasswordAPIView, PasswordResetRequestAPIView, PasswordResetConfirmAPIView, NotificationListAPIView, MarkNotificationReadAPIView, MarkAllNotificationsReadAPIView, UnreadNotificationCountAPIView, TrendingPostsAPIView, PopularPostsAPIView, AuthorProfileAPIView, ArchiveSummaryAPIView, ArchiveByMonthAPIView
 
 
 urlpatterns = [
@@ -33,4 +33,6 @@ urlpatterns = [
     path("api/notifications/mark-all-read/", MarkAllNotificationsReadAPIView.as_view(), name="notification-mark-all-read"),
     path("api/notifications/<int:pk>/read/", MarkNotificationReadAPIView.as_view(), name="notification-read"),
     path("api/author/<str:username>/", AuthorProfileAPIView.as_view(), name="author-profile"),
+    path("api/archive/", ArchiveSummaryAPIView.as_view(), name="archive-summary"),
+    path("api/archive/<int:year>/<int:month>/", ArchiveByMonthAPIView.as_view(), name="archive-by-month"),
 ]

@@ -33,6 +33,9 @@ function EditPost() {
     category: "",
     tags: [],
     content: "",
+    meta_description: "",
+    status: "draft",
+    published_at: "",
     featured_image: null,
   });
 
@@ -82,6 +85,11 @@ function EditPost() {
           String(tag.id)
         ),
         content: response.data.content,
+        meta_description: response.data.meta_description || "",
+        status: response.data.status || "draft",
+        published_at: response.data.published_at
+          ? response.data.published_at.slice(0, 16)
+          : "",
         featured_image: null,
       });
 
@@ -156,6 +164,12 @@ function EditPost() {
     data.append("title", formData.title);
     data.append("category", formData.category);
     data.append("content", formData.content);
+    data.append("meta_description", formData.meta_description);
+    data.append("status", formData.status);
+
+    if (formData.status === "scheduled" && formData.published_at) {
+      data.append("published_at", formData.published_at);
+    }
 
     formData.tags.forEach((tag) => {
       data.append("tags", tag);
@@ -340,6 +354,85 @@ function EditPost() {
               className="bg-white dark:bg-slate-800 [&_.ql-container]:min-h-70 [&_.ql-container]:text-base"
             />
           </div>
+
+        </div>
+
+        <div>
+
+          <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
+            Meta Description (SEO)
+          </label>
+
+          <textarea
+            name="meta_description"
+            rows="2"
+            maxLength={160}
+            placeholder="Short summary shown in Google search results..."
+            value={formData.meta_description}
+            onChange={handleChange}
+            className="w-full rounded-xl border border-slate-300 px-4 py-3 resize-none bg-white text-slate-900 focus:ring-2 focus:ring-orange-600 outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white dark:placeholder:text-slate-500"
+          />
+
+          <p className="text-xs text-slate-400 mt-1 dark:text-slate-500">
+            {formData.meta_description.length}/160 characters
+          </p>
+
+        </div>
+
+        <div>
+
+          <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
+            Publish Status
+          </label>
+
+          <div className="grid sm:grid-cols-3 gap-3">
+
+            {[
+              { value: "draft", label: "📝 Save as Draft" },
+              { value: "published", label: "🚀 Publish Now" },
+              { value: "scheduled", label: "🕒 Schedule" },
+            ].map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() =>
+                  setFormData((prev) => ({ ...prev, status: option.value }))
+                }
+                className={`py-3 px-4 rounded-xl font-medium text-sm border transition ${
+                  formData.status === option.value
+                    ? "bg-orange-700 text-white border-orange-700 dark:bg-orange-600 dark:border-orange-600"
+                    : "bg-white text-slate-700 border-slate-300 hover:border-orange-600 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700"
+                }`}
+              >
+                {option.label}
+              </button>
+            ))}
+
+          </div>
+
+          {formData.status === "scheduled" && (
+            <div className="mt-4">
+
+              <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
+                Publish Date & Time
+              </label>
+
+              <input
+                type="datetime-local"
+                name="published_at"
+                value={formData.published_at}
+                onChange={handleChange}
+                min={new Date().toISOString().slice(0, 16)}
+                required
+                className="w-full rounded-xl border border-slate-300 px-4 py-3 bg-white text-slate-900 focus:ring-2 focus:ring-orange-600 outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
+              />
+
+              <p className="text-xs text-slate-400 mt-1 dark:text-slate-500">
+                Your post will automatically go live at this date and time.
+              </p>
+
+            </div>
+          )}
 
         </div>
 

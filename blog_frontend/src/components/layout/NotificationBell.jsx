@@ -57,14 +57,10 @@ function NotificationBell() {
       });
   };
 
-  // Poll unread count every 30 seconds
+
   useEffect(() => {
-    loadUnreadCount();
-
-    const interval = setInterval(loadUnreadCount, 30000);
-
-    return () => clearInterval(interval);
-  }, []);
+  loadUnreadCount();
+}, []);
 
   // Close dropdown when clicking outside
   useEffect(() => {

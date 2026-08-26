@@ -11,12 +11,18 @@ function slugifyHeading(text, index) {
 }
 
 export function injectHeadingIds(html) {
-  if (!html) return { html: "", headings: [] };
+  if (!html) {
+    return {
+      html: "",
+      headings: [],
+    };
+  }
 
   const container = document.createElement("div");
   container.innerHTML = html;
 
   const headingNodes = container.querySelectorAll("h1, h2, h3");
+
   const headings = [];
 
   headingNodes.forEach((node, index) => {
@@ -32,7 +38,10 @@ export function injectHeadingIds(html) {
     });
   });
 
-  return { html: container.innerHTML, headings };
+  return {
+    html: container.innerHTML,
+    headings,
+  };
 }
 
 function TableOfContents({ headings }) {
@@ -49,12 +58,17 @@ function TableOfContents({ headings }) {
           }
         });
       },
-      { rootMargin: "-100px 0px -70% 0px" }
+      {
+        rootMargin: "-100px 0px -70% 0px",
+      }
     );
 
     headings.forEach((heading) => {
       const el = document.getElementById(heading.id);
-      if (el) observer.observe(el);
+
+      if (el) {
+        observer.observe(el);
+      }
     });
 
     return () => observer.disconnect();
@@ -64,41 +78,53 @@ function TableOfContents({ headings }) {
 
   const handleClick = (id) => {
     const el = document.getElementById(id);
+
     if (el) {
-      const y = el.getBoundingClientRect().top + window.scrollY - 90;
-      window.scrollTo({ top: y, behavior: "smooth" });
+      const y =
+        el.getBoundingClientRect().top + window.scrollY - 90;
+
+      window.scrollTo({
+        top: y,
+        behavior: "smooth",
+      });
     }
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-6 dark:bg-slate-900 dark:border-slate-800">
+    <div className="w-full min-w-0 max-w-full overflow-hidden bg-white rounded-2xl border border-slate-200 p-6 dark:bg-slate-900 dark:border-slate-800">
+      {/* Header */}
 
       <h3
-        className="text-lg font-semibold text-slate-900 mb-4 dark:text-white"
-        style={{ fontFamily: "var(--font-serif, serif)" }}
+        className="w-full min-w-0 max-w-full text-lg font-semibold text-slate-900 mb-4 dark:text-white"
+        style={{
+          fontFamily: "var(--font-serif, serif)",
+        }}
       >
         📑 On This Page
       </h3>
 
-      <nav className="space-y-1 border-l border-slate-200 dark:border-slate-800">
+      {/* Navigation */}
+
+      <nav className="w-full min-w-0 max-w-full overflow-hidden space-y-1 border-l border-slate-200 dark:border-slate-800">
         {headings.map((heading) => (
           <button
             key={heading.id}
+            type="button"
             onClick={() => handleClick(heading.id)}
-            className={`block w-full text-left text-sm py-1.5 border-l-2 -ml-px transition ${
+            className={`block w-full min-w-0 max-w-full text-left text-sm py-1.5 border-l-2 -ml-px transition whitespace-normal break-words overflow-wrap-anywhere ${
               activeId === heading.id
                 ? "border-rose-800 text-rose-800 font-semibold dark:border-rose-400 dark:text-rose-400"
                 : "border-transparent text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
             }`}
             style={{
               paddingLeft: `${(heading.level - 1) * 12 + 16}px`,
+              overflowWrap: "anywhere",
             }}
           >
             {heading.text}
           </button>
         ))}
       </nav>
-
     </div>
   );
 }

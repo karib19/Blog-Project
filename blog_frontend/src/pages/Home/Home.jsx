@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { Helmet } from "react-helmet-async";
 import api from "../../api/axios";
 import PostCard from "../../components/post/PostCard";
 import TrendingStrip from "../../components/post/TrendingStrip";
@@ -66,6 +67,14 @@ function Home() {
 
   return (
     <div className="space-y-10">
+
+      <Helmet>
+  <title>BlogSphere — Discover Amazing Stories</title>
+  <meta
+    name="description"
+    content="Programming, AI, Technology, Sports, History and everything in between."
+  />
+</Helmet>
 
       {/* Hero */}
 

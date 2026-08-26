@@ -1,11 +1,14 @@
-import AppRoutes from "./routes/AppRoutes";
+import { HelmetProvider } from "react-helmet-async";
 import { ThemeProvider } from "./context/ThemeContext";
+import AppRoutes from "./routes/AppRoutes";
 
 function App() {
   return (
-    <ThemeProvider>
-      <AppRoutes />
-    </ThemeProvider>
+    <HelmetProvider>
+      <ThemeProvider>
+        <AppRoutes />
+      </ThemeProvider>
+    </HelmetProvider>
   );
 }
 

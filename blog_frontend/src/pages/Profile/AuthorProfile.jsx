@@ -59,7 +59,7 @@ function AuthorProfile() {
     <div className="max-w-7xl mx-auto px-4 py-10">
 
       {/* Author Header */}
-      <div className="bg-linear-to-r from-rose-800 to-slate-900 rounded-3xl shadow-xl text-white p-8 mb-10">
+      <div className="bg-linear-to-r from-rose-800 to-slate-800 rounded-3xl shadow-xl text-white p-8 mb-10">
 
         <div className="flex flex-col md:flex-row items-center gap-6">
 

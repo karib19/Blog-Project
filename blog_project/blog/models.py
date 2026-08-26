@@ -32,6 +32,7 @@ class Tag(models.Model):
 class Post(models.Model):
     STATUS_CHOICES = [
         ('draft', 'Draft'),
+        ('scheduled', 'Scheduled'),
         ('published', 'Published'),
     ]
 

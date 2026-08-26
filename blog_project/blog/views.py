@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
+from django.db.models import Count
 from rest_framework import generics, filters, status
-from .serializers import PostSerializer, CategorySerializer, TagSerializer, RegisterSerializer, VerifyOTPSerializer, CustomTokenObtainPairSerializer, CommentSerializer, LikeSerializer, BookmarkSerializer, PostCreateUpdateSerializer, UserSerializer, PasswordResetRequestSerializer, PasswordResetConfirmSerializer, NotificationSerializer
+from .serializers import PostSerializer, PostListSerializer, CategorySerializer, TagSerializer, RegisterSerializer, VerifyOTPSerializer, CustomTokenObtainPairSerializer, CommentSerializer, LikeSerializer, BookmarkSerializer, PostCreateUpdateSerializer, UserSerializer, PasswordResetRequestSerializer, PasswordResetConfirmSerializer, NotificationSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import Post, Category, Tag, Comment, Like, Bookmark, PasswordResetToken, Notification, EmailOTP
 from django.shortcuts import get_object_or_404
@@ -93,6 +94,15 @@ def test_email(request):
         return JsonResponse({"success": True})
 
 
+def auto_publish_scheduled_posts():
+    now = timezone.now()
+
+    Post.objects.filter(
+        status='scheduled',
+        published_at__lte=now,
+    ).update(status='published')
+
+
 class ResendOTPAPIView(APIView):
 
     def post(self, request):
@@ -146,26 +156,34 @@ class ProfileAPIView(generics.RetrieveUpdateAPIView):
 
 
 class PostListAPIView(generics.ListAPIView):
-    queryset = Post.objects.filter(
-        status='published'
-    ).order_by('-created_at')
 
-    serializer_class = PostSerializer
+    serializer_class = PostListSerializer
 
     filter_backends = [
         DjangoFilterBackend,
         filters.SearchFilter,
-        filters.OrderingFilter
+        filters.OrderingFilter,
     ]
 
-    filterset_fields = ['category', 'tags']
-    search_fields = ['title', 'content']
-    ordering_fields = ['created_at', 'updated_at', 'views']
+    filterset_fields = ["category", "tags"]
+    search_fields = ["title", "content"]
+    ordering_fields = ["created_at", "updated_at", "views"]
 
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        context["request"] = self.request
-        return context
+    def get_queryset(self):
+
+        auto_publish_scheduled_posts()
+
+        return (
+            Post.objects
+            .filter(status="published")
+            .select_related("author", "category")
+            .prefetch_related("tags")
+            .annotate(
+                likes_count=Count("likes", distinct=True),
+                bookmarks_count=Count("bookmarked_by", distinct=True),
+            )
+            .order_by("-created_at")
+        )
 
 
 class PostDetailAPIView(generics.RetrieveAPIView):
@@ -175,6 +193,10 @@ class PostDetailAPIView(generics.RetrieveAPIView):
 
     serializer_class = PostSerializer
     lookup_field = 'slug'
+
+    def get_queryset(self):
+        auto_publish_scheduled_posts()
+        return super().get_queryset()
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -565,3 +587,50 @@ class AuthorProfileAPIView(generics.ListAPIView):
             "author": author_data,
             "results": serializer.data,
         })
+
+
+
+from django.db.models.functions import TruncMonth
+from django.db.models import Count
+
+
+class ArchiveSummaryAPIView(APIView):
+    def get(self, request):
+        summary = (
+            Post.objects.filter(status="published")
+            .annotate(month=TruncMonth("created_at"))
+            .values("month")
+            .annotate(count=Count("id"))
+            .order_by("-month")
+        )
+
+        data = [
+            {
+                "year": item["month"].year,
+                "month": item["month"].month,
+                "label": item["month"].strftime("%B %Y"),
+                "count": item["count"],
+            }
+            for item in summary
+        ]
+
+        return Response(data)
+
+
+class ArchiveByMonthAPIView(generics.ListAPIView):
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        year = self.kwargs["year"]
+        month = self.kwargs["month"]
+
+        return Post.objects.filter(
+            status="published",
+            created_at__year=year,
+            created_at__month=month,
+        ).order_by("-created_at")
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["request"] = self.request
+        return context

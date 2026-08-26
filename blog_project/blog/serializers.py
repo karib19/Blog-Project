@@ -255,6 +255,38 @@ class PostSerializer(serializers.ModelSerializer):
             related, many=True, context={"request": request}
         ).data
 
+
+class PostListSerializer(serializers.ModelSerializer):
+    author = UserSerializer(read_only=True)
+    category = CategorySerializer(read_only=True)
+    tags = TagSerializer(many=True, read_only=True)
+
+    likes_count = serializers.IntegerField(read_only=True)
+    bookmarks_count = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = Post
+        fields = [
+            "id",
+            "title",
+            "slug",
+            "excerpt",
+            "featured_image",
+            "author",
+            "category",
+            "tags",
+            "status",
+            "views",
+            "reading_time",
+            "is_featured",
+            "created_at",
+            "updated_at",
+            "published_at",
+            "likes_count",
+            "bookmarks_count",
+        ]
+
+
 class PostCreateUpdateSerializer(serializers.ModelSerializer):
     featured_image = serializers.ImageField(required=False)
 
@@ -282,6 +314,20 @@ class PostCreateUpdateSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 {"content": "Content cannot be empty."}
             )
+
+        status = attrs.get("status")
+        published_at = attrs.get("published_at")
+
+        if status == "scheduled":
+            if not published_at:
+                raise serializers.ValidationError(
+                    {"published_at": "Scheduled posts must have a publish date."}
+                )
+
+            if published_at <= timezone.now():
+                raise serializers.ValidationError(
+                    {"published_at": "Scheduled date must be in the future."}
+                )
 
         return attrs
 

@@ -40,6 +40,15 @@ function Footer() {
 
             <li>
               <NavLink
+                to="/archive"
+                className="transition hover:text-rose-400"
+              >
+                Archive
+              </NavLink>
+            </li>
+
+            <li>
+              <NavLink
                 to="/login"
                 className="transition hover:text-rose-400"
               >

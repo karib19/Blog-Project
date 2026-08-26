@@ -7,7 +7,6 @@ import ThemeToggle from "./ThemeToggle";
 function Navbar() {
   const { isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
-
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {
@@ -43,7 +42,7 @@ function Navbar() {
           <NavLink
             to="/"
             onClick={closeMenu}
-            className="flex items-baseline "
+            className="flex items-baseline"
           >
             <span
               className="text-[22px] font-semibold italic tracking-tight text-slate-900 dark:text-white"
@@ -51,74 +50,99 @@ function Navbar() {
             >
               Blog
             </span>
+
             <span className="text-[22px] font-semibold tracking-tight text-rose-800 dark:text-rose-400">
-            Sphere
+              Sphere
             </span>
           </NavLink>
 
-          {/* ================= Desktop Menu ================= */}
-          <nav className="hidden items-center gap-6 md:flex">
+          {/* ================= Right Side ================= */}
+          <div className="flex items-center gap-1">
 
-            <div className="flex items-center gap-1 border-r border-slate-200 pr-5 dark:border-slate-800">
+            {/* Theme + Notification
+                Rendered ONLY ONCE */}
+            <div className="flex items-center gap-1 border-slate-200 dark:border-slate-800 md:border-r md:pr-5">
               <ThemeToggle />
+
               {isAuthenticated && <NotificationBell />}
             </div>
 
-            <NavLink to="/" className={linkClass}>
-              Home
-            </NavLink>
+            {/* ================= Desktop Menu ================= */}
+            <nav className="hidden items-center gap-6 md:flex md:pl-5">
 
-            {isAuthenticated ? (
-              <>
-                <NavLink to="/dashboard" className={linkClass}>
-                  Dashboard
-                </NavLink>
+              <NavLink to="/" className={linkClass}>
+                Home
+              </NavLink>
 
-                <NavLink to="/my-bookmarks" className={linkClass}>
-                  Bookmarks
-                </NavLink>
+              {isAuthenticated ? (
+                <>
+                  <NavLink
+                    to="/dashboard"
+                    className={linkClass}
+                  >
+                    Dashboard
+                  </NavLink>
 
-                <NavLink to="/profile" className={linkClass}>
-                  Profile
-                </NavLink>
+                  <NavLink
+                    to="/my-bookmarks"
+                    className={linkClass}
+                  >
+                    Bookmarks
+                  </NavLink>
 
-                <button
-                  onClick={handleLogout}
-                  className="rounded-full bg-slate-900 px-4 py-2 text-sm font-medium text-white transition duration-200 hover:bg-rose-800 active:scale-95 dark:bg-white dark:text-slate-900 dark:hover:bg-rose-400"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <NavLink to="/login" className={linkClass}>
-                  Login
-                </NavLink>
+                  <NavLink
+                    to="/profile"
+                    className={linkClass}
+                  >
+                    Profile
+                  </NavLink>
 
-                <NavLink
-                  to="/register"
-                  className="rounded-full bg-rose-800 px-4 py-2 text-sm font-medium text-white transition duration-200 hover:bg-rose-900 active:scale-95 dark:bg-rose-600 dark:hover:bg-rose-500"
-                >
-                  Register
-                </NavLink>
-              </>
-            )}
-          </nav>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="rounded-full bg-slate-900 px-4 py-2 text-sm font-medium text-white transition duration-200 hover:bg-rose-800 active:scale-95 dark:bg-white dark:text-slate-900 dark:hover:bg-rose-400"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <NavLink
+                    to="/login"
+                    className={linkClass}
+                  >
+                    Login
+                  </NavLink>
 
-          {/* ================= Mobile Actions ================= */}
-          <div className="flex items-center gap-1 md:hidden">
-            <ThemeToggle />
-            {isAuthenticated && <NotificationBell />}
+                  <NavLink
+                    to="/register"
+                    className="rounded-full bg-rose-800 px-4 py-2 text-sm font-medium text-white transition duration-200 hover:bg-rose-900 active:scale-95 dark:bg-rose-600 dark:hover:bg-rose-500"
+                  >
+                    Register
+                  </NavLink>
+                </>
+              )}
+            </nav>
 
-            <button
-              type="button"
-              onClick={() => setMenuOpen((prev) => !prev)}
-              className="flex h-10 w-10 items-center justify-center rounded-full text-xl text-slate-700 transition duration-200 hover:bg-slate-100 active:scale-95 dark:text-slate-300 dark:hover:bg-slate-800"
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
-              aria-expanded={menuOpen}
-            >
-              {menuOpen ? "✕" : "☰"}
-            </button>
+            {/* ================= Mobile Menu Button ================= */}
+            <div className="md:hidden">
+              <button
+                type="button"
+                onClick={() =>
+                  setMenuOpen((prev) => !prev)
+                }
+                className="flex h-10 w-10 items-center justify-center rounded-full text-xl text-slate-700 transition duration-200 hover:bg-slate-100 active:scale-95 dark:text-slate-300 dark:hover:bg-slate-800"
+                aria-label={
+                  menuOpen
+                    ? "Close menu"
+                    : "Open menu"
+                }
+                aria-expanded={menuOpen}
+              >
+                {menuOpen ? "✕" : "☰"}
+              </button>
+            </div>
+
           </div>
         </div>
 
@@ -127,21 +151,37 @@ function Navbar() {
           <nav className="border-t border-slate-100 py-4 md:hidden dark:border-slate-800">
             <div className="flex flex-col gap-1">
 
-              <NavLink to="/" className={mobileLinkClass} onClick={closeMenu}>
+              <NavLink
+                to="/"
+                className={mobileLinkClass}
+                onClick={closeMenu}
+              >
                 Home
               </NavLink>
 
               {isAuthenticated ? (
                 <>
-                  <NavLink to="/dashboard" className={mobileLinkClass} onClick={closeMenu}>
+                  <NavLink
+                    to="/dashboard"
+                    className={mobileLinkClass}
+                    onClick={closeMenu}
+                  >
                     Dashboard
                   </NavLink>
 
-                  <NavLink to="/my-bookmarks" className={mobileLinkClass} onClick={closeMenu}>
+                  <NavLink
+                    to="/my-bookmarks"
+                    className={mobileLinkClass}
+                    onClick={closeMenu}
+                  >
                     Bookmarks
                   </NavLink>
 
-                  <NavLink to="/profile" className={mobileLinkClass} onClick={closeMenu}>
+                  <NavLink
+                    to="/profile"
+                    className={mobileLinkClass}
+                    onClick={closeMenu}
+                  >
                     Profile
                   </NavLink>
 
@@ -155,7 +195,11 @@ function Navbar() {
                 </>
               ) : (
                 <>
-                  <NavLink to="/login" className={mobileLinkClass} onClick={closeMenu}>
+                  <NavLink
+                    to="/login"
+                    className={mobileLinkClass}
+                    onClick={closeMenu}
+                  >
                     Login
                   </NavLink>
 
@@ -168,6 +212,7 @@ function Navbar() {
                   </NavLink>
                 </>
               )}
+
             </div>
           </nav>
         )}
