@@ -15,7 +15,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from django.utils import timezone
 from datetime import timedelta
-from .utils import send_otp_email, send_password_reset_email
+from .utils import send_otp_email, send_password_reset_email, auto_publish_scheduled_posts, notify_followers_of_new_post
 from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.conf import settings
