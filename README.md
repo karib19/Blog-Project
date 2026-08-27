@@ -12,11 +12,11 @@ A modern full-stack Blog Application built with **Django REST Framework** and **
 
 ### Backend API (Render)
 
-**https://blog-project-l5o3.onrender.com/**
+**https://blog-project-1-akx9.onrender.com/**
 
 ### API Documentation (Swagger)
 
-**https://blog-project-l5o3.onrender.com/api/docs/**
+**https://blog-project-1-akx9.onrender.com/api/docs/**
 
 ---
 
