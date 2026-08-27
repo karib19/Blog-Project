@@ -34,7 +34,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
-    "https://blog-project-1-akx9.onrender.com",
+    "blog-project-1-z76j.onrender.com",
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -44,7 +44,7 @@ CORS_ALLOWED_ORIGINS = [
 
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://blog-project-1-akx9.onrender.com",
+    "https://blog-project-1-z76j.onrender.com/api/",
     "https://blog-project-mu-one.vercel.app"
 ]
 
