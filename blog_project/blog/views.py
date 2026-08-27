@@ -244,15 +244,6 @@ class MyPostsAPIView(generics.ListAPIView):
         ).order_by('-created_at')
 
 
-class MyBookmarksAPIView(generics.ListAPIView):
-    serializer_class = BookmarkSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        return Bookmark.objects.filter(
-            user=self.request.user
-        ).order_by('-created_at')
-
 class DashboardAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -391,6 +382,20 @@ class BookmarkAPIView(APIView):
         )
 
 
+class MyBookmarksAPIView(generics.ListAPIView):
+    serializer_class = BookmarkSerializer
+
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return (
+            Bookmark.objects.filter(user=self.request.user)
+            .select_related("post", "post__author", "post__category")
+            .prefetch_related("post__tags")
+            .order_by('-created_at')
+        )
+
+
 class ChangePasswordAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -510,7 +515,7 @@ class UnreadNotificationCountAPIView(APIView):
 
 
 class TrendingPostsAPIView(generics.ListAPIView):
-    serializer_class = PostSerializer
+    serializer_class = PostListSerializer
 
     def get_queryset(self):
         days = int(self.request.query_params.get("days", 7))
@@ -518,6 +523,12 @@ class TrendingPostsAPIView(generics.ListAPIView):
 
         return (
             Post.objects.filter(status="published", created_at__gte=since)
+            .select_related("author", "category")
+            .prefetch_related("tags")
+            .annotate(
+                likes_count=Count("likes", distinct=True),
+                bookmarks_count=Count("bookmarked_by", distinct=True),
+            )
             .order_by("-views")[:6]
         )
 
@@ -528,12 +539,21 @@ class TrendingPostsAPIView(generics.ListAPIView):
 
 
 class PopularPostsAPIView(generics.ListAPIView):
-    serializer_class = PostSerializer
+    serializer_class = PostListSerializer
 
     def get_queryset(self):
         exclude_slug = self.request.query_params.get("exclude")
 
-        queryset = Post.objects.filter(status="published").order_by("-views")
+        queryset = (
+            Post.objects.filter(status="published")
+            .select_related("author", "category")
+            .prefetch_related("tags")
+            .annotate(
+                likes_count=Count("likes", distinct=True),
+                bookmarks_count=Count("bookmarked_by", distinct=True),
+            )
+            .order_by("-views")
+        )
 
         if exclude_slug:
             queryset = queryset.exclude(slug=exclude_slug)
@@ -547,16 +567,21 @@ class PopularPostsAPIView(generics.ListAPIView):
 
 
 class AuthorProfileAPIView(generics.ListAPIView):
-    serializer_class = PostSerializer
+    serializer_class = PostListSerializer
 
     def get_queryset(self):
         username = self.kwargs['username']
 
-        return Post.objects.filter(
-            author__username=username,
-            status='published',
-        ).order_by('-created_at')
-
+        return (
+            Post.objects.filter(author__username=username, status='published')
+            .select_related("author", "category")
+            .prefetch_related("tags")
+            .annotate(
+                likes_count=Count("likes", distinct=True),
+                bookmarks_count=Count("bookmarked_by", distinct=True),
+            )
+            .order_by('-created_at')
+        )
     def get_serializer_context(self):
         context = super().get_serializer_context()
         context["request"] = self.request

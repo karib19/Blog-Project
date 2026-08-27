@@ -339,7 +339,7 @@ class LikeSerializer(serializers.ModelSerializer):
 
 
 class BookmarkSerializer(serializers.ModelSerializer):
-    post = PostSerializer(read_only=True)
+    post = PostListSerializer(read_only=True)
 
     class Meta:
         model = Bookmark
