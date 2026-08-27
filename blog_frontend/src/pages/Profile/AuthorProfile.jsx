@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import api from "../../api/axios";
 import PostCard from "../../components/post/PostCard";
 
 function AuthorProfile() {
   const { username } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const token = localStorage.getItem("access");
 
   const [author, setAuthor] = useState(null);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [followLoading, setFollowLoading] = useState(false);
 
-  useEffect(() => {
+  const loadAuthor = () => {
     setLoading(true);
 
     api
@@ -25,7 +29,36 @@ function AuthorProfile() {
       .finally(() => {
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    loadAuthor();
   }, [username]);
+
+  const handleFollowToggle = async () => {
+    if (!token) {
+      navigate("/login", { state: { from: location.pathname } });
+      return;
+    }
+
+    setFollowLoading(true);
+
+    try {
+      const response = await api.post(`follow/${username}/`);
+
+      setAuthor((prev) => ({
+        ...prev,
+        is_following: response.data.is_following,
+        followers_count: response.data.is_following
+          ? prev.followers_count + 1
+          : prev.followers_count - 1,
+      }));
+    } catch (error) {
+      console.error(error.response?.data);
+    } finally {
+      setFollowLoading(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -55,11 +88,13 @@ function AuthorProfile() {
       ? `${author.first_name} ${author.last_name}`.trim()
       : author.username;
 
+  const isOwnProfile = localStorage.getItem("username") === username;
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
 
       {/* Author Header */}
-      <div className="bg-linear-to-r from-rose-800 to-slate-800 rounded-3xl shadow-xl text-white p-8 mb-10">
+      <div className="bg-linear-to-r from-rose-800 to-slate-900 rounded-3xl shadow-xl text-white p-8 mb-10">
 
         <div className="flex flex-col md:flex-row items-center gap-6">
 
@@ -75,7 +110,7 @@ function AuthorProfile() {
             </div>
           )}
 
-          <div className="text-center md:text-left">
+          <div className="flex-1 text-center md:text-left">
 
             <h1
               className="text-3xl font-semibold"
@@ -92,7 +127,11 @@ function AuthorProfile() {
               className="flex items-center justify-center md:justify-start gap-4 mt-3 text-sm text-rose-100"
               style={{ fontFamily: "var(--font-mono, monospace)" }}
             >
-              <span>{author.total_posts} posts published</span>
+              <span>{author.total_posts} posts</span>
+              <span>·</span>
+              <span>{author.followers_count} followers</span>
+              <span>·</span>
+              <span>{author.following_count} following</span>
 
               {author.joined && (
                 <>
@@ -108,6 +147,24 @@ function AuthorProfile() {
             </div>
 
           </div>
+
+          {!isOwnProfile && (
+            <button
+              onClick={handleFollowToggle}
+              disabled={followLoading}
+              className={`px-6 py-2.5 rounded-full font-semibold text-sm transition disabled:opacity-50 ${
+                author.is_following
+                  ? "bg-white/10 border border-white/40 text-white hover:bg-white/20"
+                  : "bg-white text-rose-800 hover:bg-rose-50"
+              }`}
+            >
+              {followLoading
+                ? "..."
+                : author.is_following
+                ? "Following ✓"
+                : "+ Follow"}
+            </button>
+          )}
 
         </div>
 
