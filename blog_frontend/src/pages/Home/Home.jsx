@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import api from "../../api/axios";
 import PostCard from "../../components/post/PostCard";
@@ -20,9 +20,7 @@ function Home() {
   const [previousPage, setPreviousPage] = useState(null);
   const [page, setPage] = useState(1);
 
-  const loadPosts = useCallback(() => {
-    setLoading(true);
-
+  useEffect(() => {
     const params = new URLSearchParams();
 
     if (search) params.append("search", search);
@@ -46,10 +44,6 @@ function Home() {
         setLoading(false);
       });
   }, [search, category, tag, ordering, page]);
-
-  useEffect(() => {
-    loadPosts();
-  }, [loadPosts]);
 
   useEffect(() => {
     api

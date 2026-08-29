@@ -7,10 +7,7 @@ function MyBookmarks() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-   loadBookmarks();
-  }, []);
-
-  const loadBookmarks = async () => {
+      const loadBookmarks = async () => {
     try {
       const response = await api.get(
         "my-bookmarks/"
@@ -25,6 +22,10 @@ function MyBookmarks() {
       setLoading(false);
     }
   };
+   loadBookmarks();
+  }, []);
+
+
 
   if (loading) {
     return (

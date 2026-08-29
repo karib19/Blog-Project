@@ -9,7 +9,7 @@ function Archive() {
   const [summary, setSummary] = useState([]);
   const [posts, setPosts] = useState([]);
   const [loadingSummary, setLoadingSummary] = useState(true);
-  const [loadingPosts, setLoadingPosts] = useState(false);
+  const [loadedArchiveKey, setLoadedArchiveKey] = useState(null);
 
   useEffect(() => {
     api
@@ -26,26 +26,34 @@ function Archive() {
   }, []);
 
   useEffect(() => {
-    if (!year || !month) {
-      setPosts([]);
-      return;
-    }
+    if (!year || !month) return;
 
-    setLoadingPosts(true);
+    let cancelled = false;
 
     api
       .get(`archive/${year}/${month}/`)
       .then((response) => {
+        if (cancelled) return;
         setPosts(response.data.results || response.data);
       })
       .catch((error) => {
+        if (cancelled) return;
         console.error(error.response?.data);
       })
       .finally(() => {
-        setLoadingPosts(false);
+        if (!cancelled) {
+          setLoadedArchiveKey(`${year}-${month}`);
+        }
       });
+
+    return () => {
+      cancelled = true;
+    };
   }, [year, month]);
 
+  const hasArchiveSelection = Boolean(year && month);
+  const archiveKey = hasArchiveSelection ? `${year}-${month}` : null;
+  const loadingPosts = hasArchiveSelection && loadedArchiveKey !== archiveKey;
   const activeLabel = summary.find(
     (item) => String(item.year) === year && String(item.month) === month
   )?.label;
@@ -130,7 +138,7 @@ function Archive() {
         {/* Posts */}
         <div>
 
-          {!year || !month ? (
+          {!hasArchiveSelection ? (
 
             <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-16 text-center dark:bg-slate-900 dark:border-slate-800">
               <p className="text-slate-500 dark:text-slate-400">

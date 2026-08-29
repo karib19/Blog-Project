@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
@@ -25,8 +25,7 @@ function EditPost() {
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
 
-  const [previewImage, setPreviewImage] =
-    useState("");
+  const [previewImage, setPreviewImage] = useState("");
 
   const [formData, setFormData] = useState({
     title: "",
@@ -39,76 +38,91 @@ function EditPost() {
     featured_image: null,
   });
 
-  useEffect(() => {
-    loadCategories();
-    loadTags();
-    loadPost();
-  }, [slug]);
-
-  const loadCategories = async () => {
+  // =========================
+  // LOAD CATEGORIES
+  // =========================
+  const loadCategories = useCallback(async () => {
     try {
-      const response = await api.get(
-        "categories/"
-      );
+      const response = await api.get("categories/");
 
-      setCategories(
-        response.data.results || response.data
-      );
+      setCategories(response.data.results || response.data);
     } catch (error) {
-      console.error(error.response?.data);
+      console.error(
+        "Failed to load categories:",
+        error.response?.data || error.message
+      );
     }
-  };
+  }, []);
 
-  const loadTags = async () => {
+  // =========================
+  // LOAD TAGS
+  // =========================
+  const loadTags = useCallback(async () => {
     try {
       const response = await api.get("tags/");
 
-      setTags(
-        response.data.results || response.data
-      );
+      setTags(response.data.results || response.data);
     } catch (error) {
-      console.error(error.response?.data);
-    }
-  };
-
-  const loadPost = async () => {
-    try {
-      const response = await api.get(
-        `posts/${slug}/`
+      console.error(
+        "Failed to load tags:",
+        error.response?.data || error.message
       );
+    }
+  }, []);
+
+  // =========================
+  // LOAD POST
+  // =========================
+  const loadPost = useCallback(async () => {
+    if (!slug) return;
+
+    try {
+      const response = await api.get(`posts/${slug}/`);
+
+      const post = response.data;
 
       setFormData({
-        title: response.data.title,
-        category:
-          response.data.category?.id || "",
-        tags: response.data.tags.map((tag) =>
-          String(tag.id)
-        ),
-        content: response.data.content,
-        meta_description: response.data.meta_description || "",
-        status: response.data.status || "draft",
-        published_at: response.data.published_at
-          ? response.data.published_at.slice(0, 16)
+        title: post.title || "",
+        category: post.category?.id || "",
+        tags: (post.tags || []).map((tag) => String(tag.id)),
+        content: post.content || "",
+        meta_description: post.meta_description || "",
+        status: post.status || "draft",
+        published_at: post.published_at
+          ? post.published_at.slice(0, 16)
           : "",
         featured_image: null,
       });
 
-      setPreviewImage(
-        response.data.featured_image
-      );
+      setPreviewImage(post.featured_image || "");
     } catch (error) {
-      console.error(error.response?.data);
+      console.error(
+        "Failed to load post:",
+        error.response?.data || error.message
+      );
     }
-  };
+  }, [slug]);
 
+  // =========================
+  // LOAD INITIAL DATA
+  // =========================
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      loadCategories();
+      loadTags();
+      loadPost();
+    }, 0);
+
+    return () => clearTimeout(timer);
+  }, [loadCategories, loadTags, loadPost]);
+
+  // =========================
+  // HANDLE INPUT CHANGE
+  // =========================
   const handleChange = (e) => {
-    const {
-      name,
-      value,
-      files,
-      options,
-    } = e.target;
+    const { name, value, files, options } = e.target;
 
+    // Featured image
     if (files) {
       const file = files[0];
 
@@ -118,18 +132,15 @@ function EditPost() {
       }));
 
       if (file) {
-        setPreviewImage(
-          URL.createObjectURL(file)
-        );
+        setPreviewImage(URL.createObjectURL(file));
       }
 
       return;
     }
 
+    // Multiple tags
     if (name === "tags") {
-      const selectedTags = Array.from(
-        options
-      )
+      const selectedTags = Array.from(options)
         .filter((option) => option.selected)
         .map((option) => option.value);
 
@@ -141,12 +152,16 @@ function EditPost() {
       return;
     }
 
+    // Normal inputs
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
+  // =========================
+  // HANDLE QUILL CONTENT
+  // =========================
   const handleContentChange = (value) => {
     setFormData((prev) => ({
       ...prev,
@@ -154,6 +169,9 @@ function EditPost() {
     }));
   };
 
+  // =========================
+  // HANDLE SUBMIT
+  // =========================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -176,30 +194,25 @@ function EditPost() {
     });
 
     if (formData.featured_image) {
-      data.append(
-        "featured_image",
-        formData.featured_image
-      );
+      data.append("featured_image", formData.featured_image);
     }
 
     try {
-      await api.put(
-        `posts/${slug}/update/`,
-        data,
-        {
-          headers: {
-            "Content-Type":
-              "multipart/form-data",
-          },
-        }
-      );
+      await api.put(`posts/${slug}/update/`, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       alert("Post Updated Successfully");
 
       navigate("/dashboard");
-
     } catch (error) {
-      console.error(error.response?.data);
+      console.error(
+        "Update failed:",
+        error.response?.data || error.message
+      );
+
       alert("Update Failed");
     } finally {
       setLoading(false);
@@ -208,9 +221,8 @@ function EditPost() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
-
+      {/* Header */}
       <div className="bg-linear-to-r from-rose-800 via-rose-900 to-slate-800 rounded-3xl p-8 shadow-xl text-white mb-8">
-
         <h1
           className="text-4xl font-semibold"
           style={{ fontFamily: "var(--font-serif, serif)" }}
@@ -221,16 +233,15 @@ function EditPost() {
         <p className="mt-3 text-orange-100 text-lg">
           Update your article and keep it fresh.
         </p>
-
       </div>
 
+      {/* Form */}
       <form
         onSubmit={handleSubmit}
         className="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 space-y-7 dark:bg-slate-900 dark:border-slate-800"
       >
-
+        {/* Title */}
         <div>
-
           <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
             Post Title
           </label>
@@ -243,13 +254,12 @@ function EditPost() {
             required
             className="w-full rounded-xl border border-slate-300 px-4 py-3 bg-white text-slate-900 focus:ring-2 focus:ring-orange-600 outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
           />
-
         </div>
 
+        {/* Category + Tags */}
         <div className="grid md:grid-cols-2 gap-6">
-
+          {/* Category */}
           <div>
-
             <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
               Category
             </label>
@@ -261,25 +271,18 @@ function EditPost() {
               required
               className="w-full rounded-xl border border-slate-300 px-4 py-3 bg-white text-slate-900 focus:ring-2 focus:ring-orange-600 outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
             >
-              <option value="">
-                Select Category
-              </option>
+              <option value="">Select Category</option>
 
               {categories.map((category) => (
-                <option
-                  key={category.id}
-                  value={category.id}
-                >
+                <option key={category.id} value={category.id}>
                   {category.name}
                 </option>
               ))}
-
             </select>
-
           </div>
 
+          {/* Tags */}
           <div>
-
             <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
               Tags
             </label>
@@ -292,33 +295,26 @@ function EditPost() {
               className="w-full h-36 rounded-xl border border-slate-300 px-4 py-3 bg-white text-slate-900 focus:ring-2 focus:ring-orange-600 outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"
             >
               {tags.map((tag) => (
-                <option
-                  key={tag.id}
-                  value={tag.id}
-                >
+                <option key={tag.id} value={tag.id}>
                   {tag.name}
                 </option>
               ))}
             </select>
-
           </div>
-
         </div>
 
+        {/* Featured Image */}
         <div>
-
           <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
             Featured Image
           </label>
 
           {previewImage && (
-
             <img
               src={previewImage}
               alt="Preview"
               className="w-full md:w-96 h-60 object-cover rounded-2xl border border-slate-200 shadow-md mb-4 dark:border-slate-700"
             />
-
           )}
 
           <input
@@ -328,21 +324,24 @@ function EditPost() {
             onChange={handleChange}
             className="block w-full rounded-xl border border-slate-300 p-3 text-slate-700 file:bg-orange-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded-lg file:cursor-pointer dark:border-slate-700 dark:text-slate-300"
           />
-
         </div>
 
+        {/* Content */}
         <div>
-
           <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
             Content
           </label>
 
           <div
             className="rounded-xl overflow-hidden border border-slate-300 focus-within:ring-2 focus-within:ring-orange-600 dark:border-slate-700
-            [&_.ql-toolbar]:dark:bg-slate-800 [&_.ql-toolbar]:dark:border-slate-700
-            [&_.ql-container]:dark:bg-slate-800 [&_.ql-container]:dark:border-slate-700
-            [&_.ql-editor]:dark:text-slate-100 [&_.ql-editor.ql-blank::before]:dark:text-slate-500
-            [&_.ql-stroke]:dark:stroke-slate-300 [&_.ql-fill]:dark:fill-slate-300
+            [&_.ql-toolbar]:dark:bg-slate-800
+            [&_.ql-toolbar]:dark:border-slate-700
+            [&_.ql-container]:dark:bg-slate-800
+            [&_.ql-container]:dark:border-slate-700
+            [&_.ql-editor]:dark:text-slate-100
+            [&_.ql-editor.ql-blank::before]:dark:text-slate-500
+            [&_.ql-stroke]:dark:stroke-slate-300
+            [&_.ql-fill]:dark:fill-slate-300
             [&_.ql-picker-label]:dark:text-slate-300"
           >
             <ReactQuill
@@ -354,11 +353,10 @@ function EditPost() {
               className="bg-white dark:bg-slate-800 [&_.ql-container]:min-h-70 [&_.ql-container]:text-base"
             />
           </div>
-
         </div>
 
+        {/* Meta Description */}
         <div>
-
           <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
             Meta Description (SEO)
           </label>
@@ -376,17 +374,15 @@ function EditPost() {
           <p className="text-xs text-slate-400 mt-1 dark:text-slate-500">
             {formData.meta_description.length}/160 characters
           </p>
-
         </div>
 
+        {/* Publish Status */}
         <div>
-
           <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
             Publish Status
           </label>
 
           <div className="grid sm:grid-cols-3 gap-3">
-
             {[
               { value: "draft", label: "📝 Save as Draft" },
               { value: "published", label: "🚀 Publish Now" },
@@ -396,7 +392,10 @@ function EditPost() {
                 key={option.value}
                 type="button"
                 onClick={() =>
-                  setFormData((prev) => ({ ...prev, status: option.value }))
+                  setFormData((prev) => ({
+                    ...prev,
+                    status: option.value,
+                  }))
                 }
                 className={`py-3 px-4 rounded-xl font-medium text-sm border transition ${
                   formData.status === option.value
@@ -407,12 +406,11 @@ function EditPost() {
                 {option.label}
               </button>
             ))}
-
           </div>
 
+          {/* Scheduled Date */}
           {formData.status === "scheduled" && (
             <div className="mt-4">
-
               <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
                 Publish Date & Time
               </label>
@@ -430,14 +428,12 @@ function EditPost() {
               <p className="text-xs text-slate-400 mt-1 dark:text-slate-500">
                 Your post will automatically go live at this date and time.
               </p>
-
             </div>
           )}
-
         </div>
 
+        {/* Submit */}
         <div>
-
           <button
             type="submit"
             disabled={loading}
@@ -447,11 +443,8 @@ function EditPost() {
                 : "bg-orange-700 hover:bg-orange-800 text-white dark:bg-orange-600 dark:hover:bg-orange-500"
             }`}
           >
-
             {loading ? (
-
               <span className="flex items-center justify-center gap-3">
-
                 <svg
                   className="animate-spin h-5 w-5"
                   xmlns="http://www.w3.org/2000/svg"
@@ -475,41 +468,28 @@ function EditPost() {
                 </svg>
 
                 Updating Post...
-
               </span>
-
             ) : (
               "💾 Update Post"
             )}
-
           </button>
-
         </div>
-
       </form>
 
+      {/* Editing Tips */}
       <div className="mt-8 bg-rose-100 border border-rose-100 rounded-2xl p-6 dark:bg-rose-950/20 dark:border-rose-900/40">
-
         <h2 className="text-xl font-bold text-slate-800 mb-3 dark:text-white">
           Editing Tips
         </h2>
 
         <ul className="space-y-2 text-slate-700 list-disc list-inside dark:text-slate-300">
-
           <li>Keep the title short and descriptive.</li>
-
           <li>Update outdated information before publishing.</li>
-
           <li>Add or remove tags if needed.</li>
-
           <li>Replace the featured image for better engagement.</li>
-
           <li>Review grammar and formatting before saving.</li>
-
         </ul>
-
       </div>
-
     </div>
   );
 }

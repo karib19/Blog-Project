@@ -3,7 +3,7 @@ import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import CommentItem from "../../components/post/CommentItem";
 import PopularSidebar from "../../components/post/Popularsidebar";
-import TableOfContents, {injectHeadingIds} from "../../components/post/TableOfContents";
+import TableOfContents, { injectHeadingIds } from "../../components/post/TableOfContents";
 import api from "../../api/axios";
 
 function PostDetail() {
@@ -24,8 +24,6 @@ function PostDetail() {
   const [tocOpen, setTocOpen] = useState(false);
 
   const loadPost = () => {
-    setLoading(true);
-
     api
       .get(`posts/${slug}/`)
       .then((response) => {
@@ -63,7 +61,7 @@ function PostDetail() {
         .then((response) => {
           setCurrentUserId(response.data.id);
         })
-        .catch(() => {});
+        .catch(() => { });
     }
   }, [token]);
 
@@ -81,9 +79,6 @@ function PostDetail() {
   useEffect(() => {
     loadPost();
     loadComments();
-
-
-    setTocOpen(false);
   }, [slug]);
 
   // Close drawer with Escape key
@@ -606,12 +601,12 @@ function PostDetail() {
         {/* DESKTOP SIDEBAR */}
 
         <aside className="hidden lg:block lg:sticky lg:top-24 h-fit min-w-0 space-y-6">
-  <div className="min-w-0 max-w-full overflow-hidden">
-    <TableOfContents headings={headings} />
-  </div>
+          <div className="min-w-0 max-w-full overflow-hidden">
+            <TableOfContents headings={headings} />
+          </div>
 
-  <PopularSidebar excludeSlug={slug} />
-</aside>
+          <PopularSidebar excludeSlug={slug} />
+        </aside>
       </div>
 
       {/* MOBILE TABLE OF CONTENTS */}
@@ -655,9 +650,8 @@ function PostDetail() {
           {/* Mobile Drawer */}
 
           <aside
-            className={`lg:hidden fixed top-0 right-0 bottom-0 z-60 w-[min(85vw,360px)] bg-white dark:bg-slate-950 shadow-2xl border-l border-slate-200 dark:border-slate-800 transform transition-transform duration-300 ease-in-out ${
-              tocOpen ? "translate-x-0" : "translate-x-full"
-            }`}
+            className={`lg:hidden fixed top-0 right-0 bottom-0 z-60 w-[min(85vw,360px)] bg-white dark:bg-slate-950 shadow-2xl border-l border-slate-200 dark:border-slate-800 transform transition-transform duration-300 ease-in-out ${tocOpen ? "translate-x-0" : "translate-x-full"
+              }`}
             aria-label="Table of contents"
           >
             <div className="h-full flex flex-col">

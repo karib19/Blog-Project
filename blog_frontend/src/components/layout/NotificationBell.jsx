@@ -108,71 +108,100 @@ function NotificationBell() {
     }
   };
 
-  const handleNotificationClick = async (notification) => {
-    if (!notification.is_read) {
-      try {
-        await api.post(
-          `notifications/${notification.id}/read/`
-        );
-
-        setNotifications((prev) =>
-          prev.map((n) =>
-            n.id === notification.id
-              ? { ...n, is_read: true }
-              : n
-          )
-        );
-
-        setUnreadCount((prev) => Math.max(0, prev - 1));
-      } catch (error) {
-        console.error(error.response?.data);
-      }
-    }
-
-    setOpen(false);
-
-    if (notification.post_slug) {
-      navigate(`/posts/${notification.post_slug}`);
-    }
-  };
-
-  const getMessage = (notification) => {
-    if (notification.notification_type === "like") {
-      return (
-        <>
-          <span className="font-semibold text-slate-900 dark:text-white">
-            {notification.sender_username}
-          </span>{" "}
-          liked your post{" "}
-          <span className="font-semibold text-slate-900 dark:text-white">
-            "{notification.post_title}"
-          </span>
-        </>
+const handleNotificationClick = async (notification) => {
+  if (!notification.is_read) {
+    try {
+      await api.post(
+        `notifications/${notification.id}/read/`
       );
-    }
 
-    if (notification.notification_type === "comment") {
-      return (
-        <>
-          <span className="font-semibold text-slate-900 dark:text-white">
-            {notification.sender_username}
-          </span>{" "}
-          commented on{" "}
-          <span className="font-semibold text-slate-900 dark:text-white">
-            "{notification.post_title}"
-          </span>
-        </>
+      setNotifications((prev) =>
+        prev.map((n) =>
+          n.id === notification.id
+            ? { ...n, is_read: true }
+            : n
+        )
       );
+
+      setUnreadCount((prev) => Math.max(0, prev - 1));
+    } catch (error) {
+      console.error(error.response?.data);
     }
+  }
 
-    return "New notification";
-  };
+  setOpen(false);
 
-  const getIcon = (type) => {
-    if (type === "like") return "❤️";
-    if (type === "comment") return "💬";
-    return "🔔";
-  };
+  if (notification.notification_type === "follow") {
+    navigate(`/author/${notification.sender_username}`);
+  } else if (notification.post_slug) {
+    navigate(`/posts/${notification.post_slug}`);
+  }
+};
+
+const getMessage = (notification) => {
+  if (notification.notification_type === "like") {
+    return (
+      <>
+        <span className="font-semibold text-slate-900 dark:text-white">
+          {notification.sender_username}
+        </span>{" "}
+        liked your post{" "}
+        <span className="font-semibold text-slate-900 dark:text-white">
+          "{notification.post_title}"
+        </span>
+      </>
+    );
+  }
+
+  if (notification.notification_type === "comment") {
+    return (
+      <>
+        <span className="font-semibold text-slate-900 dark:text-white">
+          {notification.sender_username}
+        </span>{" "}
+        commented on{" "}
+        <span className="font-semibold text-slate-900 dark:text-white">
+          "{notification.post_title}"
+        </span>
+      </>
+    );
+  }
+
+  if (notification.notification_type === "follow") {
+    return (
+      <>
+        <span className="font-semibold text-slate-900 dark:text-white">
+          {notification.sender_username}
+        </span>{" "}
+        started following you
+      </>
+    );
+  }
+
+  if (notification.notification_type === "new_post") {
+    return (
+      <>
+        <span className="font-semibold text-slate-900 dark:text-white">
+          {notification.sender_username}
+        </span>{" "}
+        published a new post{" "}
+        <span className="font-semibold text-slate-900 dark:text-white">
+          "{notification.post_title}"
+        </span>
+      </>
+    );
+  }
+
+  return "New notification";
+};
+
+const getIcon = (type) => {
+  if (type === "like") return "❤️";
+  if (type === "comment") return "💬";
+  if (type === "follow") return "👤";
+  if (type === "new_post") return "📝";
+  return "🔔";
+};
 
   return (
     <div
@@ -303,24 +332,17 @@ function NotificationBell() {
                   {/* Type Icon */}
                   <span
                     className={`
-                      flex
-                      h-9
-                      w-9
-                      shrink-0
-                      items-center
-                      justify-center
-                      rounded-full
-                      text-base
-                      ${
-                        notification.notification_type ===
-                        "like"
-                          ? "bg-rose-50 dark:bg-rose-950/40"
-                          : notification.notification_type ===
-                            "comment"
-                          ? "bg-slate-100 dark:bg-slate-800"
-                          : "bg-slate-100 dark:bg-slate-800"
-                      }
-                    `}
+  flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-base
+  ${
+    notification.notification_type === "like"
+      ? "bg-rose-50 dark:bg-rose-950/40"
+      : notification.notification_type === "follow"
+      ? "bg-blue-50 dark:bg-blue-950/40"
+      : notification.notification_type === "new_post"
+      ? "bg-emerald-50 dark:bg-emerald-950/40"
+      : "bg-slate-100 dark:bg-slate-800"
+  }
+`}
                   >
                     {getIcon(
                       notification.notification_type

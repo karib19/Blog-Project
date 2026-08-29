@@ -1,15 +1,5 @@
 import { useEffect, useState } from "react";
 
-function slugifyHeading(text, index) {
-  const base = text
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, "")
-    .replace(/\s+/g, "-");
-
-  return `${base || "section"}-${index}`;
-}
-
 export function injectHeadingIds(html) {
   if (!html) {
     return {
@@ -18,31 +8,55 @@ export function injectHeadingIds(html) {
     };
   }
 
-  const container = document.createElement("div");
-  container.innerHTML = html;
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html");
 
-  const headingNodes = container.querySelectorAll("h1, h2, h3");
+  const headingElements = doc.querySelectorAll("h1, h2, h3");
 
   const headings = [];
+  const usedIds = new Set();
 
-  headingNodes.forEach((node, index) => {
-    const text = node.textContent || "";
-    const id = slugifyHeading(text, index);
+  headingElements.forEach((heading, index) => {
+    const text = heading.textContent?.trim() || `heading-${index + 1}`;
 
-    node.id = id;
+    // Create a URL-friendly ID from heading text
+    let baseId = text
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-");
+
+    if (!baseId) {
+      baseId = `heading-${index + 1}`;
+    }
+
+    // Make sure IDs are unique
+    let id = baseId;
+    let counter = 2;
+
+    while (usedIds.has(id)) {
+      id = `${baseId}-${counter}`;
+      counter++;
+    }
+
+    usedIds.add(id);
+
+    heading.id = id;
 
     headings.push({
       id,
       text,
-      level: parseInt(node.tagName.replace("H", ""), 10),
+      level: Number(heading.tagName.substring(1)),
     });
   });
 
   return {
-    html: container.innerHTML,
+    html: doc.body.innerHTML,
     headings,
   };
 }
+
 
 function TableOfContents({ headings }) {
   const [activeId, setActiveId] = useState(null);
@@ -81,7 +95,9 @@ function TableOfContents({ headings }) {
 
     if (el) {
       const y =
-        el.getBoundingClientRect().top + window.scrollY - 90;
+        el.getBoundingClientRect().top +
+        window.scrollY -
+        90;
 
       window.scrollTo({
         top: y,
@@ -92,6 +108,7 @@ function TableOfContents({ headings }) {
 
   return (
     <div className="w-full min-w-0 max-w-full overflow-hidden bg-white rounded-2xl border border-slate-200 p-6 dark:bg-slate-900 dark:border-slate-800">
+
       {/* Header */}
 
       <h3
@@ -106,12 +123,13 @@ function TableOfContents({ headings }) {
       {/* Navigation */}
 
       <nav className="w-full min-w-0 max-w-full overflow-hidden space-y-1 border-l border-slate-200 dark:border-slate-800">
+
         {headings.map((heading) => (
           <button
             key={heading.id}
             type="button"
             onClick={() => handleClick(heading.id)}
-            className={`block w-full min-w-0 max-w-full text-left text-sm py-1.5 border-l-2 -ml-px transition whitespace-normal break-words overflow-wrap-anywhere ${
+            className={`block w-full min-w-0 max-w-full text-left text-sm py-1.5 border-l-2 -ml-px transition whitespace-normal wrap-break-words overflow-wrap-anywhere ${
               activeId === heading.id
                 ? "border-rose-800 text-rose-800 font-semibold dark:border-rose-400 dark:text-rose-400"
                 : "border-transparent text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
@@ -124,6 +142,7 @@ function TableOfContents({ headings }) {
             {heading.text}
           </button>
         ))}
+
       </nav>
     </div>
   );
