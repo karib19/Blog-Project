@@ -4,6 +4,7 @@ from django.db.models.functions import TruncMonth
 from rest_framework import generics, filters, status
 from .serializers import PostSerializer, PostListSerializer, CategorySerializer, TagSerializer, RegisterSerializer, VerifyOTPSerializer, CustomTokenObtainPairSerializer, CommentSerializer, LikeSerializer, BookmarkSerializer, PostCreateUpdateSerializer, UserSerializer, PasswordResetRequestSerializer, PasswordResetConfirmSerializer, NotificationSerializer, FollowUserSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Post, Category, Tag, Comment, Like, Bookmark, PasswordResetToken, Notification, EmailOTP, Follow
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
@@ -19,6 +20,9 @@ from .utils import send_otp_email, send_password_reset_email, auto_publish_sched
 from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.conf import settings
+
+from google.oauth2 import id_token
+from google.auth.transport import requests as google_requests
 
 
 
@@ -730,3 +734,57 @@ class FollowingListAPIView(generics.ListAPIView):
         username = self.kwargs['username']
         user = get_object_or_404(User, username=username)
         return User.objects.filter(followers__follower=user)
+
+
+
+class GoogleLoginAPIView(APIView):
+    permission_classes = []
+
+    def post(self, request):
+        token = request.data.get("credential")
+
+        if not token:
+            return Response(
+                {"error": "No credential provided."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            idinfo = id_token.verify_oauth2_token(
+                token,
+                google_requests.Request(),
+                settings.GOOGLE_CLIENT_ID
+            )
+        except ValueError:
+            return Response(
+                {"error": "Invalid Google token."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        email = idinfo.get("email")
+        first_name = idinfo.get("given_name", "")
+        last_name = idinfo.get("family_name", "")
+
+        if not email:
+            return Response(
+                {"error": "Email not found in Google account."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        user, created = User.objects.get_or_create(
+            email=email,
+            defaults={
+                "username": email.split("@")[0],
+                "first_name": first_name,
+                "last_name": last_name,
+                "is_active": True,
+            }
+        )
+
+        refresh = RefreshToken.for_user(user)
+
+        return Response({
+            "access": str(refresh.access_token),
+            "refresh": str(refresh),
+            "created": created,
+        }, status=status.HTTP_200_OK)

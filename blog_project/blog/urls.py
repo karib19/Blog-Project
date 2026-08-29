@@ -38,4 +38,5 @@ urlpatterns = [
     path("api/follow/<str:username>/", FollowToggleAPIView.as_view(), name="follow-toggle"),
     path("api/followers/<str:username>/", FollowersListAPIView.as_view(), name="followers-list"),
     path("api/following/<str:username>/", FollowingListAPIView.as_view(), name="following-list"),
+    path("api/auth/google/", GoogleLoginAPIView.as_view(), name="google-login"),
 ]
