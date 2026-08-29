@@ -17,6 +17,9 @@ import os
 
 load_dotenv()
 
+db = dj_database_url.config(default=os.environ.get("DATABASE_URL"))
+print(db)
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
