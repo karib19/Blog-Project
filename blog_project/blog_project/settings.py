@@ -37,6 +37,8 @@ ALLOWED_HOSTS = [
     "blog-project-1-z76j.onrender.com",
 ]
 
+
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "https://blog-project-mu-one.vercel.app",
