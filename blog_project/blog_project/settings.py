@@ -10,12 +10,16 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 from pathlib import Path
-import cloudinary
-import dj_database_url
-from dotenv import load_dotenv
 import os
 
-load_dotenv()
+from dotenv import load_dotenv
+import dj_database_url
+import cloudinary
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(BASE_DIR / ".env")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -137,7 +141,7 @@ WSGI_APPLICATION = 'blog_project.wsgi.application'
 
 DATABASES = {
     "default": dj_database_url.config(
-        default="postgresql://neondb_owner:npg_YFuvD2tc7NzV@ep-sparkling-boat-azaa3if1-pooler.c-3.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+        default=os.environ.get("DATABASE_URL")
     )
 }
 
