@@ -137,7 +137,7 @@ WSGI_APPLICATION = 'blog_project.wsgi.application'
 
 DATABASES = {
     "default": dj_database_url.config(
-        default=os.environ.get("DATABASE_URL")
+        default="postgresql://neondb_owner:npg_YFuvD2tc7NzV@ep-sparkling-boat-azaa3if1-pooler.c-3.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
     )
 }
 
