@@ -10,7 +10,7 @@ A modern full-stack Blog Application built with **Django REST Framework** and **
 
 **https://blog-project-mu-one.vercel.app/**
 
-### Backend API (Render)
+### Backend API (Neon)
 
 **https://blog-project-1-akx9.onrender.com/**
 
@@ -112,7 +112,7 @@ This project demonstrates a complete full-stack blog platform using Django REST 
 
 * Vercel (Frontend)
 * Render (Backend)
-* Render PostgreSQL Database
+* Neon PostgreSQL Database
 
 ---
 
@@ -151,26 +151,33 @@ Login.png
 Profile.png
 Register.png
 PostDetails.png
-Swagger.png
 ```
 
 
 ```md
-## Home
-
-![Home](screenshots/Home.png)
-
 ## Dashboard
 
 ![Dashboard](screenshots/Dashboard.png)
 
+## Home
+
+![Home](screenshots/Home.png)
+
+## Login API
+
+![Login](screenshots/Login.png)
+
+## Profile API
+
+![Profile](screenshots/Profile.png)
+
+## Register API
+
+![Register](screenshots/Register.png)
+
 ## Post Details
 
 ![Post Details](screenshots/PostDetails.png)
-
-## Swagger API
-
-![Swagger](screenshots/Swagger.png)
 ```
 
 ---

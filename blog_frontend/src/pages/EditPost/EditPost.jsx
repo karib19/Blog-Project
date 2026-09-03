@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import api from "../../api/axios";
+import useAutoSave, { loadDraft, clearDraft } from "../hooks/useAutoSave";
 
 const quillModules = {
   toolbar: [
@@ -20,7 +21,10 @@ function EditPost() {
   const { slug } = useParams();
   const navigate = useNavigate();
 
+  const draftKey = `blogsphere_edit_post_draft_${slug}`;
+
   const [loading, setLoading] = useState(false);
+  const [postLoaded, setPostLoaded] = useState(false);
 
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
@@ -37,6 +41,8 @@ function EditPost() {
     published_at: "",
     featured_image: null,
   });
+
+  const { lastSaved } = useAutoSave(draftKey, formData);
 
   // =========================
   // LOAD CATEGORIES
@@ -81,7 +87,7 @@ function EditPost() {
 
       const post = response.data;
 
-      setFormData({
+      const serverData = {
         title: post.title || "",
         category: post.category?.id || "",
         tags: (post.tags || []).map((tag) => String(tag.id)),
@@ -92,16 +98,38 @@ function EditPost() {
           ? post.published_at.slice(0, 16)
           : "",
         featured_image: null,
-      });
+      };
 
+      setFormData(serverData);
       setPreviewImage(post.featured_image || "");
+
+      const draft = loadDraft(draftKey);
+
+      if (draft?.data && draft.data.content !== serverData.content) {
+        const savedTime = new Date(draft.savedAt).toLocaleString();
+        const restore = window.confirm(
+          `Found unsaved changes to this post from ${savedTime}. Restore them?`
+        );
+
+        if (restore) {
+          setFormData((prev) => ({
+            ...prev,
+            ...draft.data,
+            featured_image: null,
+          }));
+        } else {
+          clearDraft(draftKey);
+        }
+      }
+
+      setPostLoaded(true);
     } catch (error) {
       console.error(
         "Failed to load post:",
         error.response?.data || error.message
       );
     }
-  }, [slug]);
+  }, [slug, draftKey]);
 
   // =========================
   // LOAD INITIAL DATA
@@ -122,7 +150,6 @@ function EditPost() {
   const handleChange = (e) => {
     const { name, value, files, options } = e.target;
 
-    // Featured image
     if (files) {
       const file = files[0];
 
@@ -138,7 +165,6 @@ function EditPost() {
       return;
     }
 
-    // Multiple tags
     if (name === "tags") {
       const selectedTags = Array.from(options)
         .filter((option) => option.selected)
@@ -152,7 +178,6 @@ function EditPost() {
       return;
     }
 
-    // Normal inputs
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -206,6 +231,8 @@ function EditPost() {
 
       alert("Post Updated Successfully");
 
+      clearDraft(draftKey);
+
       navigate("/dashboard");
     } catch (error) {
       console.error(
@@ -240,6 +267,13 @@ function EditPost() {
         onSubmit={handleSubmit}
         className="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 space-y-7 dark:bg-slate-900 dark:border-slate-800"
       >
+
+        {postLoaded && lastSaved && (
+          <p className="text-xs text-slate-400 -mb-3 dark:text-slate-500">
+            💾 Draft auto-saved at {lastSaved.toLocaleTimeString()}
+          </p>
+        )}
+
         {/* Title */}
         <div>
           <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
@@ -258,7 +292,6 @@ function EditPost() {
 
         {/* Category + Tags */}
         <div className="grid md:grid-cols-2 gap-6">
-          {/* Category */}
           <div>
             <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
               Category
@@ -281,7 +314,6 @@ function EditPost() {
             </select>
           </div>
 
-          {/* Tags */}
           <div>
             <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">
               Tags
@@ -408,7 +440,6 @@ function EditPost() {
             ))}
           </div>
 
-          {/* Scheduled Date */}
           {formData.status === "scheduled" && (
             <div className="mt-4">
               <label className="block font-semibold mb-2 text-slate-700 dark:text-slate-200">

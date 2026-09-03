@@ -1,6 +1,21 @@
-import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { NavLink, Link } from "react-router-dom";
+import api from "../../api/axios";
 
 function Footer() {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    api
+      .get("categories/")
+      .then((response) => {
+        setCategories(response.data.results || response.data);
+      })
+      .catch((error) => {
+        console.error(error.response?.data);
+      });
+  }, []);
+
   return (
     <footer className="mt-16 bg-slate-950 text-slate-300">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 py-12 sm:px-6 md:grid-cols-2 lg:grid-cols-4">
@@ -16,9 +31,9 @@ function Footer() {
           </h2>
 
           <p className="mt-4 max-w-sm text-sm leading-6 text-slate-400">
-            Discover programming, web development,
-            technology and modern software engineering
-            articles written by passionate developers.
+            BlogSphere is a home for stories worth reading — history,
+            sports, politics, technology and everything in between,
+            written by writers who care about their craft.
           </p>
         </div>
 
@@ -82,13 +97,24 @@ function Footer() {
             Categories
           </h3>
 
-          <ul className="space-y-2 text-sm text-slate-400">
-            <li>Programming</li>
-            <li>Python</li>
-            <li>React</li>
-            <li>Django</li>
-            <li>JavaScript</li>
-          </ul>
+          {categories.length === 0 ? (
+            <p className="text-sm text-slate-500">
+              No categories yet.
+            </p>
+          ) : (
+            <ul className="space-y-2 text-sm text-slate-400">
+              {categories.slice(0, 5).map((category) => (
+                <li key={category.id}>
+                  <Link
+                    to={`/?category=${category.id}`}
+                    className="transition hover:text-rose-400"
+                  >
+                    {category.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         {/* Contact */}

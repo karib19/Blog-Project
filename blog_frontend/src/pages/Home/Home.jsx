@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
-import { Helmet } from "react-helmet-async";
+import { useEffect, useState, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 import api from "../../api/axios";
 import PostCard from "../../components/post/PostCard";
-import TrendingStrip from "../../components/post/TrendingStrip";
 
 function Home() {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -12,7 +13,7 @@ function Home() {
   const [tags, setTags] = useState([]);
 
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(searchParams.get("category") || "");
   const [tag, setTag] = useState("");
   const [ordering, setOrdering] = useState("-created_at");
 
@@ -20,7 +21,9 @@ function Home() {
   const [previousPage, setPreviousPage] = useState(null);
   const [page, setPage] = useState(1);
 
-  useEffect(() => {
+  const loadPosts = useCallback(() => {
+    setLoading(true);
+
     const params = new URLSearchParams();
 
     if (search) params.append("search", search);
@@ -46,6 +49,14 @@ function Home() {
   }, [search, category, tag, ordering, page]);
 
   useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      loadPosts();
+    }, 0);
+
+    return () => clearTimeout(timeoutId);
+  }, [loadPosts]);
+
+  useEffect(() => {
     api
       .get("categories/")
       .then((response) => {
@@ -59,16 +70,17 @@ function Home() {
       });
   }, []);
 
+  // Keep the URL query param in sync when the category filter changes
+  useEffect(() => {
+    if (category) {
+      setSearchParams({ category }, { replace: true });
+    } else {
+      setSearchParams({}, { replace: true });
+    }
+  }, [category]);
+
   return (
     <div className="space-y-10">
-
-      <Helmet>
-  <title>BlogSphere — Discover Amazing Stories</title>
-  <meta
-    name="description"
-    content="Programming, AI, Technology, Sports, History and everything in between."
-  />
-</Helmet>
 
       {/* Hero */}
 
@@ -119,10 +131,6 @@ function Home() {
         </div>
 
       </section>
-
-      {/* Trending Strip */}
-
-    <TrendingStrip />
 
       {/* Filters */}
 

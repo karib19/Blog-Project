@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import api from "../../api/axios";
+import useAutoSave, { loadDraft, clearDraft } from "../hooks/useAutoSave";
 
 const quillModules = {
   toolbar: [
@@ -15,6 +16,8 @@ const quillModules = {
     ["clean"],
   ],
 };
+
+const DRAFT_KEY = "blogsphere_create_post_draft";
 
 function CreatePost() {
   const navigate = useNavigate();
@@ -37,6 +40,40 @@ function CreatePost() {
     published_at: "",
     featured_image: null,
   });
+
+  const { lastSaved } = useAutoSave(DRAFT_KEY, formData);
+
+  useEffect(() => {
+    const draft = loadDraft(DRAFT_KEY);
+
+    if (!(draft?.data?.title || draft?.data?.content)) {
+      return;
+    }
+
+    const savedTime = new Date(draft.savedAt).toLocaleString();
+
+    const restoreDraft = () => {
+      const restore = window.confirm(
+        `Found an unsaved draft from ${savedTime}. Restore it?`
+      );
+
+      if (restore) {
+        setFormData((prev) => ({
+          ...prev,
+          ...draft.data,
+          featured_image: null,
+        }));
+      } else {
+        clearDraft(DRAFT_KEY);
+      }
+    };
+
+    const timeoutId = window.setTimeout(restoreDraft, 0);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, []);
 
   useEffect(() => {
     api
@@ -159,6 +196,8 @@ function CreatePost() {
 
       alert("Post Created Successfully!");
 
+      clearDraft(DRAFT_KEY);
+
       setFormData({
         title: "",
         category: "",
@@ -204,6 +243,12 @@ function CreatePost() {
         onSubmit={handleSubmit}
         className="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 space-y-7 dark:bg-slate-900 dark:border-slate-800"
       >
+
+        {lastSaved && (
+          <p className="text-xs text-slate-400 -mb-3 dark:text-slate-500">
+            💾 Draft auto-saved at {lastSaved.toLocaleTimeString()}
+          </p>
+        )}
 
         <div>
 

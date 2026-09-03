@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../api/axios";
+import GoogleLoginButton from "../Auth/GoogleLoginButton";
 
 function Register() {
   const navigate = useNavigate();
+
 
   const [loading, setLoading] = useState(false);
 
@@ -358,6 +360,19 @@ localStorage.setItem(
           </button>
 
         </form>
+
+
+
+{/* Divider */}
+<div className="flex items-center gap-3 my-6">
+  <div className="flex-1 h-px bg-slate-200"></div>
+  <span className="text-sm text-slate-400">or</span>
+  <div className="flex-1 h-px bg-slate-200"></div>
+</div>
+
+<GoogleLoginButton />
+
+
 
         <div className="mt-8 text-center border-t border-slate-100 pt-6">
 
