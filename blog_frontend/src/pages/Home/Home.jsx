@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import api from "../../api/axios";
 import PostCard from "../../components/post/PostCard";
+import TrendingStrip from "../../components/post/Trendingstrip";
 
 function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -81,6 +82,8 @@ function Home() {
 
   return (
     <div className="space-y-10">
+
+      <TrendingStrip />
 
       {/* Hero */}
 
