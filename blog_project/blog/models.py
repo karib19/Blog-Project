@@ -37,23 +37,34 @@ class Post(models.Model):
     ]
 
     title = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True, blank=True, null=True)
+
+    slug = models.SlugField(
+        max_length=255,
+        unique=True,
+        blank=True,
+        null=True
+    )
+
     excerpt = models.TextField(
         max_length=300,
         blank=True,
         help_text="Short description for cards and SEO."
     )
+
     content = models.TextField()
+
     featured_image = models.ImageField(
         upload_to='posts/',
         blank=True,
         null=True
     )
+
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='posts'
     )
+
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
@@ -61,25 +72,34 @@ class Post(models.Model):
         blank=True,
         related_name='posts'
     )
+
     tags = models.ManyToManyField(
         Tag,
         blank=True,
         related_name='posts'
     )
+
     status = models.CharField(
         max_length=10,
         choices=STATUS_CHOICES,
         default='draft'
     )
+
     views = models.PositiveIntegerField(default=0)
+
     reading_time = models.PositiveIntegerField(default=1)
+
     is_featured = models.BooleanField(default=False)
+
     meta_description = models.CharField(
         max_length=160,
         blank=True
     )
+
     created_at = models.DateTimeField(auto_now_add=True)
+
     updated_at = models.DateTimeField(auto_now=True)
+
     published_at = models.DateTimeField(
         null=True,
         blank=True
@@ -89,11 +109,20 @@ class Post(models.Model):
         ordering = ['-created_at']
 
     def calculate_reading_time(self):
-        text_without_tags = re.sub(r'<[^>]+>', ' ', self.content or '')
+        text_without_tags = re.sub(
+            r'<[^>]+>',
+            ' ',
+            self.content or ''
+        )
+
         text_decoded = html.unescape(text_without_tags)
+
         text_decoded = text_decoded.replace('\xa0', ' ')
+
         word_count = len(text_decoded.split())
+
         minutes = math.ceil(word_count / 200)
+
         return max(minutes, 1)
 
     def save(self, *args, **kwargs):
