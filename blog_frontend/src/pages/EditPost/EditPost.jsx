@@ -89,7 +89,7 @@ function EditPost() {
 
       const serverData = {
         title: post.title || "",
-        category: post.category?.id || "",
+        category: post.category || "",
         tags: (post.tags || []).map((tag) => String(tag.id)),
         content: post.content || "",
         meta_description: post.meta_description || "",
