@@ -245,7 +245,7 @@ function CreatePost() {
       >
 
         {lastSaved && (
-          <p className="text-xs text-slate-400 -mb-3 dark:text-slate-500">
+          <p className="text-xs text-slate-400 mb-2 dark:text-slate-500">
             💾 Draft auto-saved at {lastSaved.toLocaleTimeString()}
           </p>
         )}
