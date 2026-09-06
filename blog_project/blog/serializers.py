@@ -5,6 +5,7 @@ from .models import Post, Category, Tag, Comment, Like, Bookmark, PasswordResetT
 from .utils import send_otp_email
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import EmailOTP
+from django.utils import timezone
 
 User = get_user_model()
 
