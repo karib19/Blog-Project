@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import PostListAPIView, PostDetailAPIView, CategoryListAPIView, TagListAPIView, CommentListCreateAPIView, CommentDeleteAPIView, LikeAPIView, ProfileAPIView, RegisterAPIView, VerifyOTPAPIView, test_email, ResendOTPAPIView, CustomTokenObtainPairView, PostCreateAPIView, PostUpdateAPIView, PostDeleteAPIView, BookmarkAPIView, MyPostsAPIView, MyBookmarksAPIView,DashboardAPIView, ChangePasswordAPIView, PasswordResetRequestAPIView, PasswordResetConfirmAPIView, NotificationListAPIView, MarkNotificationReadAPIView, MarkAllNotificationsReadAPIView, UnreadNotificationCountAPIView, TrendingPostsAPIView, PopularPostsAPIView, AuthorProfileAPIView, ArchiveSummaryAPIView, ArchiveByMonthAPIView, FollowToggleAPIView, FollowersListAPIView, FollowingListAPIView, GoogleLoginAPIView
+from .views import PostListAPIView, PostDetailAPIView, CategoryListAPIView, TagListAPIView, CommentListCreateAPIView, CommentDeleteAPIView, LikeAPIView, ProfileAPIView, RegisterAPIView, VerifyOTPAPIView, test_email, ResendOTPAPIView, CustomTokenObtainPairView, PostCreateAPIView, PostUpdateAPIView, PostDeleteAPIView, BookmarkAPIView, MyPostsAPIView, MyBookmarksAPIView,DashboardAPIView, ChangePasswordAPIView, PasswordResetRequestAPIView, PasswordResetConfirmAPIView, NotificationListAPIView, MarkNotificationReadAPIView, MarkAllNotificationsReadAPIView, UnreadNotificationCountAPIView, TrendingPostsAPIView, PopularPostsAPIView, AuthorProfileAPIView, ArchiveSummaryAPIView, ArchiveByMonthAPIView, FollowToggleAPIView, FollowersListAPIView, FollowingListAPIView, GoogleLoginAPIView, PostEditDetailAPIView
 
 
 urlpatterns = [
@@ -15,6 +15,7 @@ urlpatterns = [
     path("api/posts/popular/", PopularPostsAPIView.as_view(), name="popular-posts"),
     path('api/posts/<slug:slug>/',PostDetailAPIView.as_view(),name='api-post-detail'),
     path('api/posts/<slug:slug>/update/',PostUpdateAPIView.as_view(),name='post-update'),
+    path('posts/<slug:slug>/edit/', PostEditDetailAPIView.as_view(), name='post-edit-detail'),
     path('api/posts/<slug:slug>/delete/',PostDeleteAPIView.as_view(),name='post-delete'),
     path('api/my-posts/',MyPostsAPIView.as_view(),name='my-posts'),
     path('api/my-bookmarks/',MyBookmarksAPIView.as_view(),name='my-bookmarks'),

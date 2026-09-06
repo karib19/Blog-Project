@@ -83,7 +83,7 @@ function EditPost() {
     if (!slug) return;
 
     try {
-      const response = await api.get(`posts/${slug}/`);
+      const response = await api.get(`posts/${slug}/edit/`);
 
       const post = response.data;
 

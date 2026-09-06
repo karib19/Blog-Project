@@ -232,6 +232,14 @@ class PostUpdateAPIView(generics.UpdateAPIView):
         serializer.save()
 
 
+class PostEditDetailAPIView(generics.RetrieveAPIView):
+
+    queryset = Post.objects.all()
+    serializer_class = PostCreateUpdateSerializer  \
+    permission_classes = [IsAuthenticated, IsAuthorOrReadOnly]
+    lookup_field = 'slug'
+
+
 class PostDeleteAPIView(generics.DestroyAPIView):
     queryset = Post.objects.all()
     permission_classes = [IsAuthenticated, IsAuthorOrReadOnly]
