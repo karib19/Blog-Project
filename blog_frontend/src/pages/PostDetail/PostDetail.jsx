@@ -6,6 +6,8 @@ import PopularSidebar from "../../components/post/Popularsidebar";
 import TableOfContents, { injectHeadingIds } from "../../components/post/TableOfContents";
 import api from "../../api/axios";
 
+
+
 function PostDetail() {
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -288,33 +290,55 @@ function PostDetail() {
 
           {/* Author */}
 
-          <div className="flex flex-wrap justify-between gap-6 border-y border-slate-200 py-5 mb-8 dark:border-slate-800">
-            <div>
-              <Link
-                to={`/author/${post.author.username}`}
-                className="font-semibold text-lg text-slate-900 hover:text-rose-800 transition dark:text-white dark:hover:text-rose-400"
-              >
-                {post.author.username}
-              </Link>
+<div className="flex flex-wrap justify-between gap-6 border-y border-slate-200 py-5 mb-8 dark:border-slate-800">
 
-              <p className="text-slate-500 text-sm dark:text-slate-400">
-                Author
-              </p>
-            </div>
+  {/* Author Info */}
+  <div className="flex items-center gap-3">
 
-            <div
-              className="flex flex-wrap gap-6 text-slate-600 text-sm dark:text-slate-400"
-              style={{ fontFamily: "var(--font-mono, monospace)" }}
-            >
-              <span>❤️ {post.likes_count}</span>
+    {/* Author Avatar */}
+    {post.author?.avatar ? (
+      <img
+        src={post.author.avatar}
+        alt={`${post.author.username} avatar`}
+        className="w-11 h-11 rounded-full object-cover shrink-0"
+      />
+    ) : (
+      <div className="w-11 h-11 rounded-full bg-rose-50 text-rose-800 flex items-center justify-center text-sm font-bold shrink-0 dark:bg-rose-950/40 dark:text-rose-400">
+        {post.author?.username?.charAt(0).toUpperCase() || "?"}
+      </div>
+    )}
 
-              <span>🔖 {post.bookmarks_count}</span>
+    {/* Author Name */}
+    <div>
+      <Link
+        to={`/author/${post.author.username}`}
+        className="font-semibold text-lg text-slate-900 hover:text-rose-800 transition dark:text-white dark:hover:text-rose-400"
+      >
+        {post.author.username}
+      </Link>
 
-              <span>👁 {post.views}</span>
+      <p className="text-slate-500 text-sm dark:text-slate-400">
+        Author
+      </p>
+    </div>
 
-              <span>⏱ {post.reading_time} min read</span>
-            </div>
-          </div>
+  </div>
+
+  {/* Post Stats */}
+  <div
+    className="flex flex-wrap gap-6 text-slate-600 text-sm dark:text-slate-400"
+    style={{ fontFamily: "var(--font-mono, monospace)" }}
+  >
+    <span>❤️ {post.likes_count}</span>
+
+    <span>🔖 {post.bookmarks_count}</span>
+
+    <span>👁 {post.views}</span>
+
+    <span>⏱ {post.reading_time} min read</span>
+  </div>
+
+</div>
 
           {/* Tags */}
 

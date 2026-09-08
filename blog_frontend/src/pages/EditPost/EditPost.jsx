@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
@@ -30,6 +30,8 @@ function EditPost() {
   const [tags, setTags] = useState([]);
 
   const [previewImage, setPreviewImage] = useState("");
+
+  const quillRef = useRef(null);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -143,6 +145,40 @@ function EditPost() {
 
     return () => clearTimeout(timer);
   }, [loadCategories, loadTags, loadPost]);
+
+  // =========================
+  // AUTO-CONVERT PASTED "- " / "* " LINES TO BULLET LIST
+  // =========================
+  useEffect(() => {
+    const quill = quillRef.current?.getEditor?.();
+    if (!quill) return;
+
+    const handlePaste = () => {
+      setTimeout(() => {
+        const lines = quill.getLines(0, quill.getLength());
+
+        lines.forEach((line) => {
+          const start = quill.getIndex(line);
+          const length = line.length();
+          const text = quill.getText(start, length);
+
+          const match = text.match(/^(-|\*)\s+/);
+
+          if (match) {
+            quill.deleteText(start, match[0].length);
+            quill.formatLine(start, 1, "list", "bullet");
+          }
+        });
+      }, 50);
+    };
+
+    const editorRoot = quill.root;
+    editorRoot.addEventListener("paste", handlePaste);
+
+    return () => {
+      editorRoot.removeEventListener("paste", handlePaste);
+    };
+  }, [postLoaded]);
 
   // =========================
   // HANDLE INPUT CHANGE
@@ -377,6 +413,7 @@ function EditPost() {
             [&_.ql-picker-label]:dark:text-slate-300"
           >
             <ReactQuill
+              ref={quillRef}
               theme="snow"
               value={formData.content}
               onChange={handleContentChange}

@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.db.models import Count
+from django.db.models import Count, F
 from django.db.models.functions import TruncMonth
 from rest_framework import generics, filters, status
 from .serializers import PostSerializer, PostListSerializer, CategorySerializer, TagSerializer, RegisterSerializer, VerifyOTPSerializer, CustomTokenObtainPairSerializer, CommentSerializer, LikeSerializer, BookmarkSerializer, PostCreateUpdateSerializer, UserSerializer, PasswordResetRequestSerializer, PasswordResetConfirmSerializer, NotificationSerializer, FollowUserSerializer
@@ -208,6 +208,18 @@ class PostDetailAPIView(generics.RetrieveAPIView):
         context["request"] = self.request
         return context
 
+    def retrieve(self, request, *args, **kwargs):
+        post = self.get_object()
+
+        Post.objects.filter(pk=post.pk).update(
+            views=F('views') + 1
+        )
+
+        post.refresh_from_db()
+
+        serializer = self.get_serializer(post)
+        return Response(serializer.data)
+
 
 class PostCreateAPIView(generics.CreateAPIView):
     serializer_class = PostCreateUpdateSerializer
@@ -235,7 +247,7 @@ class PostUpdateAPIView(generics.UpdateAPIView):
 class PostEditDetailAPIView(generics.RetrieveAPIView):
 
     queryset = Post.objects.all()
-    serializer_class = PostCreateUpdateSerializer  
+    serializer_class = PostCreateUpdateSerializer
     permission_classes = [IsAuthenticated, IsAuthorOrReadOnly]
     lookup_field = 'slug'
 

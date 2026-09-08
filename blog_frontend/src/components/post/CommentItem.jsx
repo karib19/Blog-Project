@@ -1,8 +1,18 @@
 import { useState } from "react";
 import api from "../../api/axios";
 
-function Avatar({ username }) {
+function Avatar({ username, avatar }) {
   const letter = username ? username.charAt(0).toUpperCase() : "?";
+
+  if (avatar) {
+    return (
+      <img
+        src={avatar}
+        alt={`${username || "User"} avatar`}
+        className="w-9 h-9 rounded-full object-cover shrink-0"
+      />
+    );
+  }
 
   return (
     <div className="w-9 h-9 rounded-full bg-rose-50 text-rose-800 flex items-center justify-center text-sm font-bold shrink-0 dark:bg-rose-950/40 dark:text-rose-400">
@@ -89,7 +99,10 @@ function CommentItem({
 
       {/* Avatar + connecting line */}
       <div className="flex flex-col items-center shrink-0">
-        <Avatar username={comment.user?.username} />
+        <Avatar
+  username={comment.user?.username}
+  avatar={comment.user?.avatar}
+/>
         {(hasReplies && repliesOpen) && (
           <div className="w-px flex-1 bg-slate-200 dark:bg-slate-800 mt-2"></div>
         )}

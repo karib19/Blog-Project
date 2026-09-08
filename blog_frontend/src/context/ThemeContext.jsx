@@ -32,6 +32,8 @@ export function ThemeProvider({ children }) {
   );
 }
 
+// This hook intentionally shares the provider module's context API.
+// eslint-disable-next-line react-refresh/only-export-components
 export function useTheme() {
   const context = useContext(ThemeContext);
 
