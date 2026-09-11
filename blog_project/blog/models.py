@@ -312,3 +312,60 @@ class Follow(models.Model):
 
     def __str__(self):
         return f'{self.follower.username} follows {self.following.username}'
+
+
+class Report(models.Model):
+    REASON_CHOICES = [
+        ("spam", "Spam or Advertisement"),
+        ("harassment", "Harassment or Bullying"),
+        ("hate_speech", "Hate Speech"),
+        ("misinformation", "Misinformation"),
+        ("nsfw", "Inappropriate / NSFW Content"),
+        ("other", "Other"),
+    ]
+
+    STATUS_CHOICES = [
+        ("pending", "Pending Review"),
+        ("reviewed", "Reviewed"),
+        ("dismissed", "Dismissed"),
+        ("action_taken", "Action Taken"),
+    ]
+
+    reporter = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="reports_made"
+    )
+
+
+    post = models.ForeignKey(
+        "Post", on_delete=models.CASCADE, null=True, blank=True, related_name="reports"
+    )
+    comment = models.ForeignKey(
+        "Comment", on_delete=models.CASCADE, null=True, blank=True, related_name="reports"
+    )
+
+    reason = models.CharField(max_length=20, choices=REASON_CHOICES)
+    details = models.TextField(blank=True)
+
+    status = models.CharField(
+        max_length=20, choices=STATUS_CHOICES, default="pending"
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+        constraints = [
+            models.UniqueConstraint(
+                fields=["reporter", "post"], name="unique_post_report",
+                condition=models.Q(post__isnull=False),
+            ),
+            models.UniqueConstraint(
+                fields=["reporter", "comment"], name="unique_comment_report",
+                condition=models.Q(comment__isnull=False),
+            ),
+        ]
+
+    def __str__(self):
+        target = self.post or self.comment
+        return f"Report on {target} by {self.reporter.username}"

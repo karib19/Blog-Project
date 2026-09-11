@@ -91,9 +91,13 @@ api.interceptors.response.use(
         }
       );
 
-      const newAccess = response.data.access;
+const newAccess = response.data.access;
+const newRefresh = response.data.refresh;   
 
-      localStorage.setItem("access", newAccess);
+localStorage.setItem("access", newAccess);
+if (newRefresh) {
+  localStorage.setItem("refresh", newRefresh);
+}
 
       processQueue(null, newAccess);
 

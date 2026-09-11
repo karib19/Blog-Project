@@ -1,4 +1,7 @@
 import { useState } from "react";
+
+import ReportModal from "../post/ReportModal";
+
 import api from "../../api/axios";
 
 function Avatar({ username, avatar }) {
@@ -37,6 +40,7 @@ function CommentItem({
   const [repliesOpen, setRepliesOpen] = useState(true);
   const [deleting, setDeleting] = useState(false);
   const [deleted, setDeleted] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
 
   const isOwnComment =
     currentUserId != null && comment.user?.id === currentUserId;
@@ -80,6 +84,7 @@ function CommentItem({
 
     try {
       await api.delete(`comments/${comment.id}/delete/`);
+
       setDeleted(true);
       onCommentPosted();
     } catch (error) {
@@ -96,68 +101,79 @@ function CommentItem({
 
   return (
     <div className="flex gap-3">
-
       {/* Avatar + connecting line */}
       <div className="flex flex-col items-center shrink-0">
         <Avatar
-  username={comment.user?.username}
-  avatar={comment.user?.avatar}
-/>
-        {(hasReplies && repliesOpen) && (
+          username={comment.user?.username}
+          avatar={comment.user?.avatar}
+        />
+
+        {hasReplies && repliesOpen && (
           <div className="w-px flex-1 bg-slate-200 dark:bg-slate-800 mt-2"></div>
         )}
       </div>
 
       <div className="flex-1 min-w-0 pb-2">
+        {/* Comment Box */}
+        <div className="relative bg-slate-50 rounded-2xl px-4 py-3 dark:bg-slate-800/60">
+          {/* Username + Time */}
+          <div className="flex items-baseline gap-2 flex-wrap min-w-0 pr-10">
+            <h4 className="font-semibold text-sm text-slate-900 dark:text-white">
+              {comment.user?.username}
+            </h4>
 
-        <div className="bg-slate-50 rounded-2xl px-4 py-3 dark:bg-slate-800/60">
+            <span className="text-xs text-slate-400 dark:text-slate-500">
+              {comment.created_at
+                ? new Date(comment.created_at).toLocaleString()
+                : "Just now"}
+            </span>
+          </div>
 
-          <div className="flex items-baseline justify-between gap-2 flex-wrap">
-
-            <div className="flex items-baseline gap-2 flex-wrap">
-              <h4 className="font-semibold text-sm text-slate-900 dark:text-white">
-                {comment.user?.username}
-              </h4>
-
-              <span className="text-xs text-slate-400 dark:text-slate-500">
-                {comment.created_at
-                  ? new Date(comment.created_at).toLocaleString()
-                  : "Just now"}
-              </span>
-            </div>
-
-            {isOwnComment && (
+          {/* Delete / Report Actions */}
+          <div className="absolute top-3 right-3 flex flex-col items-center leading-none">
+            {/* নিজের কমেন্ট হলে শুধু Delete দেখাবে */}
+            {isOwnComment ? (
               <button
                 onClick={handleDelete}
                 disabled={deleting}
                 title="Delete comment"
                 className="text-xs text-slate-400 hover:text-rose-700 transition disabled:opacity-50 dark:text-slate-500 dark:hover:text-rose-400"
               >
-                {deleting ? "..." : "🗑"}
+                {deleting ? "..." : "🗑️"}
+              </button>
+            ) : (
+              /* অন্যের কমেন্ট হলে শুধু Report দেখাবে */
+              <button
+                onClick={() => setShowReportModal(true)}
+                className="text-xs text-slate-400 hover:text-rose-700 transition dark:text-slate-500 dark:hover:text-rose-400"
+                title="Report comment"
+              >
+                🚩
               </button>
             )}
-
           </div>
 
+          {/* Comment Text */}
           <p className="text-slate-700 whitespace-pre-line text-sm mt-1 dark:text-slate-300">
             {replyingToUsername && (
               <span className="font-semibold text-rose-800 dark:text-rose-400 mr-1">
                 @{replyingToUsername}
               </span>
             )}
+
             {comment.content}
           </p>
-
         </div>
 
+        {/* Reply + Replies Count */}
         <div className="flex items-center gap-4 mt-1.5 pl-1">
-
           <button
             onClick={() => {
               if (!token) {
                 onLoginRequired();
                 return;
               }
+
               setShowReplyForm((prev) => !prev);
             }}
             className="text-xs font-semibold text-slate-500 hover:text-rose-800 transition dark:text-slate-400 dark:hover:text-rose-400"
@@ -171,15 +187,16 @@ function CommentItem({
               className="text-xs font-semibold text-slate-500 hover:text-slate-700 transition flex items-center gap-1 dark:text-slate-400 dark:hover:text-slate-200"
             >
               <span>{repliesOpen ? "▾" : "▸"}</span>
-              {comment.replies.length} {comment.replies.length === 1 ? "reply" : "replies"}
+
+              {comment.replies.length}{" "}
+              {comment.replies.length === 1 ? "reply" : "replies"}
             </button>
           )}
-
         </div>
 
+        {/* Reply Form */}
         {showReplyForm && (
           <form onSubmit={handleReplySubmit} className="mt-3 flex gap-2">
-
             <textarea
               rows="1"
               placeholder={`Reply to ${comment.user?.username}...`}
@@ -195,10 +212,10 @@ function CommentItem({
             >
               {submitting ? "..." : "Send"}
             </button>
-
           </form>
         )}
 
+        {/* Nested Replies */}
         {hasReplies && repliesOpen && (
           <div className="mt-3 space-y-3">
             {comment.replies.map((reply) => (
@@ -216,9 +233,17 @@ function CommentItem({
             ))}
           </div>
         )}
-
       </div>
 
+      {/* Report Modal — শুধু অন্যের কমেন্টে ব্যবহার হবে */}
+      {!isOwnComment && (
+        <ReportModal
+          isOpen={showReportModal}
+          onClose={() => setShowReportModal(false)}
+          targetType="comment"
+          targetId={comment.id}
+        />
+      )}
     </div>
   );
 }

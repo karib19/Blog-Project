@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../api/axios";
@@ -8,7 +9,7 @@ function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const [error, setError] = useState("");
+  const [error] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -38,16 +39,14 @@ function Login() {
 
       login();
 
-      alert("Login Successful");
+      toast.success("Welcome back! 👋");
 
       navigate("/dashboard");
     } catch (error) {
       console.error(error.response?.data);
 
-    setError(
-      error.response?.data?.detail ||
-      "Login failed."
-);
+    toast.error("Invalid username or password.");
+
     } finally {
       setLoading(false);
     }

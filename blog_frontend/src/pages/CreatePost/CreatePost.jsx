@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
@@ -42,6 +43,40 @@ function CreatePost() {
   });
 
   const { lastSaved } = useAutoSave(DRAFT_KEY, formData);
+
+
+  const quillRef = useRef(null);
+
+  useEffect(() => {
+    const quill = quillRef.current?.getEditor?.();
+    if (!quill) return;
+
+    const handlePaste = () => {
+      setTimeout(() => {
+        const lines = quill.getLines(0, quill.getLength());
+
+        lines.forEach((line) => {
+          const start = quill.getIndex(line);
+          const length = line.length();
+          const text = quill.getText(start, length);
+
+          const match = text.match(/^(-|\*)\s+/);
+
+          if (match) {
+            quill.deleteText(start, match[0].length);
+            quill.formatLine(start, 1, "list", "bullet");
+          }
+        });
+      }, 50);
+    };
+
+    const editorRoot = quill.root;
+    editorRoot.addEventListener("paste", handlePaste);
+
+    return () => {
+      editorRoot.removeEventListener("paste", handlePaste);
+    };
+  }, []);
 
   useEffect(() => {
     const draft = loadDraft(DRAFT_KEY);
@@ -194,7 +229,7 @@ function CreatePost() {
 
       console.log(response.data);
 
-      alert("Post Created Successfully!");
+      toast.success("Post Created Successfully!");
 
       clearDraft(DRAFT_KEY);
 
@@ -215,7 +250,7 @@ function CreatePost() {
 
     } catch (error) {
       console.error(error.response?.data);
-      alert("Failed to create post.");
+      toast.error("Failed to create post. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -377,6 +412,7 @@ function CreatePost() {
             [&_.ql-picker-label]:dark:text-slate-300"
           >
             <ReactQuill
+              ref={quillRef}
               theme="snow"
               value={formData.content}
               onChange={handleContentChange}

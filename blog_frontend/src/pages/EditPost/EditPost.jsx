@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ReactQuill from "react-quill-new";
@@ -265,7 +266,7 @@ function EditPost() {
         },
       });
 
-      alert("Post Updated Successfully");
+      toast.success("Post updated successfully!");
 
       clearDraft(draftKey);
 
@@ -276,7 +277,7 @@ function EditPost() {
         error.response?.data || error.message
       );
 
-      alert("Update Failed");
+      toast.error("Failed to update post. Please try again.");
     } finally {
       setLoading(false);
     }

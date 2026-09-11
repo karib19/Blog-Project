@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useConfirm } from "../../components/layout/ConfirmDialog";
 import api from "../../api/axios";
 
 function Dashboard() {
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
+
+  const confirm = useConfirm();
 
   useEffect(() => {
     api
@@ -26,12 +30,16 @@ function Dashboard() {
       });
   }, []);
 
-  const handleDelete = async (slug) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this post?"
-    );
+  const handleDelete = async (slug, title) => {
+    const confirmed = await confirm({
+      title: "Delete this post?",
+      message: `"${title}" will be permanently deleted. This action cannot be undone.`,
+      confirmLabel: "Delete",
+      cancelLabel: "Cancel",
+      variant: "danger",
+    });
 
-    if (!confirmDelete) return;
+    if (!confirmed) return;
 
     try {
       await api.delete(`posts/${slug}/delete/`);
@@ -40,10 +48,10 @@ function Dashboard() {
         prevPosts.filter((post) => post.slug !== slug)
       );
 
-      alert("Post Deleted Successfully");
+      toast.success("Post deleted successfully.");
     } catch (error) {
       console.error(error.response?.data);
-      alert("Delete Failed");
+      toast.error("Failed to delete post. Please try again.");
     }
   };
 
@@ -258,7 +266,7 @@ function Dashboard() {
                   </NavLink>
 
                   <button
-                    onClick={() => handleDelete(post.slug)}
+                    onClick={() => handleDelete(post.slug, post.title)}
                     className="px-5 py-2 rounded-xl bg-rose-800 hover:bg-rose-900 text-white font-semibold transition dark:bg-rose-600 dark:hover:bg-rose-500"
                   >
                     🗑 Delete

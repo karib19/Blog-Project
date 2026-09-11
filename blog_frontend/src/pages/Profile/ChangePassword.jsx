@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/axios";
@@ -63,7 +64,7 @@ function ChangePassword() {
     e.preventDefault();
 
     if (!passwordsMatch) {
-      alert("Passwords do not match.");
+      toast.error("Passwords do not match.");
       return;
     }
 
@@ -72,9 +73,7 @@ function ChangePassword() {
     try {
       await api.put("change-password/", formData);
 
-      alert(
-        "Password changed successfully. Please login again."
-      );
+      toast.success("Password changed successfully. Please login again.");
 
       localStorage.removeItem("access");
       localStorage.removeItem("refresh");
@@ -83,7 +82,7 @@ function ChangePassword() {
       navigate("/login");
     } catch (error) {
       console.error(error.response?.data);
-      alert("Password change failed.");
+      toast.error("Password change failed.");
     } finally {
       setLoading(false);
     }

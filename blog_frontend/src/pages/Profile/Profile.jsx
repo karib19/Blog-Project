@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../../api/axios";
@@ -102,12 +103,12 @@ function Profile() {
 
     // Optional validation
     if (!file.type.startsWith("image/")) {
-      alert("Please select a valid image file.");
+      toast.error("Please select a valid image file.");
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      alert("Image size must be less than 5MB.");
+      toast.error("Image size must be less than 5MB.");
       return;
     }
 
@@ -140,12 +141,12 @@ function Profile() {
     try {
       await api.put("profile/", data);
 
-      alert("Profile Updated Successfully");
+      toast.success("Profile updated successfully!");
 
       await loadProfile();
     } catch (error) {
       console.error(error.response?.data || error);
-      alert("Profile Update Failed");
+      toast.error("Failed to update profile. Please try again.");
     } finally {
       setSaving(false);
     }

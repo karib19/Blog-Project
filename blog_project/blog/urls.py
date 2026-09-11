@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import PostListAPIView, PostDetailAPIView, CategoryListAPIView, TagListAPIView, CommentListCreateAPIView, CommentDeleteAPIView, LikeAPIView, ProfileAPIView, RegisterAPIView, VerifyOTPAPIView, test_email, ResendOTPAPIView, CustomTokenObtainPairView, PostCreateAPIView, PostUpdateAPIView, PostDeleteAPIView, BookmarkAPIView, MyPostsAPIView, MyBookmarksAPIView,DashboardAPIView, ChangePasswordAPIView, PasswordResetRequestAPIView, PasswordResetConfirmAPIView, NotificationListAPIView, MarkNotificationReadAPIView, MarkAllNotificationsReadAPIView, UnreadNotificationCountAPIView, TrendingPostsAPIView, PopularPostsAPIView, AuthorProfileAPIView, ArchiveSummaryAPIView, ArchiveByMonthAPIView, FollowToggleAPIView, FollowersListAPIView, FollowingListAPIView, GoogleLoginAPIView, PostEditDetailAPIView
+from .views import PostListAPIView, PostDetailAPIView, CategoryListAPIView, TagListAPIView, CommentListCreateAPIView, CommentDeleteAPIView, LikeAPIView, ProfileAPIView, RegisterAPIView, VerifyOTPAPIView, test_email, ResendOTPAPIView, CustomTokenObtainPairView, PostCreateAPIView, PostUpdateAPIView, PostDeleteAPIView, BookmarkAPIView, MyPostsAPIView, MyBookmarksAPIView,DashboardAPIView, ChangePasswordAPIView, PasswordResetRequestAPIView, PasswordResetConfirmAPIView, NotificationListAPIView, MarkNotificationReadAPIView, MarkAllNotificationsReadAPIView, UnreadNotificationCountAPIView, TrendingPostsAPIView, PopularPostsAPIView, AuthorProfileAPIView, ArchiveSummaryAPIView, ArchiveByMonthAPIView, FollowToggleAPIView, FollowersListAPIView, FollowingListAPIView, GoogleLoginAPIView, PostEditDetailAPIView, LogoutAPIView, ReportCreateAPIView
 from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
@@ -41,4 +41,6 @@ urlpatterns = [
     path("api/followers/<str:username>/", FollowersListAPIView.as_view(), name="followers-list"),
     path("api/following/<str:username>/", FollowingListAPIView.as_view(), name="following-list"),
     path("api/auth/google/", GoogleLoginAPIView.as_view(), name="google-login"),
+    path("api/logout/", LogoutAPIView.as_view(), name="logout"),
+    path("api/reports/", ReportCreateAPIView.as_view(), name="report-create"),
 ]

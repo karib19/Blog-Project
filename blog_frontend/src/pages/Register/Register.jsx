@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../api/axios";
@@ -65,12 +66,12 @@ function Register() {
     setErrors({});
 
     if (!passwordsMatch) {
-      alert("Passwords do not match.");
+      toast.error("Passwords do not match.");
       return;
     }
 
     if (passwordStrength() === "Weak") {
-      alert("Choose a stronger password.");
+      toast.error("Choose a stronger password.");
       return;
     }
 

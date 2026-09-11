@@ -117,3 +117,13 @@ a {
     padding-inline: 2rem;
   }
 }
+
+ :root {
+   --toast-bg: #1e293b;
+  --toast-color: #ffffff;
+ }
+
+ .dark {
+   --toast-bg: #0f172a;
+   --toast-color: #f1f5f9;
+ }

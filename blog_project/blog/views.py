@@ -1,16 +1,20 @@
 from django.contrib.auth.models import User
 from django.db.models import Count, F
 from django.db.models.functions import TruncMonth
+from django.db import IntegrityError
 from rest_framework import generics, filters, status
-from .serializers import PostSerializer, PostListSerializer, CategorySerializer, TagSerializer, RegisterSerializer, VerifyOTPSerializer, CustomTokenObtainPairSerializer, CommentSerializer, LikeSerializer, BookmarkSerializer, PostCreateUpdateSerializer, UserSerializer, PasswordResetRequestSerializer, PasswordResetConfirmSerializer, NotificationSerializer, FollowUserSerializer
+from .serializers import PostSerializer, PostListSerializer, CategorySerializer, TagSerializer, RegisterSerializer, VerifyOTPSerializer, CustomTokenObtainPairSerializer, CommentSerializer, LikeSerializer, BookmarkSerializer, PostCreateUpdateSerializer, UserSerializer, PasswordResetRequestSerializer, PasswordResetConfirmSerializer, NotificationSerializer, FollowUserSerializer, ReportSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Post, Category, Tag, Comment, Like, Bookmark, PasswordResetToken, Notification, EmailOTP, Follow
+from rest_framework_simplejwt.exceptions import TokenError
+from .models import Post, Category, Tag, Comment, Like, Bookmark, PasswordResetToken, Notification, EmailOTP, Follow, Profile, Report
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
 from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import ValidationError as DRFValidationError
 from .permissions import IsAuthorOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
@@ -24,14 +28,18 @@ from django.conf import settings
 from google.oauth2 import id_token
 from google.auth.transport import requests as google_requests
 
+from .throttles import LoginRateThrottle, RegisterRateThrottle, OTPRateThrottle, PasswordResetRateThrottle
+
 
 
 class RegisterAPIView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
+    throttle_classes = [RegisterRateThrottle]
 
 
 class VerifyOTPAPIView(APIView):
+    throttle_classes = [OTPRateThrottle]
 
     def post(self, request):
 
@@ -100,6 +108,7 @@ def test_email(request):
 
 
 class ResendOTPAPIView(APIView):
+    throttle_classes = [OTPRateThrottle]
 
     def post(self, request):
 
@@ -140,6 +149,7 @@ class ResendOTPAPIView(APIView):
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
+    throttle_classes = [LoginRateThrottle]
 
 
 class ProfileAPIView(generics.RetrieveUpdateAPIView):
@@ -211,15 +221,21 @@ class PostDetailAPIView(generics.RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         post = self.get_object()
 
-        Post.objects.filter(pk=post.pk).update(
-            views=F('views') + 1
-        )
+        session_key = f"viewed_post_{post.pk}"
+
+        if not request.session.get(session_key):
+            Post.objects.filter(pk=post.pk).update(
+                views=F('views') + 1
+            )
+            request.session[session_key] = True
+
+
+            request.session.set_expiry(60 * 60 * 24)
 
         post.refresh_from_db()
 
         serializer = self.get_serializer(post)
         return Response(serializer.data)
-
 
 class PostCreateAPIView(generics.CreateAPIView):
     serializer_class = PostCreateUpdateSerializer
@@ -458,6 +474,8 @@ class ChangePasswordAPIView(APIView):
 
 
 class PasswordResetRequestAPIView(APIView):
+    throttle_classes = [PasswordResetRateThrottle]
+
     def post(self, request):
         serializer = PasswordResetRequestSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -808,3 +826,57 @@ class GoogleLoginAPIView(APIView):
             "refresh": str(refresh),
             "created": created,
         }, status=status.HTTP_200_OK)
+
+
+class LogoutAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            refresh_token = request.data.get("refresh")
+
+            if not refresh_token:
+                return Response(
+                    {"error": "Refresh token is required."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+
+            return Response(
+                {"message": "Logged out successfully."},
+                status=status.HTTP_200_OK
+            )
+
+        except TokenError:
+            return Response(
+                {"error": "Invalid or already blacklisted token."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+class ReportCreateAPIView(generics.CreateAPIView):
+    serializer_class = ReportSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        try:
+            serializer.save(reporter=self.request.user)
+        except IntegrityError:
+            raise DRFValidationError(
+                "You have already reported this content."
+            )
+
+
+class ReportCreateAPIView(generics.CreateAPIView):
+    serializer_class = ReportSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        try:
+            serializer.save(reporter=self.request.user)
+        except IntegrityError:
+            raise DRFValidationError(
+                "You have already reported this content."
+            )

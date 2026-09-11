@@ -1,13 +1,51 @@
 from django.contrib.auth import get_user_model
 from django.db.models import Count, Q
 from rest_framework import serializers
-from .models import Post, Category, Tag, Comment, Like, Bookmark, PasswordResetToken, Notification
+from .models import Post, Category, Tag, Comment, Like, Bookmark, PasswordResetToken, Notification, Report
 from .utils import send_otp_email
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import EmailOTP
 from django.utils import timezone
+import bleach
+from bleach.css_sanitizer import CSSSanitizer
 
 User = get_user_model()
+
+ALLOWED_TAGS = [
+    "p", "br", "strong", "em", "u", "s", "b", "i",
+    "h1", "h2", "h3", "h4",
+    "ul", "ol", "li",
+    "blockquote", "code", "pre",
+    "a", "img",
+    "span",
+]
+
+ALLOWED_ATTRIBUTES = {
+    "a": ["href", "target", "rel"],
+    "img": ["src", "alt", "width", "height"],
+    "span": ["style", "class"],
+    "p": ["style", "class"],
+    "*": ["class"],
+}
+
+ALLOWED_STYLES = ["text-align", "color", "background-color"]
+
+css_sanitizer = CSSSanitizer(allowed_css_properties=ALLOWED_STYLES)
+
+
+def sanitize_html(content):
+
+    if not content:
+        return content
+    return bleach.clean(
+        content,
+        tags=ALLOWED_TAGS,
+        attributes=ALLOWED_ATTRIBUTES,
+        css_sanitizer=css_sanitizer,
+        strip=True,
+    )
+
+
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -145,6 +183,9 @@ class CommentSerializer(serializers.ModelSerializer):
         return CommentSerializer(
             replies, many=True, context=self.context
         ).data
+
+    def validate_content(self, value):
+        return bleach.clean(value, tags=[], strip=True)
 
 
 
@@ -310,6 +351,9 @@ class PostCreateUpdateSerializer(serializers.ModelSerializer):
             )
         return value
 
+    def validate_content(self, value):
+        return sanitize_html(value)
+
     def validate(self, attrs):
         if not attrs.get("content"):
             raise serializers.ValidationError(
@@ -397,3 +441,29 @@ class FollowUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'first_name', 'last_name']
+
+
+class ReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Report
+        fields = [
+            "id", "post", "comment", "reason",
+            "details", "status", "created_at",
+        ]
+        read_only_fields = ["id", "status", "created_at"]
+
+    def validate(self, attrs):
+        post = attrs.get("post")
+        comment = attrs.get("comment")
+
+        if not post and not comment:
+            raise serializers.ValidationError(
+                "Either a post or a comment must be specified."
+            )
+
+        if post and comment:
+            raise serializers.ValidationError(
+                "Report either a post or a comment, not both."
+            )
+
+        return attrs
